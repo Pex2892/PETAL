@@ -8,6 +8,7 @@ import pandas as pd
 import os
 import bs4 as bs
 import requests
+from generator import *
 
 start_time = time.time()
 
@@ -18,12 +19,12 @@ hsa_gene = 'hsa:5594'  # non deve essere statico, ma prelevarlo da questo url:
                        # https://www.genome.jp/dbget-bin/www_bget?pathway+hsa04010
 
 # https://www.genome.jp/dbget-bin/www_bget?hsa:5594+hsa:5595
-hop = 3
+hop = 2
 
 
 # ----- INITIAL VARIABLE ----
 pd.set_option('display.max_colwidth', -1) # mi serve a non troncare le info salvate all'interno del DF
-col = ['hop', 'name_start', 'hsa_start', 'name_end', 'hsa_end', 'url_hsa_end', 'relation', 'type_rel']
+col = ['hop', 'name_start', 'hsa_start', 'name_end', 'hsa_end', 'url_hsa_end', 'relation', 'type_rel', 'pathway_origin']
 df_tree = pd.DataFrame(columns=col)
 
 # ----- INITIAL METHODS ----
@@ -100,17 +101,7 @@ def read_kgml(level, pathway_hsa, name_gene_start, hsa_gene_start):
 
                 if len(list_gene_relation) > 0 and not list_gene_relation[0][2] in list_child_pathway: # togliendo la condizione dopo l'and vedrei i duplicati, quindi fare il calcolo delle occorrenze
                     str_to_csv = str_to_csv + str(level)+';'+name_gene_start+';'+hsa_gene_start+';'+list_gene_relation[0][2]+';'+\
-                                 list_gene_relation[0][1]+';'+elem.attributes['type'].value+';'+elem2.attributes['name'].value+';'+list_gene_relation[0][3]+"\n"
-
-
-                    # list_relations_pathway.append(
-                    #     #pd.Series(
-                    #         [level, name_gene_start, hsa_gene_start, list_gene_relation[0][2],
-                    #                list_gene_relation[0][1],
-                    #                list_gene_relation[0][3],
-                    #                elem.attributes['type'].value,
-                    #                elem2.attributes['name'].value
-                    #                ])#, index=df_tree_temp.columns))
+                                 list_gene_relation[0][1]+';'+elem.attributes['type'].value+';'+elem2.attributes['name'].value+';'+list_gene_relation[0][3]+';'+pathway_hsa+"\n"
 
                     list_child_pathway.append(list_gene_relation[0][2])
 
@@ -119,47 +110,52 @@ def read_kgml(level, pathway_hsa, name_gene_start, hsa_gene_start):
         tfile.write(str_to_csv)
         tfile.close()
 
-def execute_i(url_pathway_kegg, pathway_hsa, level_actual, name_gene_start, hsa_gene_start):
+def execute_i(url_pathway_kegg, pathway_hsa, level_actual, name_gene_start, hsa_gene_start, list_pathways_gene_actual):
     global list_child_pathway
 
     # rimuovo dalla lista trovata il pathway in input
-    list_pathways_gene_actual = [x for x in read_html(url_pathway_kegg) if x != pathway_hsa]
+    if list_pathways_gene_actual == None:
+        #print('EXECUTE_I:', url_pathway_kegg, pathway_hsa, level_actual, name_gene_start, hsa_gene_start)
 
-    for val in list_pathways_gene_actual:
-        download_xml(val)
-        read_kgml(level_actual, val, name_gene_start, hsa_gene_start)
+        list_pathways_gene_actual = [x for x in read_html(url_pathway_kegg) if x != pathway_hsa]
+        #print('list_pathways_gene_actual_n:', list_pathways_gene_actual)
+        for val in list_pathways_gene_actual:
+            download_xml(val)
+            read_kgml(level_actual, val, name_gene_start, hsa_gene_start)
+    else:
+        download_xml(list_pathways_gene_actual)
+        read_kgml(level_actual, list_pathways_gene_actual, name_gene_start, hsa_gene_start)
+        #print('list_pathways_gene_actual_1', list_pathways_gene_actual)
+
     list_child_pathway = []
+
 
 # ----- INITIAL MAIN ----
 if os.path.isdir('results'):
     shutil.rmtree('results')
 os.makedirs('results')
 
+num_cores = multiprocessing.cpu_count()
 for level_actual in range(1, hop+1): #hop+1 perchè non devo saltare l'ultimo livello
     if level_actual == 1:
         download_xml(pathway_hsa)
         read_kgml(level_actual, pathway_hsa, name_gene, hsa_gene)
+
+        list_pathways_gene_actual_first_level = [x for x in read_html('https://www.genome.jp/dbget-bin/www_bget?hsa:5594+hsa:5595') if x != pathway_hsa]
+
+        inputs = range(0, len(list_pathways_gene_actual_first_level))
+
+        Parallel(n_jobs=num_cores)(delayed(execute_i)('https://www.genome.jp/dbget-bin/www_bget?hsa:5594+hsa:5595', pathway_hsa, level_actual, name_gene, hsa_gene, list_pathways_gene_actual_first_level[i]) for i in inputs)
+
+        #print('EXECUTE_1:', pathway_hsa, level_actual, pathway_hsa, name_gene, hsa_gene)
+
     else:
         df_genes_level_prev = (df_tree[df_tree['hop'] == level_actual - 1])#.drop_duplicates(subset='name_end')
 
-        #print('level_actual:', level_actual)
-        #print(df_genes_level_prev.iloc[:,3].to_string(index=False))
-        #print('len:', len(df_genes_level_prev.iloc[:,3]))
-
         inputs = range(0, df_genes_level_prev.shape[0])
-        num_cores = multiprocessing.cpu_count()
 
         #, verbose=5
-        Parallel(n_jobs=num_cores)(delayed(execute_i)(df_genes_level_prev.iloc[i,7], pathway_hsa, level_actual, df_genes_level_prev.iloc[i,3], df_genes_level_prev.iloc[i,4]) for i in inputs)
-
-        #print(df_result_level)
-        #df_result_level = pd.concat(df_result_level)
-        #df_tree = pd.concat([df_tree, df_result_level])
-        #print(df_tree)
-        #df_tree.to_csv('results/level_'+str(level_actual) + '.csv', header=False, index=False)
-
-        ### se uso i file
-        #p = subprocess.call('sh concatenate.sh '+str(level_actual), shell=True)
+        Parallel(n_jobs=num_cores)(delayed(execute_i)(df_genes_level_prev.iloc[i,7], pathway_hsa, level_actual, df_genes_level_prev.iloc[i,3], df_genes_level_prev.iloc[i,4], None) for i in inputs)
 
     # carico il csv del livello attuale con i duplicati
     df_tree = pd.read_csv('results/results_level'+str(level_actual)+'.csv', sep=';', header=None, names=col)
@@ -170,4 +166,9 @@ for level_actual in range(1, hop+1): #hop+1 perchè non devo saltare l'ultimo li
 
 
 subprocess.call('sh concatenate.sh', shell=True)
+
+# genero il file di output per poi passarlo e creare il json
+init_generate_output(hop)
+
+
 print('Time of Execution:', time.time()-start_time)

@@ -15,7 +15,8 @@ def init_generate_output(hop):
 
     lista = [[]]
     for i in range(0, len_df_1):
-        lista[0].append(df_1.iloc[i, 1] + ';;' + df_1.iloc[i, 3] + '||' + df_1.iloc[i, 5] + '#' + df_1.iloc[i, 6])
+        lista[0].append(df_1.iloc[i, 1] + ';;' + df_1.iloc[i, 3] + '||' + df_1.iloc[i, 5] + '#' + df_1.iloc[i, 6]
+                        + '#--' + df_1.iloc[i, 8])
 
     # print('Livello 1')
     # print(lista)
@@ -64,7 +65,7 @@ def process_level(level, list_level_prev):
         for j in range(0, len_list_level_prev):
             if gene in list_level_prev[j]:
                 row = list_level_prev[j].split('||')[0]
-                row = row + ';;' + df.iloc[i, 3] + '||' + df.iloc[i, 5] + '#' + df.iloc[i, 6]
+                row = row + ';;' + df.iloc[i, 3] + '||' + df.iloc[i, 5] + '#' + df.iloc[i, 6] + '#--' + df.iloc[i, 8]
                 result_list_actual.append(row)
 
     return result_list_actual
@@ -104,47 +105,47 @@ def check_child(lista, child, row_act, links_):
 
     return lista
 
-def output_json
-rows = ''
-links = []
-with open('results/output_text.txt') as f:
-    rows = f.readlines()
+def output_json():
+    rows = ''
+    links = []
+    with open('results/output_text.txt') as f:
+        rows = f.readlines()
 
-for i in range(0, len(rows)):
-    part_line = rows[i].split("||")
-    links.append(part_line[1].replace("\n", ""))
+    for i in range(0, len(rows)):
+        part_line = rows[i].split("||")
+        links.append(part_line[1].replace("\n", ""))
 
-    rows[i] = part_line[0].split(";;")
-    if rows[i][-1] == "":
-        rows[i].pop()
+        rows[i] = part_line[0].split(";;")
+        if rows[i][-1] == "":
+            rows[i].pop()
 
-json_dict = {}
+    json_dict = {}
 
-json_root = {}
-json_root["nodeName"] = rows[0][0]
-json_root["code"] = "lorem"
-json_root["version"] = "lorem"
-json_root["name"] = "null"
-json_root["label"] = "null"
-json_root["type"] = "type4"
-# json_root["link"] = {}
-# json_root["link"]['name'] = "Link node 1 to 2.1"
-# json_root["link"]['nodeName'] = "NODE NAME 2.1"
-# json_root["link"]['direction'] = "ASYN"
-json_root["children"] = []
-
-p_root = json_root["children"]
-genes = list()
-genes.append(rows[0][0])
-
-for i in range(0, len(rows)):  # scorro tutte le righe i-sime
-    for j in range(1, len(rows[i])):
-        genes.append(rows[i][j])
-        p_root = check_child(p_root, rows[i][j], i, links)
+    json_root = {}
+    json_root["nodeName"] = rows[0][0]
+    json_root["code"] = "lorem"
+    json_root["version"] = "lorem"
+    json_root["name"] = "null"
+    json_root["label"] = "null"
+    json_root["type"] = "type4"
+    # json_root["link"] = {}
+    # json_root["link"]['name'] = "Link node 1 to 2.1"
+    # json_root["link"]['nodeName'] = "NODE NAME 2.1"
+    # json_root["link"]['direction'] = "ASYN"
+    json_root["children"] = []
 
     p_root = json_root["children"]
+    genes = list()
+    genes.append(rows[0][0])
 
-json_dict['tree'] = json_root
+    for i in range(0, len(rows)):  # scorro tutte le righe i-sime
+        for j in range(1, len(rows[i])):
+            genes.append(rows[i][j])
+            p_root = check_child(p_root, rows[i][j], i, links)
 
-with open("results/flare.json", "w") as outfile:
-    json.dump(json_dict, outfile, indent=2, sort_keys=False)
+        p_root = json_root["children"]
+
+    json_dict['tree'] = json_root
+
+    with open("demo/flare.json", "w") as outfile:
+        json.dump(json_dict, outfile, indent=2, sort_keys=False)

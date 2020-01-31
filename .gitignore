@@ -1,2 +1,7 @@
 
 .DS_Store
+*.xml
+*.csv
+*.txt
+*.html
+test.py

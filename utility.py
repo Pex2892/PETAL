@@ -1,9 +1,13 @@
 import argparse
+import re
+from datetime import datetime
 import bs4 as bs
 import requests
 import os
 import shutil
 from xml.dom import minidom
+from Bcolors import Bcolors as Bc
+
 
 
 def command_line():
@@ -25,33 +29,85 @@ def command_line():
 
 def clear_results():
     if os.path.isdir('results'):
-        shutil.rmtree('results')
-    os.makedirs('results')
+        shutil.rmtree('results/execution')
+        os.makedirs('results/execution')
+
+
+def get_info_gene_initial(pathway_hsa, name_gene):
+    mydoc = minidom.parse('results/pathways_xml/' + pathway_hsa + '.xml')
+
+    # GENES
+    entry = mydoc.getElementsByTagName('entry')
+
+    for elem in entry:
+        string_check = name_gene + ','
+        if elem.attributes['type'].value == 'gene' and string_check in elem.getElementsByTagName('graphics')[0].attributes['name'].value:
+            return elem.attributes['name'].value, elem.attributes['link'].value
+
+    print(Bc.FAIL + Bc.BOLD + "The gene entered not exit into pathway selected! " + Bc.ENDC)
+    exit(1)
+
+
+def download_update_pathway_html(url_page):
+    # retrieve datetime to file
+    file_time = os.path.getmtime('results/pathway_map_update_history.html')
+
+    # check datetime (in seconds) > 24h (seconds)
+    if (datetime.now() - datetime.fromtimestamp(file_time)).total_seconds() > 86400:
+        # download file html updated
+        try:
+            req = requests.get(url_page)
+
+            with open('results/pathway_map_update_history.html', 'wb') as f:
+                f.write(req.content)
+
+            soup = bs.BeautifulSoup(req.content, 'html.parser')
+
+            return [item.text for item in soup.findAll('td')[1::4]]
+        except requests.exceptions.ConnectionError:
+            print("Connection refused from KEGG")
+            exit(1)
+    else:
+        # open file html previously downloaded
+        with open('results/pathway_map_update_history.html', 'r') as f:
+            soup = bs.BeautifulSoup(f.read(), 'html.parser')
+
+            return [item.text for item in soup.findAll('td')[1::4]]
+
+# def check_update_pathway_html(check_pathway):
+    # print(check_pathway + ' - ' + re.findall(r'\d+', check_pathway)[0])
+    # with open('results/pathway_map_update_history.html', 'r') as f:
+    #     soup = bs.BeautifulSoup(f.read(), 'html.parser')
+    #
+    #     for item in soup.findAll('td')[1::4]:
+    #         if item.text in check_pathway:
+    #             return True
+    # return False
 
 
 def download_xml(pathway_hsa_input):
-    if not os.path.exists('./pathways_xml/'+pathway_hsa_input+'.xml'):
+    # pathway non esiste
+    if not os.path.exists('results/pathways_xml/'+pathway_hsa_input+'.xml'):
         # print('file not exist!')
         pathway_kgml = requests.get('http://rest.kegg.jp/get/' + pathway_hsa_input + '/kgml')
-        with open('pathways_xml/'+pathway_hsa_input+'.xml', 'wb') as f:
+        with open('results/pathways_xml/'+pathway_hsa_input+'.xml', 'wb') as f:
             f.write(pathway_kgml.content)
-
 
 def download_read_html(url_pathway):
     hsa_pathwway = url_pathway.split('?')[1].replace('+', '_').replace(':', '')
 
-    if not os.path.exists('./pathways_html/'+hsa_pathwway+'.html'):
+    if not os.path.exists('results/pathways_html/'+hsa_pathwway+'.html'):
         try:
             req = requests.get(url_pathway)
 
-            with open('pathways_html/'+hsa_pathwway+'.html', 'wb') as f:
+            with open('results/pathways_html/'+hsa_pathwway+'.html', 'wb') as f:
                 f.write(req.content)
         except requests.exceptions.ConnectionError:
             print("Connection refused")
             exit(1)
 
     # open pathway of the genes in html
-    with open('pathways_html/'+hsa_pathwway+'.html', 'r') as f:
+    with open('results/pathways_html/'+hsa_pathwway+'.html', 'r') as f:
         soup = bs.BeautifulSoup(f.read(), 'html.parser')
 
         list_pathway = list()
@@ -87,8 +143,7 @@ def concat_multiple_subtype(list_subtype):
 
 
 def read_kgml(level, pathway_hsa, name_gene_start, hsa_gene_start):
-
-    mydoc = minidom.parse('pathways_xml/' + pathway_hsa + '.xml')
+    mydoc = minidom.parse('results/pathways_xml/' + pathway_hsa + '.xml')
 
     # GENES
     entry = mydoc.getElementsByTagName('entry')
@@ -136,13 +191,13 @@ def read_kgml(level, pathway_hsa, name_gene_start, hsa_gene_start):
                                      concat_multiple_subtype(elem.getElementsByTagName('subtype')) + ';' + \
                                      list_gene_relation[0][3] + ';' + pathway_hsa + "\n"
 
-        tfile = open('results/results_level' + str(level) + '.csv', 'a')
+        tfile = open('results/execution/results_level' + str(level) + '.csv', 'a')
         tfile.write(str_to_csv)
         tfile.close()
 
 
 def execute_i(url_pathway_kegg, pathway_hsa, level_actual, name_gene_start, hsa_gene_start, list_pathways_gene_actual):
-    global list_child_pathway
+    #global list_child_pathway
 
     # rimuovo dalla lista trovata il pathway in input
     if list_pathways_gene_actual == None:
@@ -158,4 +213,4 @@ def execute_i(url_pathway_kegg, pathway_hsa, level_actual, name_gene_start, hsa_
         read_kgml(level_actual, list_pathways_gene_actual, name_gene_start, hsa_gene_start)
         #print('list_pathways_gene_actual_1', list_pathways_gene_actual)
 
-    list_child_pathway = []
+    #list_child_pathway = []

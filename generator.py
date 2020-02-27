@@ -8,7 +8,7 @@ COLUMNS_DF = ['hop', 'name_start', 'hsa_start', 'name_end', 'hsa_end', 'url_hsa_
 
 def init_generate_output(hop):
     # carico il csv del livello attuale con i duplicati
-    df_1 = pd.read_csv('results/results_level1.csv', sep=';', header=None, names=COLUMNS_DF)
+    df_1 = pd.read_csv('results/execution/results_level1.csv', sep=';', header=None, names=COLUMNS_DF)
     df_1 = df_1.sort_values(by=['name_end'])
 
     len_df_1 = df_1.shape[0]
@@ -38,7 +38,7 @@ def init_generate_output(hop):
     output = '\n'.join(output)
 
     # scrivo il file di output
-    with open('results/output_text.txt', 'w') as f:
+    with open('results/execution/output_text.txt', 'w') as f:
         f.write(output)
 
 
@@ -47,7 +47,7 @@ def init_generate_output(hop):
 
 def process_level(level, list_level_prev):
     # carico il csv del livello attuale
-    df = pd.read_csv(os.path.join('results', 'results_level'+str(level)+'.csv'), sep=';', header=None, names=COLUMNS_DF)
+    df = pd.read_csv(os.path.join('results', 'execution', 'results_level'+str(level)+'.csv'), sep=';', header=None, names=COLUMNS_DF)
 
     # ordino il df per nome gene iniziale
     df = df.sort_values(by=['name_start'])
@@ -108,7 +108,7 @@ def check_child(lista, child, row_act, links_):
 def output_json():
     rows = ''
     links = []
-    with open('results/output_text.txt') as f:
+    with open('results/execution/output_text.txt') as f:
         rows = f.readlines()
 
     for i in range(0, len(rows)):

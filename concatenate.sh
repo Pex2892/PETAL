@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd results
+cd results/execution
 
 #head -1 results_level1.csv > results_level$1.csv
 #for f in results_level$1.csv; do (cat "${f}"; echo) >> results_all.csv; done

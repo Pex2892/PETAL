@@ -20,7 +20,218 @@
           "direction": "ASYN",
           "from": "hsa04371"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "PPP2R3B",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//dephosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04151"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PHLPP2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//dephosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04151"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "THEM4",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04151"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MTCP1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04151"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RHOB",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05132"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RRAS",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05132"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ILK",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04510"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PTK2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05418"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PTPA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//dephosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04931"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "OGT",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//glycosylation",
+              "direction": "ASYN",
+              "from": "hsa04931"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NKX3-1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "missing interaction",
+              "direction": "ASYN",
+              "from": "hsa05200"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PRKCZ",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04071"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TRIB3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04931"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CRTC2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04151"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "ARAF",
@@ -35,7 +246,83 @@
           "direction": "ASYN",
           "from": "hsa05205"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "YWHAQ",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05160"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ARRB1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04928"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NRAS",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05218"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KRAS",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04914"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RRAS2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "ARRB1",
@@ -50,7 +337,38 @@
           "direction": "ASYN",
           "from": "hsa04929"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "KIF3A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04340"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KISS1R",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "None",
+              "direction": "ASYN",
+              "from": "hsa04929"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "BMPR1A",
@@ -65,7 +383,23 @@
           "direction": "ASYN",
           "from": "hsa04550"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "BMP4",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04550"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "CAMK2A",
@@ -80,7 +414,68 @@
           "direction": "ASYN",
           "from": "hsa04720"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "ITPR1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PPP1CA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04720"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RIPK3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04217"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CYBB",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04217"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "CAMK4",
@@ -95,7 +490,23 @@
           "direction": "ASYN",
           "from": "hsa04725"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "CALML6",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04921"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "DAPK1",
@@ -108,7 +519,7 @@
           "name": "PPrel",
           "nodeName": "missing interaction",
           "direction": "ASYN",
-          "from": "hsa05219"
+          "from": "hsa05200"
         },
         "children": []
       },
@@ -125,7 +536,23 @@
           "direction": "ASYN",
           "from": "hsa04726"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "NFE2L2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05418"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "DUSP10",
@@ -170,7 +597,23 @@
           "direction": "ASYN",
           "from": "hsa04550"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "SMAD1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "GErel",
+              "nodeName": "expression",
+              "direction": "ASYN",
+              "from": "hsa04550"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "EGFR",
@@ -183,9 +626,355 @@
           "name": "PPrel",
           "nodeName": "activation//indirect effect",
           "direction": "ASYN",
-          "from": "hsa04934"
+          "from": "hsa04928"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "PDGFA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04072"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "DCN",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "EGF",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05213"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PLCB1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04921"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PIK3R6",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04921"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SRC",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04921"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KITLG",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04072"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "INS",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04072"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CSF1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04151"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RXFP3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04926"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TGFA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05214"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RNF41",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "ubiquitination",
+              "direction": "ASYN",
+              "from": "hsa04144"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "BTC",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04012"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "EREG",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04012"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TCIRG1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05165"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "IL24",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04630"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CNTF",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04630"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIR145",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIR125A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIR7-1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "USP8",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04934"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "AREG",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04012"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "HBEGF",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04915"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "ERBB2",
@@ -200,7 +989,68 @@
           "direction": "ASYN",
           "from": "hsa01524"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "NOTCH1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "GErel",
+              "nodeName": "expression",
+              "direction": "ASYN",
+              "from": "hsa05224"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "HES1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "GErel",
+              "nodeName": "expression",
+              "direction": "ASYN",
+              "from": "hsa05224"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIR331",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "HEY1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "GErel",
+              "nodeName": "expression",
+              "direction": "ASYN",
+              "from": "hsa05224"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "FGFR1",
@@ -215,7 +1065,83 @@
           "direction": "ASYN",
           "from": "hsa05205"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "FGF21",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04714"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KLB",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04714"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FGF2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FGF1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05224"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FGF23",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04928"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "GNAI1",
@@ -230,7 +1156,713 @@
           "direction": "ASYN",
           "from": "hsa04261"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "PTGER1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05163"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "DRD2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05030"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GRM2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05030"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MTNR1B",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04713"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MTNR1A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04713"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "P2RY12",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04611"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "S1PR5",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04071"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "S1PR4",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04071"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "S1PR3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04071"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "S1PR2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04071"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "S1PR1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04071"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ADORA1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04071"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CHRM1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04024"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "EDNRB",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04916"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CXCR4",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04670"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ADRB2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04261"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RXFP1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04926"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RXFP4",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04926"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "HTR5A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04726"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GPSM1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05030"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CCR5",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05145"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RGS9",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05030"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NPY1R",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04923"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SSTR2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04971"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "HTR1A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04726"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "OPRD1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04022"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GRM7",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PCrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04724"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ADRB1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04022"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "LPAR1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04540"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GRM1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04730"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GRM4",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PCrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04724"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CRHR1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04730"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RGS3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04360"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CASR",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04928"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PTH1R",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04928"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SSTR1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04935"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "DRD3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04728"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "APLNR",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04371"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GABBR1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05032"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "OPRM1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05032"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CXCR6",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04062"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CHRM2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04725"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "OXTR",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04921"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CNR1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04015"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PTGER3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04923"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "BDKRB2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04022"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CHRM4",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04725"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "GNB5",
@@ -241,9 +1873,9 @@
         "type": "type1",
         "link": {
           "name": "PPrel",
-          "nodeName": "activation",
+          "nodeName": "activation//indirect effect",
           "direction": "ASYN",
-          "from": "hsa04723"
+          "from": "hsa04713"
         },
         "children": []
       },
@@ -260,7 +1892,323 @@
           "direction": "ASYN",
           "from": "hsa04380"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "FRS2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04714"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SHC2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04062"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "BLNK",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04662"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ERBB2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MET",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FLT3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05221"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "LAT",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04664"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CSF1R",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04151"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "IRS1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04910"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PDGFRA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05163"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "IL6ST",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04550"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FGFR2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05226"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PDGFRB",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05165"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ABL1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05200"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "LCP2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04650"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "HCST",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04650"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SH2B2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04722"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SH2B3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04722"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NTRK2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04722"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NTRK3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04722"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CD28",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04660"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "HRAS",
@@ -273,9 +2221,535 @@
           "name": "PPrel",
           "nodeName": "activation//indirect effect",
           "direction": "ASYN",
-          "from": "hsa04933"
+          "from": "hsa04360"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "RASA4B...",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04014"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FGFR3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05219"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KIT",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04916"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SHOC2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04014"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NF1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04014"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TFG",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05216"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SPHK2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04370"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GNB5",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05167"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SYK",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05167"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RASGRP1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04660"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RASSF1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "missing interaction",
+              "direction": "ASYN",
+              "from": "hsa05219"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RASGRF1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04014"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ICAM1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05166"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "LSP1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04625"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ALK",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05235"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "IFNGR1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05235"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NOS1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04730"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PRKCE",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04371"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIRLET7C",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIRLET7A1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CAMK2A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05200"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SOS1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04062"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ARHGEF12",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04625"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RASA1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04360"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CAMK1D",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05214"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FDPS",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05166"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GNAQ",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04921"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RASGRP3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04662"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RPS6KA6",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04722"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RET",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05216"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GNAI1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04071"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CSF2RB",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04210"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NTRK1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04210"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAPK1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04722"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FGFR1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04550"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "IGF1R",
@@ -290,7 +2764,68 @@
           "direction": "ASYN",
           "from": "hsa05205"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "IGF1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04114"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "IGF2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05225"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GRB10",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04150"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KL",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04211"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "INSR",
@@ -305,7 +2840,68 @@
           "direction": "ASYN",
           "from": "hsa04930"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "SOCS4",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04930"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PTPRF",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//dephosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04910"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PTPN1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//dephosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04910"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PRKCB",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04931"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "IQGAP1",
@@ -320,7 +2916,38 @@
           "direction": "ASYN",
           "from": "hsa05205"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "CD44",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CDC42",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04810"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "LAT",
@@ -335,7 +2962,53 @@
           "direction": "ASYN",
           "from": "hsa04659"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "PTPN11",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//dephosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04650"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CD244",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04650"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ZAP70",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04660"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "MAP2K1",
@@ -350,7 +3023,173 @@
           "direction": "ASYN",
           "from": "hsa04010"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "ARAF",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PRKCD",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04722"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GRB2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04550"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "HRAS",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04725"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TICAM1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05135"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "BRAF",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa05216"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TRAF6",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05235"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MOS",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04914"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PPP2CA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04730"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PAK4...",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04510"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAP3K8",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04668"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "MAP2K2",
@@ -365,7 +3204,113 @@
           "direction": "ASYN",
           "from": "hsa04010"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "RAF1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa05170"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIR195",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PRNP",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05020"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAP3K7",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa05161"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PRKACA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04919"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "EGFR",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04066"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PAK1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04650"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "MAP2K3",
@@ -380,7 +3325,68 @@
           "direction": "ASYN",
           "from": "hsa05132"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "RAP1A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04015"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RAC1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04664"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAP3K2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04912"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAP3K1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04935"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "MAP3K7",
@@ -391,11 +3397,87 @@
         "type": "type1",
         "link": {
           "name": "PPrel",
-          "nodeName": "activation//phosphorylation",
+          "nodeName": "activation//phosphorylation//indirect effect",
           "direction": "ASYN",
-          "from": "hsa04621"
+          "from": "hsa05145"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "TAB3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04657"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PRKCQ",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04660"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAP2K7",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04660"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "BCL10",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04660"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TAB1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04621"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "MAPK14",
@@ -410,7 +3492,188 @@
           "direction": "ASYN",
           "from": "hsa04917"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "RIPK2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05152"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAP3K5",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04071"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NOS3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04933"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "DLG1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04660"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAPK8",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04917"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PRKG1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04714"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "BMPR1A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04550"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RAPGEF3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04261"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAP2K1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa05161"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAP2K3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04015"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAP2K6",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04380"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "DUSP1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa05418"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "MIR10A",
@@ -425,7 +3688,23 @@
           "direction": "ASYN",
           "from": "hsa05206"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "TWIST2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "GErel",
+              "nodeName": "expression//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "MIR195",
@@ -470,7 +3749,158 @@
           "direction": "ASYN",
           "from": "hsa04713"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "GRIN1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04713"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CACNA1I",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04713"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RYR1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04713"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CACNA1C",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04713"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "AKT3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04371"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ASS1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "ECrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa00220"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KLF2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "GErel",
+              "nodeName": "expression",
+              "direction": "ASYN",
+              "from": "hsa04371"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ARG1...",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "ECrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa00330"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GATM",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "ECrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa00330"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ASL",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "ECrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa00220"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "PPP2CA",
@@ -485,7 +3915,68 @@
           "direction": "ASYN",
           "from": "hsa04730"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "SMG1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PCrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa03015"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PPP1R17",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04730"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TGFBR2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04350"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAPK14",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05142"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "PRKACA",
@@ -496,11 +3987,207 @@
         "type": "type1",
         "link": {
           "name": "PPrel",
-          "nodeName": "activation",
+          "nodeName": "activation//indirect effect",
           "direction": "ASYN",
-          "from": "hsa04720"
+          "from": "hsa04725"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "SMO",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04340"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RASD1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04713"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PPP1R1B",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05030"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KCNQ1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound//activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa05110"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SLC12A2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound//activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa05110"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "IGF1R",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "ECrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04114"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ITGA2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PRKCA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04916"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PKIA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05034"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ADCY1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "ECrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04114"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RAB13",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04530"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PGR",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "ECrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04114"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "AR",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "ECrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04114"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "PRKCA",
@@ -511,11 +4198,222 @@
         "type": "type1",
         "link": {
           "name": "PPrel",
-          "nodeName": "activation//phosphorylation//indirect effect",
+          "nodeName": "activation",
           "direction": "ASYN",
-          "from": "hsa04933"
+          "from": "hsa04261"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "PDPK1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04151"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIR10A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIR103B1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIR30A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PLCG1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04020"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PLA2G4B",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04730"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIR129-1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MIR143",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05206"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PLCE1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04020"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MTOR",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04150"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PLCZ1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04020"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PLCD3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04020"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ATP6AP1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa05161"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "LYN",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04730"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "PRKCB",
@@ -530,7 +4428,53 @@
           "direction": "ASYN",
           "from": "hsa05140"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "PLCG2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "compound",
+              "direction": "ASYN",
+              "from": "hsa04662"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "AGER",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04933"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FCGR1A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "ECrel",
+              "nodeName": "compound//activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05140"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "PRKCD",
@@ -560,7 +4504,23 @@
           "direction": "ASYN",
           "from": "hsa04062"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "PARD6A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04530"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "PTK2",
@@ -575,7 +4535,173 @@
           "direction": "ASYN",
           "from": "hsa04360"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "SDC4",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KDR",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04370"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GPER1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa01522"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NCK2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04360"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NEO1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04360"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RHOA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04670"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "ITGB1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04510"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FGR",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04062"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PIK3CA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04062"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PTEN",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//dephosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04510"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "JAK2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04935"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "PTPN11",
@@ -590,7 +4716,158 @@
           "direction": "ASYN",
           "from": "hsa05211"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "GAB2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05220"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PILRA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa05168"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "GAB1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05211"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KIR2DL1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04650"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KIR3DL2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04650"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "KIR3DL1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04650"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PRKAG2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04920"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "UNC5D",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04360"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FOXO1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "GErel",
+              "nodeName": "expression",
+              "direction": "ASYN",
+              "from": "hsa04931"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "JAK1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//phosphorylation",
+              "direction": "ASYN",
+              "from": "hsa04630"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "PTPN6",
@@ -603,9 +4880,25 @@
           "name": "PPrel",
           "nodeName": "inhibition//dephosphorylation",
           "direction": "ASYN",
-          "from": "hsa05140"
+          "from": "hsa05235"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "PDCD1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa05235"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "RIPK2",
@@ -620,7 +4913,158 @@
           "direction": "ASYN",
           "from": "hsa05152"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "HSP90AA1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05132"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TRAF2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04621"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CARD9",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04621"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "BIRC2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//ubiquitination",
+              "direction": "ASYN",
+              "from": "hsa04621"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "XIAP",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//ubiquitination",
+              "direction": "ASYN",
+              "from": "hsa04621"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CARD6",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04621"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RBCK1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//ubiquitination",
+              "direction": "ASYN",
+              "from": "hsa04621"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NOD1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04621"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NOD2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04621"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TRIP6",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04621"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "RRAS2",
@@ -650,7 +5094,98 @@
           "direction": "ASYN",
           "from": "hsa05205"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "MMP9",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "HPSE",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "state change",
+              "direction": "ASYN",
+              "from": "hsa05205"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FN1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04512"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "COL1A1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04512"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TNC",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04512"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "COMP",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04512"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "TLR4",
@@ -665,7 +5200,68 @@
           "direction": "ASYN",
           "from": "hsa05133"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "HSPA9",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05152"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "HSPD1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05152"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "LY96",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa05145"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CD14",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05134"
+            },
+            "children": []
+          }
+        ]
       },
       {
         "nodeName": "TRAF6",
@@ -676,11 +5272,342 @@
         "type": "type1",
         "link": {
           "name": "PPrel",
-          "nodeName": "activation//phosphorylation//indirect effect",
+          "nodeName": "activation//indirect effect",
           "direction": "ASYN",
-          "from": "hsa05142"
+          "from": "hsa05152"
         },
-        "children": []
+        "children": [
+          {
+            "nodeName": "IRAK1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05145"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TLR5",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05131"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TLR4",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa05131"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TNFAIP3",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05162"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "IRAK4",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05161"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "PTPN6",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa05130"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "IL1R1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04380"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "STAT1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition//indirect effect",
+              "direction": "ASYN",
+              "from": "hsa04380"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TNFRSF1A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04380"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TNFRSF11A",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04380"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "FHL2",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04380"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "SQSTM1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04380"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "EDARADD",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04064"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NGFR",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04722"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CD40",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04064"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "NFKB1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "GErel",
+              "nodeName": "expression",
+              "direction": "ASYN",
+              "from": "hsa05200"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "MAVS",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "binding/association",
+              "direction": "ASYN",
+              "from": "hsa04622"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "AMBRA1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04140"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "RIPK1",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04620"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "DDX58",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa04064"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "CYLD",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "inhibition",
+              "direction": "ASYN",
+              "from": "hsa04380"
+            },
+            "children": []
+          },
+          {
+            "nodeName": "TIFA",
+            "code": "lorem",
+            "version": "lorem",
+            "name": "",
+            "label": "",
+            "type": "type1",
+            "link": {
+              "name": "PPrel",
+              "nodeName": "activation",
+              "direction": "ASYN",
+              "from": "hsa05131"
+            },
+            "children": []
+          }
+        ]
       }
     ]
   }

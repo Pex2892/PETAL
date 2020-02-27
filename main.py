@@ -6,16 +6,13 @@ from utility import *
 from generator import *
 from Bcolors import Bcolors as Bc
 
-
 # --------------- INITIAL START TIME --------------
 start_time = time.time()
 
-
 # -------------- INITIAL CONFIG --------------
-pd.set_option('display.max_colwidth', -1) # mi serve a non troncare le info salvate all'interno del DF
+pd.set_option('display.max_colwidth', -1)  # mi serve a non troncare le info salvate all'interno del DF
 col = ['hop', 'name_start', 'hsa_start', 'name_end', 'hsa_end', 'url_hsa_end', 'relation', 'type_rel', 'pathway_origin']
 df_tree = pd.DataFrame(columns=col)
-
 
 # -------------- INITIAL SHELL PARAMETERS --------------
 pathway_hsa, name_gene, hop = command_line()
@@ -25,11 +22,9 @@ print(Bc.OKBLUE + Bc.BOLD + "Pathway: %s" % pathway_hsa + Bc.ENDC)
 print(Bc.OKBLUE + Bc.BOLD + "Gene: %s" % name_gene + Bc.ENDC)
 print(Bc.OKBLUE + Bc.BOLD + "Hop: %s" % hop + Bc.ENDC)
 
-
-hsa_gene = 'hsa:5594'  # non deve essere statico, ma prelevarlo da questo url:
-                       # https://www.genome.jp/dbget-bin/www_bget?pathway+hsa04010
+# hsa_gene = 'hsa:5594'  # non deve essere statico, ma prelevarlo da questo url:
+# https://www.genome.jp/dbget-bin/www_bget?pathway+hsa04010
 # https://www.genome.jp/dbget-bin/www_bget?hsa:5594+hsa:5595
-
 
 
 # -------------- INITIAL MAIN --------------
@@ -37,38 +32,53 @@ hsa_gene = 'hsa:5594'  # non deve essere statico, ma prelevarlo da questo url:
 # delete all results of previous execution
 clear_results()
 
+# download and return list of the update pathway
+list_update_pathway = download_update_pathway_html('https://www.genome.jp/kegg/docs/upd_map.html')
+
 # set the number of the CPUs
 num_cores = multiprocessing.cpu_count()
 
 # hop+1 = because it has to analyze the last level
-for level_actual in range(1, hop+1):
+for level_actual in range(1, hop + 1):
     print(Bc.HEADER + Bc.BOLD + "--- START LEVEL %s ---" % level_actual + Bc.ENDC)
 
     if level_actual == 1:
+        # download initial pathway
         download_xml(pathway_hsa)
+
+        # get info first gene from hsa name of pathway
+        hsa_gene, url_pathway_initial = get_info_gene_initial(pathway_hsa, name_gene)
+
+        # read initial pathway, create and add genes to csv
         read_kgml(level_actual, pathway_hsa, name_gene, hsa_gene)
 
-        list_pathways_gene_actual_first_level = [x for x in download_read_html('https://www.genome.jp/dbget-bin/www_bget?hsa:5594+hsa:5595') if x != pathway_hsa]
+        # retrive other list pathways in reference to initial pathway
+        list_pathways_gene_actual_first_level = [x for x in download_read_html(url_pathway_initial) if x != pathway_hsa]
 
+        # set range from 0 to lenght list previous retrived
         inputs = range(0, len(list_pathways_gene_actual_first_level))
 
-        Parallel(n_jobs=num_cores)(delayed(execute_i)('https://www.genome.jp/dbget-bin/www_bget?hsa:5594+hsa:5595', pathway_hsa, level_actual, name_gene, hsa_gene, list_pathways_gene_actual_first_level[i]) for i in inputs)
+        # process single gene on each CPUs available
+        Parallel(n_jobs=num_cores)(delayed(execute_i)(url_pathway_initial, pathway_hsa, level_actual, name_gene, hsa_gene,
+                                                      list_pathways_gene_actual_first_level[i]) for i in inputs)
     else:
         df_genes_level_prev = (df_tree[df_tree['hop'] == level_actual - 1])
 
         inputs = range(0, df_genes_level_prev.shape[0])
 
-        Parallel(n_jobs=num_cores)(delayed(execute_i)(df_genes_level_prev.iloc[i,7], pathway_hsa, level_actual, df_genes_level_prev.iloc[i,3], df_genes_level_prev.iloc[i,4], None) for i in inputs)
+        # process single gene on each CPUs available
+        Parallel(n_jobs=num_cores)(delayed(execute_i)(df_genes_level_prev.iloc[i, 7], pathway_hsa, level_actual,
+                                                      df_genes_level_prev.iloc[i, 3], df_genes_level_prev.iloc[i, 4],
+                                                      None) for i in inputs)
 
     # carico il csv del livello attuale con i duplicati
-    df_tree = pd.read_csv('results/results_level'+str(level_actual)+'.csv', sep=';', header=None, names=col)
+    df_tree = pd.read_csv('results/execution/results_level' + str(level_actual) + '.csv', sep=';', header=None, names=col)
 
     # elimino i duplicati dal livello attuale e ri-salvo il file
     df_tree = df_tree.drop_duplicates(subset='name_end')
-    df_tree.to_csv('results/results_level'+str(level_actual)+'.csv', sep=';', header=False, index=False)
+    df_tree.to_csv('results/execution/results_level' + str(level_actual) + '.csv', sep=';', header=False, index=False)
 
     print(Bc.HEADER + Bc.BOLD + "--- END LEVEL %s ---" % level_actual + Bc.ENDC)
-
 
 subprocess.call('sh concatenate.sh', shell=True)
 

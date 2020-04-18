@@ -1,93 +1,122 @@
+import globals as gl
 import time
-import multiprocessing
 import subprocess
 from joblib import Parallel, delayed
-from utility import *
+import utility as utl
 from generator import *
-from Bcolors import Bcolors as Bc
 
 # --------------- INITIAL START TIME --------------
 start_time = time.time()
 
-# -------------- INITIAL CONFIG --------------
-pd.set_option('display.max_colwidth', -1)  # mi serve a non troncare le info salvate all'interno del DF
-col = ['hop', 'name_start', 'hsa_start', 'name_end', 'hsa_end', 'url_hsa_end', 'relation', 'type_rel', 'pathway_origin']
-df_tree = pd.DataFrame(columns=col)
-
-# -------------- INITIAL SHELL PARAMETERS --------------
-pathway_hsa, name_gene, hop = command_line()
-
-print(Bc.WARNING + Bc.BOLD + "--- INITIAL SHELL PARAMETERS ---" + Bc.ENDC)
-print(Bc.OKBLUE + Bc.BOLD + "Pathway: %s" % pathway_hsa + Bc.ENDC)
-print(Bc.OKBLUE + Bc.BOLD + "Gene: %s" % name_gene + Bc.ENDC)
-print(Bc.OKBLUE + Bc.BOLD + "Hop: %s" % hop + Bc.ENDC)
-
-# hsa_gene = 'hsa:5594'  # non deve essere statico, ma prelevarlo da questo url:
-# https://www.genome.jp/dbget-bin/www_bget?pathway+hsa04010
-# https://www.genome.jp/dbget-bin/www_bget?hsa:5594+hsa:5595
-
-
 # -------------- INITIAL MAIN --------------
+# read initial parameters
+utl.read_config()
 
 # delete all results of previous execution
-clear_results()
+utl.clear_previous_results()
 
 # download and return list of the update pathway
-list_update_pathway = download_update_pathway_html('https://www.genome.jp/kegg/docs/upd_map.html')
-
-# set the number of the CPUs
-num_cores = multiprocessing.cpu_count()
+utl.download_update_pathway_html('https://www.genome.jp/kegg/docs/upd_map.html')
 
 # hop+1 = because it has to analyze the last level
-for level_actual in range(1, hop + 1):
-    print(Bc.HEADER + Bc.BOLD + "--- START LEVEL %s ---" % level_actual + Bc.ENDC)
+for level_actual in range(1, gl.hop_input + 1):
+    print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- START LEVEL %s ---" % level_actual + gl.COLORS['end_line'])
 
     if level_actual == 1:
         # download initial pathway
-        download_xml(pathway_hsa)
+        utl.download_xml(gl.pathway_input)
 
         # get info first gene from hsa name of pathway
-        hsa_gene, url_pathway_initial = get_info_gene_initial(pathway_hsa, name_gene)
+        hsa_gene_input_finded, url_pathway_gene_input_finded = utl.get_info_gene_initial(gl.pathway_input, gl.gene_input)
 
         # read initial pathway, create and add genes to csv
-        read_kgml(level_actual, pathway_hsa, name_gene, hsa_gene)
+        list_rows_df_returned = utl.read_kgml(-1, level_actual, gl.pathway_input, gl.gene_input, hsa_gene_input_finded)
+
+        # unifico i primi n geni che sono direttamente connessi
+        utl.unified([list_rows_df_returned])
 
         # retrive other list pathways in reference to initial pathway
-        list_pathways_gene_actual_first_level = [x for x in download_read_html(url_pathway_initial) if x != pathway_hsa]
+        list_pathways_this_gene = utl.download_read_html(url_pathway_gene_input_finded)
 
-        # set range from 0 to lenght list previous retrived
-        inputs = range(0, len(list_pathways_gene_actual_first_level))
+        # rimuovo il pathway di origine, cioè passato in input dal file di config
+        if gl.pathway_input in list_pathways_this_gene:
+            list_pathways_this_gene.remove(gl.pathway_input)
 
         # process single gene on each CPUs available
-        Parallel(n_jobs=num_cores)(delayed(execute_i)(url_pathway_initial, pathway_hsa, level_actual, name_gene, hsa_gene,
-                                                      list_pathways_gene_actual_first_level[i]) for i in inputs)
+        list_rows_df_returned = Parallel(n_jobs=gl.NUM_CORES, backend='threading')(delayed(utl.analysis_hop_n)(
+            i, level_actual, gl.gene_input, hsa_gene_input_finded,
+            pathway_this_gene) for i, pathway_this_gene in enumerate(list_pathways_this_gene))
+
+        utl.unified(list_rows_df_returned)
+
     else:
-        df_genes_level_prev = (df_tree[df_tree['hop'] == level_actual - 1])
+        df_genes_resulted = (gl.DF_TREE[gl.DF_TREE['hop'] == level_actual - 1])
 
-        inputs = range(0, df_genes_level_prev.shape[0])
+        # ----- NUOVO -----
+        for index, row in df_genes_resulted.iterrows():
+            # print('[%s] SONO ARRIVATOOOOOO: %s ' % (level_actual, index))
 
-        # process single gene on each CPUs available
-        Parallel(n_jobs=num_cores)(delayed(execute_i)(df_genes_level_prev.iloc[i, 7], pathway_hsa, level_actual,
-                                                      df_genes_level_prev.iloc[i, 3], df_genes_level_prev.iloc[i, 4],
-                                                      None) for i in inputs)
+            # ottengo la lista di pathway in riferimento al gene che sto passando
+            list_pathways_this_gene = utl.download_read_html(row['url_gene_end'])
+
+            # rimuovo il pathway di origine, cioè passato in input dal file di config così evito un loop continuo
+            if gl.pathway_input in list_pathways_this_gene:
+                list_pathways_this_gene.remove(gl.pathway_input)
+
+            # process single gene on each CPUs available
+            list_rows_df_returned = Parallel(n_jobs=gl.NUM_CORES, backend='threading')(delayed(utl.analysis_hop_n)(
+                 i, level_actual, row['name_end'], row['hsa_end'],
+                 pathway_this_gene) for i, pathway_this_gene in enumerate(list_pathways_this_gene))
+
+            utl.unified(list_rows_df_returned)
+
+        # ----- NUOVO -----
+
+    # ----- DROP DUPLICATES -----
+
+    # estraggo i duplicati dello stesso livello e ordinati in ordine alfabetico
+    df_genes_this_level = (gl.DF_TREE[gl.DF_TREE['hop'] == level_actual])
+    df_duplicated_filtered = df_genes_this_level[df_genes_this_level.duplicated(
+        subset=['name_end'], keep=False)].sort_values('name_end')
+
+    # lista con i nomi dei geni duplicati
+    list_name_genes_duplicated = df_duplicated_filtered.name_end.unique()
+
+    # process single gene on each CPUs available
+    list_rows_to_do_df_returned = Parallel(n_jobs=gl.NUM_CORES, backend='threading')(delayed(utl.get_info_row_duplicated)(
+        df_duplicated_filtered, gene_duplicate) for gene_duplicate in list_name_genes_duplicated)
+
+    # aggiorno e elimino le righe del dataframe
+    utl.clean_update_row_duplicates(list_rows_to_do_df_returned)
+
+    # resetto l'indice di riga, perchè non più sequenziali dovuto alle eliminazioni delle righe
+    gl.DF_TREE = gl.DF_TREE.reset_index(drop=True)
+    # ----- DROP DUPLICATES -----
+
 
     # carico il csv del livello attuale con i duplicati
-    df_tree = pd.read_csv('results/execution/results_level' + str(level_actual) + '.csv', sep=';', header=None, names=col)
+    # DF_TREE = gl.pd.read_csv('results/execution/results_level' + str(level_actual) + '.csv', sep=';', header=None, names=col)
 
     # elimino i duplicati dal livello attuale e ri-salvo il file
-    df_tree = df_tree.drop_duplicates(subset='name_end')
-    df_tree.to_csv('results/execution/results_level' + str(level_actual) + '.csv', sep=';', header=False, index=False)
 
-    print(Bc.HEADER + Bc.BOLD + "--- END LEVEL %s ---" % level_actual + Bc.ENDC)
+    # ##DF_TREE.to_csv('results/execution/results_level' + str(level_actual) + '.csv', sep=';', header=False, index=False)
 
-subprocess.call('sh concatenate.sh', shell=True)
+    print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- END LEVEL %s ---" % level_actual + gl.COLORS['end_line'])
+
+
+print(gl.DF_TREE)
+
+
+# subprocess.call('sh concatenate.sh', shell=True)
+gl.DF_TREE.to_csv('results/execution/results_level.csv', sep=';', header=False, index=False)
+
 
 # genero il file di output file output_text.txt
-init_generate_output(hop)
+# init_generate_output(gl.hop)
 
 # genero il file di output in json dal file output_text.txt
-output_json()
+# output_json()
 
 m, s = divmod(time.time() - start_time, 60)
 
-print(Bc.FAIL + Bc.BOLD + "--- %s minutes and %s seconds ---" % (round(m), round(s)) + Bc.ENDC)
+print(gl.COLORS['red'] + gl.COLORS['bold'] + "--- %s minutes and %s seconds ---" % (round(m), round(s)) + gl.COLORS['end_line'])

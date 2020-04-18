@@ -43,7 +43,7 @@ for level_actual in range(1, gl.hop_input + 1):
             list_pathways_this_gene.remove(gl.pathway_input)
 
         # process single gene on each CPUs available
-        list_rows_df_returned = Parallel(n_jobs=gl.NUM_CORES, backend='threading')(delayed(utl.analysis_hop_n)(
+        list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(delayed(utl.analysis_hop_n)(
             i, level_actual, gl.gene_input, hsa_gene_input_finded,
             pathway_this_gene) for i, pathway_this_gene in enumerate(list_pathways_this_gene))
 
@@ -63,7 +63,7 @@ for level_actual in range(1, gl.hop_input + 1):
                 list_pathways_this_gene.remove(gl.pathway_input)
 
             # process single gene on each CPUs available
-            list_rows_df_returned = Parallel(n_jobs=gl.NUM_CORES, backend='threading')(delayed(utl.analysis_hop_n)(
+            list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(delayed(utl.analysis_hop_n)(
                  i, level_actual, row['name_end'], row['hsa_end'],
                  pathway_this_gene) for i, pathway_this_gene in enumerate(list_pathways_this_gene))
 
@@ -81,7 +81,7 @@ for level_actual in range(1, gl.hop_input + 1):
     list_name_genes_duplicated = df_duplicated_filtered.name_end.unique()
 
     # process single gene on each CPUs available
-    list_rows_to_do_df_returned = Parallel(n_jobs=gl.NUM_CORES, backend='threading')(delayed(utl.get_info_row_duplicated)(
+    list_rows_to_do_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(delayed(utl.get_info_row_duplicated)(
         df_duplicated_filtered, gene_duplicate) for gene_duplicate in list_name_genes_duplicated)
 
     # aggiorno e elimino le righe del dataframe

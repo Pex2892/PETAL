@@ -9,19 +9,24 @@ import shutil
 from xml.dom import minidom
 import json
 import time
-from joblib import Parallel, delayed
+import multiprocessing as mlp
 
 
 def read_config():
     with open(gl.filename_config) as f:
         data = json.load(f)
-        # print(data)
+
+        gl.num_cores_input = int(data['n_CPU']['value'])
+        if gl.num_cores_input == 0 or gl.num_cores_input > mlp.cpu_count():
+            gl.num_cores_input = mlp.cpu_count()
+
         gl.log_input = int(data['log']['value'])
         gl.pathway_input = data['pathway']['value']
         gl.gene_input = data['gene']['value']
         gl.hop_input = int(data['hop']['value'])
 
     print(gl.COLORS['yellow'] + gl.COLORS['bold'] + "--- INITIAL SHELL PARAMETERS ---" + gl.COLORS['end_line'])
+    print(gl.COLORS['blue'] + gl.COLORS['bold'] + "#CPUs: %s" % gl.num_cores_input + gl.COLORS['end_line'])
     print(gl.COLORS['blue'] + gl.COLORS['bold'] + "Pathway: %s" % gl.pathway_input + gl.COLORS['end_line'])
     print(gl.COLORS['blue'] + gl.COLORS['bold'] + "Gene: %s" % gl.gene_input + gl.COLORS['end_line'])
     print(gl.COLORS['blue'] + gl.COLORS['bold'] + "Hop: %s" % gl.hop_input + gl.COLORS['end_line'])

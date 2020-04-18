@@ -5,18 +5,18 @@
     },
     "n_CPU": {
         "value": 0,
-        "_comment": "<integer>, -1 le usa tutte, se mette un numero grosso setta al limite It depends on the number of CPUs installed on the local machine"
+        "_comment": "<integer>, 0 le usa tutte, se mette un numero grosso setta al limite It depends on the number of CPUs installed on the local machine"
     },
     "pathway": {
         "value": "hsa04010",
-        "_comment": "<string>, ..."
+        "_comment": "<string>, pathway da dove inizierà l'analisi"
     },
     "gene": {
         "value": "MAPK1",
-        "_comment": "<string>, ..."
+        "_comment": "<string>, gene di partenza"
     },
     "hop": {
         "value": 2,
-        "_comment": "<integer>, ..."
+        "_comment": "<integer>, rappresenta la profondità dell'analisi"
     }
 }

@@ -1,5 +1,4 @@
 import pandas as pd
-import multiprocessing as mlp
 
 # INITIAL PARAMETERS
 filename_config = 'config.json'
@@ -7,11 +6,7 @@ log_input = None
 pathway_input = None
 gene_input = None
 hop_input = None
-
-# inserire log
-
-# set the number of the CPUs
-NUM_CORES = mlp.cpu_count()
+num_cores_input = None  # set the number of the CPUs
 
 # mi serve a non troncare le info salvate all'interno del DF
 pd.set_option('display.max_colwidth', -1)

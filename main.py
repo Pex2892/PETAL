@@ -52,7 +52,6 @@ for level_actual in range(1, gl.hop_input + 1):
     else:
         df_genes_resulted = (gl.DF_TREE[gl.DF_TREE['hop'] == level_actual - 1])
 
-        # ----- NUOVO -----
         for index, row in df_genes_resulted.iterrows():
             # print('[%s] SONO ARRIVATOOOOOO: %s ' % (level_actual, index))
 
@@ -70,7 +69,6 @@ for level_actual in range(1, gl.hop_input + 1):
 
             utl.unified(list_rows_df_returned)
 
-        # ----- NUOVO -----
 
     # ----- DROP DUPLICATES -----
 
@@ -91,15 +89,8 @@ for level_actual in range(1, gl.hop_input + 1):
 
     # resetto l'indice di riga, perchè non più sequenziali dovuto alle eliminazioni delle righe
     gl.DF_TREE = gl.DF_TREE.reset_index(drop=True)
+
     # ----- DROP DUPLICATES -----
-
-
-    # carico il csv del livello attuale con i duplicati
-    # DF_TREE = gl.pd.read_csv('results/execution/results_level' + str(level_actual) + '.csv', sep=';', header=None, names=col)
-
-    # elimino i duplicati dal livello attuale e ri-salvo il file
-
-    # ##DF_TREE.to_csv('results/execution/results_level' + str(level_actual) + '.csv', sep=';', header=False, index=False)
 
     print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- END LEVEL %s ---" % level_actual + gl.COLORS['end_line'])
 
@@ -108,7 +99,7 @@ print(gl.DF_TREE)
 
 
 # subprocess.call('sh concatenate.sh', shell=True)
-gl.DF_TREE.to_csv('results/execution/results_level.csv', sep=';', header=False, index=False)
+# gl.DF_TREE.to_csv('results/execution/results_level.csv', sep=';', header=False, index=False)
 
 
 # genero il file di output file output_text.txt

@@ -1,6 +1,4 @@
 import globals as gl
-import argparse
-import re
 from datetime import datetime
 import bs4 as bs
 import requests
@@ -10,6 +8,9 @@ from xml.dom import minidom
 import json
 import time
 import multiprocessing as mlp
+import gzip
+import hashlib
+from dateutil.parser import parse
 
 
 def read_config():
@@ -33,119 +34,164 @@ def read_config():
 
 
 def clear_previous_results():
-    if os.path.isdir('results'):
-        shutil.rmtree('results/execution')
-        os.makedirs('results/execution')
+    pathdir = os.path.join(os.getcwd(), 'results')
+
+    # elimino cartella results
+    shutil.rmtree(pathdir)
+
+    # creo cartella results
+    os.makedirs(pathdir)
 
 
-def download_update_pathway_html(url_page):
+def check_pathway_update_history(url):
     # download and return list of the updated pathway
 
     print(gl.COLORS['yellow'] + gl.COLORS['bold'] + "--- CHECK UPDATED PATHWAYS ---" + gl.COLORS['end_line'])
 
+    pathfile = os.path.join(os.getcwd(), 'database')
+    filename = 'pathway_update_history.html.gz'
+
+    # scarico, se non esiste file html con tutti i pathway aggiornati recentemente
+    download_file(url, pathfile, filename)
+
     # retrieve datetime to file
-    file_time = os.path.getmtime('results/pathway_map_update_history.html')
+    filetime = os.path.getmtime(os.path.join(pathfile, filename))
 
-    # check datetime (in seconds) > 24h (seconds)
-    if (datetime.now() - datetime.fromtimestamp(file_time)).total_seconds() > 86400:
+    # check different time (in seconds) > 24h (seconds), download file
+    if (datetime.now() - datetime.fromtimestamp(filetime)).total_seconds() > 86400:
         print(gl.COLORS['green'] + "Download updated list!" + gl.COLORS['end_line'])
+        # elimino il vecchio file
+        os.remove(os.path.join(pathfile, filename))
 
-        # download file html updated
-        try:
-            req = requests.get(url_page)
+        # scarico il nuovo file
+        download_file(url, pathfile, filename)
 
-            with open('results/pathway_map_update_history.html', 'wb') as f:
-                f.write(req.content)
+    # leggo il file compresso
+    with gzip.open(os.path.join(pathfile, filename), "rb") as f:
+        content = f.read().decode('utf-8')
 
-            soup = bs.BeautifulSoup(req.content, 'html.parser')
+        soup = bs.BeautifulSoup(content, 'html.parser')
 
-            gl.LIST_UPDATED_PATHWAY = [item.text for item in soup.findAll('td')[1::4]]
-            # return [item.text for item in soup.findAll('td')[1::4]]
-        except requests.exceptions.ConnectionError:
-            print("Connection refused from KEGG")
-            exit(1)
-    else:
-        print(gl.COLORS['green'] + "No updates found!" + gl.COLORS['end_line'])
+        items = soup.findAll('td')
 
-        # open file html previously downloaded
-        with open('results/pathway_map_update_history.html', 'r') as f:
-            soup = bs.BeautifulSoup(f.read(), 'html.parser')
+        i = 0
+        while i < len(items):
+            # controllo se il campo è una data e se dal 2020 in poi
+            if is_date(items[i].text) and int(items[i].text[0:4]) >= 2020:
+                if 'Deleted; ' in items[i + 3].text:
 
-            gl.LIST_UPDATED_PATHWAY = [item.text for item in soup.findAll('td')[1::4]]
+                    # se esiste, rimuovere il pathway eliminato
+                    if os.path.exists(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz')):
+                        print('cancello il pathway rimosso da kegg: %s' % items[i + 1].text)
+                        os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz'))
 
-            # return [item.text for item in soup.findAll('td')[1::4]]
+                    # se esiste, rimuovere il vecchio pathway con cui è stato unito quello cancellato e scarico
+                    # quello aggiornato
+                    merged_pathway = items[i + 3].text.split('merged into ')[1]
+                    if os.path.exists(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + merged_pathway + '.xml.gz')):
+                        # retrieve datetime to file
+                        filetime = datetime.fromtimestamp(os.path.getmtime(
+                            os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz')))
 
+                        # convert time
+                        update_time_from_kegg = datetime.strptime(
+                            items[i].text+' 00:00:00.000000', '%Y-%m-%d %H:%M:%S.%f')
 
-# def command_line():
-#     parser = argparse.ArgumentParser(description='PETAL (Parallel Pathway Analyzer) \n Scrivere una breve descrizione')
-#
-#     parser.add_argument("-pathway", default='hsa04010', type=str,
-#                         help="This is the name of the biological pathway", required=True)
-#
-#     parser.add_argument("-gene", default='MAPK1', type=str,
-#                         help="This is the name of the gene", required=True)
-#
-#     parser.add_argument("-hop", default=2, type=int,
-#                         help="Represents the maximum search depth", required=True)
-#
-#     args = parser.parse_args()
-#
-#     return args.pathway, args.gene, args.hop
+                        if filetime < update_time_from_kegg:
+                            print('il pathway di kegg è più aggiornato')
+
+                            print('cancello il pathway vecchio (locale), ma aggiornato su kegg: %s' % 'hsa'+merged_pathway)
+                            os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + merged_pathway + '.xml.gz'))
+
+                            # scaricare il pathway con cui è stato unito
+                            print('scarico il pathway aggiornato da kegg: %s' % 'hsa' + merged_pathway)
+                            download_file('http://rest.kegg.jp/get/' + 'hsa' + merged_pathway + '/kgml',
+                                          os.path.join(pathfile, 'pathways', 'xml'),
+                                          'hsa' + merged_pathway + '.xml.gz')
+                        else:
+                            print('il pathway locale è più aggiornato')
+
+                elif 'Newly added' in items[i + 3].text:
+                    print('aggiunto')
+
+                    # verificare se esiste il file
+                    if os.path.exists(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz')):
+                        # retrieve datetime to file
+                        filetime = datetime.fromtimestamp(os.path.getmtime(
+                            os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz')))
+
+                        # convert time
+                        update_time_from_kegg = datetime.strptime(
+                            items[i].text+' 00:00:00.000000', '%Y-%m-%d %H:%M:%S.%f')
+
+                        if filetime < update_time_from_kegg:
+                            print('il pathway di kegg è più aggiornato')
+
+                            # rimuovere il vecchio pathway
+                            print('cancello il pathway vecchio (locale), ma aggiornato su kegg: %s' % 'hsa' + items[
+                                i + 1].text)
+                            os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz'))
+
+                            # scaricare il pathway aggiornato
+                            print('scarico il pathway aggiornato da kegg: %s' % 'hsa' + items[i + 1].text)
+                            download_file('http://rest.kegg.jp/get/' + 'hsa' + items[i + 1].text + '/kgml',
+                                          os.path.join(pathfile, 'pathways', 'xml'),
+                                          'hsa' + items[i + 1].text + '.xml.gz')
+                        else:
+                            print('il pathway locale è più aggiornato')
+
+                i = i + 4
+            else:
+                break
 
 
 def get_info_gene_initial(pathway_hsa, name_gene):
-    mydoc = minidom.parse('results/pathways_xml/' + pathway_hsa + '.xml')
+    filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
 
-    # GENES
-    entry = mydoc.getElementsByTagName('entry')
+    with gzip.open(filename, "rb") as f:
+        content = f.read().decode('utf-8')
+        mydoc = minidom.parseString(content)
 
-    for elem in entry:
-        string_check = name_gene + ','
-        if elem.attributes['type'].value == 'gene' and string_check in \
-                elem.getElementsByTagName('graphics')[0].attributes['name'].value:
-            return elem.attributes['name'].value, elem.attributes['link'].value
+        # GENES
+        entry = mydoc.getElementsByTagName('entry')
 
-    print(gl.COLORS['red'] + gl.COLORS['bold'] + "The gene entered not exit into pathway selected! " +
-          gl.COLORS['end_line'])
-    exit(1)
+        for elem in entry:
+            string_check = name_gene + ','
+            if elem.attributes['type'].value == 'gene' and string_check in \
+                    elem.getElementsByTagName('graphics')[0].attributes['name'].value:
+                return elem.attributes['name'].value, elem.attributes['link'].value
 
-
-# def check_update_pathway_html(check_pathway):
-# print(check_pathway + ' - ' + re.findall(r'\d+', check_pathway)[0])
-# with open('results/pathway_map_update_history.html', 'r') as f:
-#     soup = bs.BeautifulSoup(f.read(), 'html.parser')
-#
-#     for item in soup.findAll('td')[1::4]:
-#         if item.text in check_pathway:
-#             return True
-# return False
+        print(gl.COLORS['red'] + gl.COLORS['bold'] + "The gene entered not exit into pathway selected! " +
+              gl.COLORS['end_line'])
+        exit(1)
 
 
-def download_xml(pathway_hsa_input):
-    # pathway non esiste
-    if not os.path.exists('results/pathways_xml/' + pathway_hsa_input + '.xml'):
-        # print('file not exist!')
-        pathway_kgml = requests.get('http://rest.kegg.jp/get/' + pathway_hsa_input + '/kgml')
-        with open('results/pathways_xml/' + pathway_hsa_input + '.xml', 'wb') as f:
-            f.write(pathway_kgml.content)
-
-
-def download_read_html(url_pathway):
-    hsa_pathwway = url_pathway.split('?')[1].replace('+', '_').replace(':', '')
-
-    if not os.path.exists('results/pathways_html/' + hsa_pathwway + '.html'):
+def download_file(url, pathfile, filename):
+    # se il pathway (xml o html) non esiste all'interno della directory
+    if not os.path.exists(os.path.join(pathfile, filename)):
         try:
-            req = requests.get(url_pathway)
+            req = requests.get(url)
 
-            with open('results/pathways_html/' + hsa_pathwway + '.html', 'wb') as f:
+            with gzip.open(os.path.join(pathfile, filename), "wb") as f:
                 f.write(req.content)
+
         except requests.exceptions.ConnectionError:
-            print("Connection refused")
+            print("Connection refused from KEGG")
             exit(1)
 
+
+def download_read_html(url):
+    filename = url.split('?')[1].replace('+', '_').replace(':', '')
+    filename = hashlib.md5(filename.encode("utf-8")).hexdigest() + '.html.gz'
+
+    # scarico file html con tutti i pathway collegati a geni passati nell'url
+    download_file(url, os.path.join(os.getcwd(), 'database', 'pathways', 'html'), filename)
+
     # open pathway of the genes in html
-    with open('results/pathways_html/' + hsa_pathwway + '.html', 'r') as f:
-        soup = bs.BeautifulSoup(f.read(), 'html.parser')
+    with gzip.open(os.path.join(os.getcwd(), 'database', 'pathways', 'html', filename), "rb") as f:
+        content = f.read().decode('utf-8')
+
+        soup = bs.BeautifulSoup(content, 'html.parser')
 
         list_pathway = list()
         for link in soup.findAll('a'):
@@ -158,6 +204,21 @@ def download_read_html(url_pathway):
         list_pathway = list(set(list_pathway))  # generate a unique elements
 
     return list_pathway
+
+
+def is_date(string, fuzzy=False):
+    """
+    Return whether the string can be interpreted as a date.
+
+    :param string: str, string to check for date
+    :param fuzzy: bool, ignore unknown tokens in string if True
+    """
+    try:
+        parse(string, fuzzy=fuzzy)
+        return True
+
+    except ValueError:
+        return False
 
 
 def search_id_to_hsa(list_genes_this_pathway, hsa_gene):
@@ -179,118 +240,107 @@ def concat_multiple_subtype(list_subtype):
     return 'None'
 
 
-def read_kgml(i, hop, pathway_hsa, name_gene_start, hsa_gene_start):
+def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start):
     # print('[%s][hop: %s][pathway: %s][gene: %s]\n' % (i, hop, pathway_hsa, name_gene_start))
 
-    mydoc = minidom.parse('results/pathways_xml/' + pathway_hsa + '.xml')
+    filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
 
-    # GENES
-    entry = mydoc.getElementsByTagName('entry')
-    graphics = mydoc.getElementsByTagName('graphics')
+    with gzip.open(filename, "rb") as f:
+        content = f.read().decode('utf-8')
+        mydoc = minidom.parseString(content)
 
-    # RELATIONS
-    relation = mydoc.getElementsByTagName('relation')
-    # subtype = mydoc.getElementsByTagName('subtype')
+        # GENES
+        entry = mydoc.getElementsByTagName('entry')
+        graphics = mydoc.getElementsByTagName('graphics')
 
-    list_genes_this_pathway = []
-    for elem, elem2 in zip(entry, graphics):
-        if 'hsa:' in elem.attributes['name'].value and \
-                elem.attributes['type'].value == 'gene':
-            # not 'path:' in elem.attributes['name'].value and \
+        # RELATIONS
+        relation = mydoc.getElementsByTagName('relation')
+        # subtype = mydoc.getElementsByTagName('subtype')
 
-            # salvo i geni che hanno hsa e sono di tipo gene
-            list_genes_this_pathway.append((elem.attributes['id'].value,
-                                            elem.attributes['name'].value,
-                                            elem2.attributes['name'].value.split(',')[0],
-                                            elem.attributes['link'].value))
+        list_genes_this_pathway = []
+        for elem, elem2 in zip(entry, graphics):
+            if 'hsa:' in elem.attributes['name'].value and \
+                    elem.attributes['type'].value == 'gene':
+                # not 'path:' in elem.attributes['name'].value and \
 
-    # print('[%s][hop: %s][pathway: %s][gene: %s]list_genes_this_pathway: %s\n' % (i, hop, pathway_hsa, name_gene_start, list_genes_this_pathway))
+                # salvo i geni che hanno hsa e sono di tipo gene
+                list_genes_this_pathway.append((elem.attributes['id'].value,
+                                                elem.attributes['name'].value,
+                                                elem2.attributes['name'].value.split(',')[0],
+                                                elem.attributes['link'].value))
 
-    # cerco gli id all'interno della mappa per quello specifico hsa(gene)
-    # perchè in ogni pathway è diverso, anche se è lo stesso gene
-    # se li trova restituisce tuple di diversi id che fanno riferimento al gene
-    list_ids_gene_input = search_id_to_hsa(list_genes_this_pathway, hsa_gene_start)
+        # print('[%s][hop: %s][pathway: %s][gene: %s]list_genes_this_pathway: %s\n' % (i, hop, pathway_hsa,
+        # name_gene_start, list_genes_this_pathway))
 
-    # print('[%s][hop: %s][pathway: %s][gene: %s]list_ids_gene_input: %s\n' % (i, hop, pathway_hsa, name_gene_start, list_ids_gene_input))
+        # cerco gli id all'interno della mappa per quello specifico hsa(gene)
+        # perchè in ogni pathway è diverso, anche se è lo stesso gene
+        # se li trova restituisce tuple di diversi id che fanno riferimento al gene
+        list_ids_gene_input = search_id_to_hsa(list_genes_this_pathway, hsa_gene_start)
 
-    list_rows = list()
-    if len(list_ids_gene_input) > 0:
-        # str_to_csv = ''
+        # print('[%s][hop: %s][pathway: %s][gene: %s]list_ids_gene_input: %s\n' % (i, hop, pathway_hsa,
+        # name_gene_start, list_ids_gene_input))
 
-        # scorro tutte le relazioni all'interno della mappa
-        for elem in relation:
-            # scorro tutta la lista degli id che fanno riferimento allo stesso gene della stessa mappa
-            for id_gene in list_ids_gene_input:
-                # verifico se l'entry2(id di partenza) è uguale a uno degli id salvati nella lista
-                if elem.attributes['entry2'].value == id_gene[0]:
+        list_rows = list()
+        if len(list_ids_gene_input) > 0:
+            # str_to_csv = ''
 
-                    # estraggo le info dei geni che ha una relazione con id_gene
-                    # tornato vuoto perchè potrebbe essere che l'entry1 non esiste o non è di tipo gene (group, compund)
-                    list_gene_relation = search_gene_to_id(list_genes_this_pathway, elem.attributes['entry1'].value)
+            # scorro tutte le relazioni all'interno della mappa
+            for elem in relation:
+                # scorro tutta la lista degli id che fanno riferimento allo stesso gene della stessa mappa
+                for id_gene in list_ids_gene_input:
+                    # verifico se l'entry2(id di partenza) è uguale a uno degli id salvati nella lista
+                    if elem.attributes['entry2'].value == id_gene[0]:
 
-                    # print('[%s][hop: %s][pathway: %s][gene: %s]list_gene_relation: %s\n' % (
-                    # i, hop, pathway_hsa, name_gene_start, list_gene_relation))
+                        # estraggo le info dei geni che ha una relazione con id_gene tornato vuoto perchè potrebbe
+                        # essere che l'entry1 non esiste o non è di tipo gene (group, compund)
+                        list_gene_relation = search_gene_to_id(list_genes_this_pathway, elem.attributes['entry1'].value)
 
-                    # ONLY DEBUG
-                    # if len(list_gene_relation) == 0:
-                    #    print('mi blocco')
+                        # print('[%s][hop: %s][pathway: %s][gene: %s]list_gene_relation: %s\n' % (
+                        # i, hop, pathway_hsa, name_gene_start, list_gene_relation))
 
-                    # print('FIND! @ ID: ' + elem.attributes['entry1'].value + ' - name: ' + list_gene_relation[0][2])
+                        # ONLY DEBUG
+                        # if len(list_gene_relation) == 0:
+                        #    print('mi blocco')
 
-                    # verifico se esiste una relazione effettivamente
-                    if len(list_gene_relation) > 0:
-                        # nell riga 71 concateno tutti i subtype della relazione analizzata
+                        # print('FIND! @ ID: ' + elem.attributes['entry1'].value + ' - name: ' + list_gene_relation[
+                        # 0][2])
 
-                        # str_to_csv = str_to_csv + str(level) + ';' + \
-                        #              name_gene_start + ';' + \
-                        #              hsa_gene_start + ';' + \
-                        #              list_gene_relation[0][2] + ';' + \
-                        #              list_gene_relation[0][1] + ';' + \
-                        #              elem.attributes['type'].value + ';' + \
-                        #              concat_multiple_subtype(elem.getElementsByTagName('subtype')) + ';' + \
-                        #              list_gene_relation[0][3] + ';' + pathway_hsa + "\n"
-                        row = {
-                            'hop': hop,
-                            'name_start': name_gene_start,
-                            'hsa_start': hsa_gene_start,
-                            'name_end': list_gene_relation[0][2],
-                            'hsa_end': list_gene_relation[0][1],
-                            'url_gene_end': list_gene_relation[0][3],
-                            'relation': elem.attributes['type'].value,
-                            'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
-                            'pathway_origin': pathway_hsa
-                        }
-                        list_rows.append(row)
-    return list_rows
-    # tfile = open('results/execution/results_level' + str(level) + '.csv', 'a')
-    # tfile.write(str_to_csv)
-    # tfile.close()
+                        # verifico se esiste una relazione effettivamente
+                        if len(list_gene_relation) > 0:
+                            # nell riga 71 concateno tutti i subtype della relazione analizzata
+
+                            # str_to_csv = str_to_csv + str(level) + ';' + \
+                            #              name_gene_start + ';' + \
+                            #              hsa_gene_start + ';' + \
+                            #              list_gene_relation[0][2] + ';' + \
+                            #              list_gene_relation[0][1] + ';' + \
+                            #              elem.attributes['type'].value + ';' + \
+                            #              concat_multiple_subtype(elem.getElementsByTagName('subtype')) + ';' + \
+                            #              list_gene_relation[0][3] + ';' + pathway_hsa + "\n"
+                            row = {
+                                'hop': hop,
+                                'name_start': name_gene_start,
+                                'hsa_start': hsa_gene_start,
+                                'name_end': list_gene_relation[0][2],
+                                'hsa_end': list_gene_relation[0][1],
+                                'url_gene_end': list_gene_relation[0][3],
+                                'relation': elem.attributes['type'].value,
+                                'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
+                                'pathway_origin': pathway_hsa
+                            }
+                            list_rows.append(row)
+        return list_rows
 
 
-# def execute_i(i, url_pathway_kegg, pathway_hsa, level_actual, name_gene_start, hsa_gene_start,
-#               list_pathways_gene_actual):
-#     # # rimuovo dalla lista trovata il pathway in input
-#     # if list_pathways_gene_actual == None:
-#     #     # print('EXECUTE_I:', url_pathway_kegg, pathway_hsa, level_actual, name_gene_start, hsa_gene_start)
-#     #
-#     #     list_pathways_gene_actual = [x for x in download_read_html(url_pathway_kegg) if x != pathway_hsa]
-#     #     # print('list_pathways_gene_actual_n:', list_pathways_gene_actual)
-#     #     for val in list_pathways_gene_actual:
-#     #         download_xml(val)
-#     #         read_kgml(i, level_actual, val, name_gene_start, hsa_gene_start)
-#     # else:
-#     print('----->>>list_pathways_gene_actual: ', list_pathways_gene_actual)
-#     download_xml(list_pathways_gene_actual)
-#     list_rows = read_kgml(i, level_actual, list_pathways_gene_actual, name_gene_start, hsa_gene_start)
-#     exit(1)
-#     return list_rows
-#     # print('list_pathways_gene_actual_1', list_pathways_gene_actual)
-
-def analysis_hop_n(iteration, hop, gene, gene_hsa, pathway_this_gene):
+def analysis_hop_n(hop, gene, gene_hsa, pathway_this_gene):
     # print('[i: %s][hop: %s][gene: %s][hsa: %s][pathway: %s]\n' % (iteration, hop, gene, gene_hsa, pathway_this_gene))
 
-    download_xml(pathway_this_gene)
-    list_rows = read_kgml(iteration, hop, pathway_this_gene, gene, gene_hsa)
+    # download_xml(pathway_this_gene)
+    download_file('http://rest.kegg.jp/get/' + pathway_this_gene + '/kgml',
+                  os.path.join(os.getcwd(), 'database', 'pathways', 'xml'),
+                  pathway_this_gene + '.xml.gz')
+
+    list_rows = read_kgml(hop, pathway_this_gene, gene, gene_hsa)
 
     return list_rows
 
@@ -318,6 +368,7 @@ def get_info_row_duplicated(df_filtered, gene):
     ]
 
     return list_to_do_df
+
 
 def clean_update_row_duplicates(list_to_do_df):
     for row in list_to_do_df:

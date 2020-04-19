@@ -16,7 +16,7 @@ utl.read_config()
 utl.clear_previous_results()
 
 # download and return list of the update pathway
-utl.download_update_pathway_html('https://www.genome.jp/kegg/docs/upd_map.html')
+utl.check_pathway_update_history('https://www.genome.jp/kegg/docs/upd_map.html')
 
 # hop+1 = because it has to analyze the last level
 for level_actual in range(1, gl.hop_input + 1):
@@ -24,13 +24,16 @@ for level_actual in range(1, gl.hop_input + 1):
 
     if level_actual == 1:
         # download initial pathway
-        utl.download_xml(gl.pathway_input)
+        utl.download_file('http://rest.kegg.jp/get/' + gl.pathway_input + '/kgml',
+                          os.path.join(os.getcwd(), 'database', 'pathways', 'xml'),
+                          gl.pathway_input + '.xml.gz')
 
         # get info first gene from hsa name of pathway
-        hsa_gene_input_finded, url_pathway_gene_input_finded = utl.get_info_gene_initial(gl.pathway_input, gl.gene_input)
+        hsa_gene_input_finded, url_pathway_gene_input_finded = utl.get_info_gene_initial(gl.pathway_input,
+                                                                                         gl.gene_input)
 
         # read initial pathway, create and add genes to csv
-        list_rows_df_returned = utl.read_kgml(-1, level_actual, gl.pathway_input, gl.gene_input, hsa_gene_input_finded)
+        list_rows_df_returned = utl.read_kgml(level_actual, gl.pathway_input, gl.gene_input, hsa_gene_input_finded)
 
         # unifico i primi n geni che sono direttamente connessi
         utl.unified([list_rows_df_returned])
@@ -44,8 +47,8 @@ for level_actual in range(1, gl.hop_input + 1):
 
         # process single gene on each CPUs available
         list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(delayed(utl.analysis_hop_n)(
-            i, level_actual, gl.gene_input, hsa_gene_input_finded,
-            pathway_this_gene) for i, pathway_this_gene in enumerate(list_pathways_this_gene))
+            level_actual, gl.gene_input, hsa_gene_input_finded,
+            pathway_this_gene) for pathway_this_gene in list_pathways_this_gene)
 
         utl.unified(list_rows_df_returned)
 
@@ -63,12 +66,12 @@ for level_actual in range(1, gl.hop_input + 1):
                 list_pathways_this_gene.remove(gl.pathway_input)
 
             # process single gene on each CPUs available
-            list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(delayed(utl.analysis_hop_n)(
-                 i, level_actual, row['name_end'], row['hsa_end'],
-                 pathway_this_gene) for i, pathway_this_gene in enumerate(list_pathways_this_gene))
+            list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(
+                delayed(utl.analysis_hop_n)(
+                    level_actual, row['name_end'], row['hsa_end'],
+                    pathway_this_gene) for pathway_this_gene in list_pathways_this_gene)
 
             utl.unified(list_rows_df_returned)
-
 
     # ----- DROP DUPLICATES -----
 
@@ -81,8 +84,9 @@ for level_actual in range(1, gl.hop_input + 1):
     list_name_genes_duplicated = df_duplicated_filtered.name_end.unique()
 
     # process single gene on each CPUs available
-    list_rows_to_do_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(delayed(utl.get_info_row_duplicated)(
-        df_duplicated_filtered, gene_duplicate) for gene_duplicate in list_name_genes_duplicated)
+    list_rows_to_do_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(
+        delayed(utl.get_info_row_duplicated)(
+            df_duplicated_filtered, gene_duplicate) for gene_duplicate in list_name_genes_duplicated)
 
     # aggiorno e elimino le righe del dataframe
     utl.clean_update_row_duplicates(list_rows_to_do_df_returned)
@@ -94,12 +98,10 @@ for level_actual in range(1, gl.hop_input + 1):
 
     print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- END LEVEL %s ---" % level_actual + gl.COLORS['end_line'])
 
-
 print(gl.DF_TREE)
 
-
 # subprocess.call('sh concatenate.sh', shell=True)
-# gl.DF_TREE.to_csv('results/execution/results_level.csv', sep=';', header=False, index=False)
+gl.DF_TREE.to_csv('results/results_level.csv', sep=';', header=False, index=False)
 
 
 # genero il file di output file output_text.txt
@@ -110,4 +112,5 @@ print(gl.DF_TREE)
 
 m, s = divmod(time.time() - start_time, 60)
 
-print(gl.COLORS['red'] + gl.COLORS['bold'] + "--- %s minutes and %s seconds ---" % (round(m), round(s)) + gl.COLORS['end_line'])
+print(gl.COLORS['red'] + gl.COLORS['bold'] + "--- %s minutes and %s seconds ---" % (round(m), round(s)) + gl.COLORS[
+    'end_line'])

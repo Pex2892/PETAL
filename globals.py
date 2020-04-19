@@ -12,7 +12,8 @@ num_cores_input = None  # set the number of the CPUs
 pd.set_option('display.max_colwidth', -1)
 
 
-COLS_DF = ['hop', 'name_start', 'hsa_start', 'name_end', 'hsa_end', 'url_gene_end', 'relation', 'type_rel', 'pathway_origin']
+COLS_DF = ['hop', 'name_start', 'hsa_start', 'name_end', 'hsa_end', 'url_gene_end', 'relation',
+           'type_rel', 'pathway_origin']
 DF_TREE = pd.DataFrame(columns=COLS_DF)
 
 # list of the updated pathway

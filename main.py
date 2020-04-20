@@ -10,7 +10,9 @@ start_time = time.time()
 
 # -------------- INITIAL MAIN --------------
 # read initial parameters
+#gl.logger.debug('Leggo i parametri di input')
 utl.read_config()
+gl.logger.debug('finito di leggere i parametri di input')
 
 # delete all results of previous execution
 utl.clear_previous_results()
@@ -86,10 +88,11 @@ for level_actual in range(1, gl.hop_input + 1):
     # process single gene on each CPUs available
     list_rows_to_do_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(
         delayed(utl.get_info_row_duplicated)(
-            df_duplicated_filtered, gene_duplicate) for gene_duplicate in list_name_genes_duplicated)
+            level_actual, df_duplicated_filtered, gene_duplicate)
+        for gene_duplicate in list_name_genes_duplicated)
 
     # aggiorno e elimino le righe del dataframe
-    utl.clean_update_row_duplicates(list_rows_to_do_df_returned)
+    utl.clean_update_row_duplicates(level_actual, list_rows_to_do_df_returned)
 
     # resetto l'indice di riga, perchè non più sequenziali dovuto alle eliminazioni delle righe
     gl.DF_TREE = gl.DF_TREE.reset_index(drop=True)
@@ -98,7 +101,7 @@ for level_actual in range(1, gl.hop_input + 1):
 
     print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- END LEVEL %s ---" % level_actual + gl.COLORS['end_line'])
 
-print(gl.DF_TREE)
+# print(gl.DF_TREE)
 
 # subprocess.call('sh concatenate.sh', shell=True)
 gl.DF_TREE.to_csv('results/results_level.csv', sep=';', header=False, index=False)

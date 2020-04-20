@@ -11,6 +11,8 @@ import multiprocessing as mlp
 import gzip
 import hashlib
 from dateutil.parser import parse
+import logging
+import logging.config
 
 
 def read_config():
@@ -21,7 +23,8 @@ def read_config():
         if gl.num_cores_input == 0 or gl.num_cores_input > mlp.cpu_count():
             gl.num_cores_input = mlp.cpu_count()
 
-        gl.log_input = int(data['log']['value'])
+        set_logger(not bool(data['log']['value']))
+
         gl.pathway_input = data['pathway']['value']
         gl.gene_input = data['gene']['value']
         gl.hop_input = int(data['hop']['value'])
@@ -31,6 +34,31 @@ def read_config():
     print(gl.COLORS['blue'] + gl.COLORS['bold'] + "Pathway: %s" % gl.pathway_input + gl.COLORS['end_line'])
     print(gl.COLORS['blue'] + gl.COLORS['bold'] + "Gene: %s" % gl.gene_input + gl.COLORS['end_line'])
     print(gl.COLORS['blue'] + gl.COLORS['bold'] + "Hop: %s" % gl.hop_input + gl.COLORS['end_line'])
+
+
+def set_logger(flag):
+    #rimuovo il file di log vecchio
+    os.remove(os.path.join(os.getcwd(), 'debug.log'))
+
+    gl.logger = logging.getLogger(__name__)
+    gl.logger.disabled = flag
+
+    gl.logger.setLevel(logging.DEBUG)
+
+    fh = logging.FileHandler('debug.log')
+    fh.setLevel(logging.DEBUG)
+    gl.logger.addHandler(fh)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    gl.logger.addHandler(fh)
+
+    gl.logger.debug('Messaggio di debug')
+    gl.logger.info('Messaggio info')
+    gl.logger.warning('Avviso')
+    gl.logger.error('Messaggio di errore')
+    gl.logger.critical('Errore grave')
+
+
 
 
 def clear_previous_results():
@@ -326,7 +354,8 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start):
                                 'url_gene_end': list_gene_relation[0][3],
                                 'relation': elem.attributes['type'].value,
                                 'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
-                                'pathway_origin': pathway_hsa
+                                'pathway_origin': pathway_hsa,
+                                'occurrences': 1
                             }
                             list_rows.append(row)
         return list_rows
@@ -352,7 +381,7 @@ def unified(list_rows_returned):
                 gl.DF_TREE = gl.DF_TREE.append(cell, ignore_index=True)
 
 
-def get_info_row_duplicated(df_filtered, gene):
+def get_info_row_duplicated(hop, df_filtered, gene):
     subdf = df_filtered[df_filtered['name_end'] == gene]
 
     # riga duplicate ma che ha più info rispetta alle altre
@@ -364,20 +393,21 @@ def get_info_row_duplicated(df_filtered, gene):
         # quella da conservare
         '§§'.join(subdf['relation'].tolist()),  # unisco tutte le relation in base ai pathway di origine
         '§§'.join(subdf['type_rel'].tolist()),  # unisco tutte le type_rel in base ai pathway di origine
-        '§§'.join(subdf['pathway_origin'].tolist())  # unisco tutti i pathway_origine
+        '§§'.join(subdf['pathway_origin'].tolist()),  # unisco tutti i pathway_origine,
+        0   #subdf.shape[0]  # numero di occorrenze incontrate
     ]
 
     return list_to_do_df
 
 
-def clean_update_row_duplicates(list_to_do_df):
+def clean_update_row_duplicates(hop, list_to_do_df):
     for row in list_to_do_df:
         # print(row, '\n')
-        # print(gl.DF_TREE.loc[row[0], ['relation', 'type_rel', 'pathway_origin']])
 
-        # aggiorno la riga selezionata, con le nuove stringhe nelle 3 colonne
-        gl.DF_TREE.loc[row[0], ['relation', 'type_rel', 'pathway_origin']] = [row[2], row[3], row[4]]
+        # aggiorno la riga selezionata, con le nuove stringhe nelle 4 colonne
+        cols = ['relation', 'type_rel', 'pathway_origin', 'occurrences']
+
+        gl.DF_TREE.loc[row[0], cols] = [row[2], row[3], row[4], 0]
 
         # rimuovo le righe selezionate
         gl.DF_TREE = gl.DF_TREE.drop(row[1])
-        # print(gl.DF_TREE.loc[row[0], ['relation', 'type_rel', 'pathway_origin']])

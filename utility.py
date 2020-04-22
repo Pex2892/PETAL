@@ -310,7 +310,6 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start):
 
         list_rows = list()
         if len(list_ids_gene_input) > 0:
-            # str_to_csv = ''
 
             # scorro tutte le relazioni all'interno della mappa
             for elem in relation:
@@ -335,16 +334,7 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start):
 
                         # verifico se esiste una relazione effettivamente
                         if len(list_gene_relation) > 0:
-                            # nell riga 71 concateno tutti i subtype della relazione analizzata
-
-                            # str_to_csv = str_to_csv + str(level) + ';' + \
-                            #              name_gene_start + ';' + \
-                            #              hsa_gene_start + ';' + \
-                            #              list_gene_relation[0][2] + ';' + \
-                            #              list_gene_relation[0][1] + ';' + \
-                            #              elem.attributes['type'].value + ';' + \
-                            #              concat_multiple_subtype(elem.getElementsByTagName('subtype')) + ';' + \
-                            #              list_gene_relation[0][3] + ';' + pathway_hsa + "\n"
+                            # in concat_multiple_subtype, concateno tutti i subtype della relazione analizzata
                             row = {
                                 'hop': hop,
                                 'name_start': name_gene_start,
@@ -355,6 +345,7 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start):
                                 'relation': elem.attributes['type'].value,
                                 'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
                                 'pathway_origin': pathway_hsa,
+                                'occurrences_gene_start': 1,
                                 'occurrences': 1
                             }
                             list_rows.append(row)
@@ -381,33 +372,48 @@ def unified(list_rows_returned):
                 gl.DF_TREE = gl.DF_TREE.append(cell, ignore_index=True)
 
 
-def get_info_row_duplicated(hop, df_filtered, gene):
-    subdf = df_filtered[df_filtered['name_end'] == gene]
+def get_info_row_duplicated(i, hop, df_filtered, gene):
+    grouped_df = (df_filtered[df_filtered['name_end'] == gene]).groupby("name_start")
 
-    # riga duplicate ma che ha più info rispetta alle altre
-    index_gene_more_info = subdf[subdf['hsa_end'] == subdf['hsa_end'].max()].index[0]
+    list_to_do_df = list()
+    iter = 0
+    for key, group in grouped_df:
+        # key = gene
+        # group = group of this gene
+        # print('[i_par: %s][key: %s][iter_for: %s] group2: %s\n' % (i, key, iter, group))
+        # print('[i_par: %s][key: %s][iter_for: %s] shape_row: %s\n' % (i, key, iter, group.shape[0]))
 
-    list_to_do_df = [
-        index_gene_more_info,  # riga da aggiornare e conservare
-        list(filter(index_gene_more_info.__ne__, subdf.index.values.tolist())),  # lista di righe da rimuovere meno
-        # quella da conservare
-        '§§'.join(subdf['relation'].tolist()),  # unisco tutte le relation in base ai pathway di origine
-        '§§'.join(subdf['type_rel'].tolist()),  # unisco tutte le type_rel in base ai pathway di origine
-        '§§'.join(subdf['pathway_origin'].tolist()),  # unisco tutti i pathway_origine,
-        0   #subdf.shape[0]  # numero di occorrenze incontrate
-    ]
+        # riga duplicate ma che ha più info rispetta alle altre
+        index_gene_more_info = group[group['hsa_end'] == group['hsa_end'].max()].index[0]
+
+        # riga da aggiornare e conservare
+        # lista di righe da rimuovere meno quella da conservare
+        # unisco tutte le relation in base ai pathway di origine
+        # unisco tutte le type_rel in base ai pathway di origine
+        # unisco tutti i pathway_origine
+        list_to_do_df.append((
+            index_gene_more_info,
+            list(filter(index_gene_more_info.__ne__, group.index.values.tolist())),
+            '§§'.join(group['relation'].tolist()),
+            '§§'.join(group['type_rel'].tolist()),
+            '§§'.join(group['pathway_origin'].tolist())
+            )
+        )
+        iter = iter + 1
 
     return list_to_do_df
 
 
-def clean_update_row_duplicates(hop, list_to_do_df):
+def clean_update_row_duplicates(list_to_do_df):
     for row in list_to_do_df:
-        # print(row, '\n')
+        for cell in row:
+            # print(row, '\n')
 
-        # aggiorno la riga selezionata, con le nuove stringhe nelle 4 colonne
-        cols = ['relation', 'type_rel', 'pathway_origin', 'occurrences']
+            # aggiorno la riga selezionata, con le nuove stringhe nelle 4 colonne
+            cols = ['relation', 'type_rel', 'pathway_origin']
 
-        gl.DF_TREE.loc[row[0], cols] = [row[2], row[3], row[4], 0]
+            gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4]]
 
-        # rimuovo le righe selezionate
-        gl.DF_TREE = gl.DF_TREE.drop(row[1])
+            # rimuovo le righe selezionate
+            if len(cell[1]) > 0:
+                gl.DF_TREE = gl.DF_TREE.drop(cell[1])

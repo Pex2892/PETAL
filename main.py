@@ -1,9 +1,11 @@
 import globals as gl
 import time
+import os
 import subprocess
 from joblib import Parallel, delayed
 import utility as utl
-from generator import *
+# from generator import *
+import draw
 
 # --------------- INITIAL START TIME --------------
 start_time = time.time()
@@ -55,7 +57,11 @@ for level_actual in range(1, gl.hop_input + 1):
         utl.unified(list_rows_df_returned)
 
     else:
-        df_genes_resulted = (gl.DF_TREE[gl.DF_TREE['hop'] == level_actual - 1])
+        # estraggo i geni finali del livello precedente, evitando il gene di input così evito un loop
+        df_genes_resulted = (gl.DF_TREE[
+            (gl.DF_TREE['hop'] == level_actual - 1) &
+            (gl.DF_TREE['name_end'] != gl.gene_input)
+        ])
 
         for index, row in df_genes_resulted.iterrows():
             # print('[%s] SONO ARRIVATOOOOOO: %s ' % (level_actual, index))
@@ -87,12 +93,12 @@ for level_actual in range(1, gl.hop_input + 1):
 
     # process single gene on each CPUs available
     list_rows_to_do_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(
-        delayed(utl.get_info_row_duplicated)(
+        delayed(utl.get_info_row_duplicated)(iter1,
             level_actual, df_duplicated_filtered, gene_duplicate)
-        for gene_duplicate in list_name_genes_duplicated)
+        for iter1, gene_duplicate in enumerate(list_name_genes_duplicated))
 
     # aggiorno e elimino le righe del dataframe
-    utl.clean_update_row_duplicates(level_actual, list_rows_to_do_df_returned)
+    utl.clean_update_row_duplicates(list_rows_to_do_df_returned)
 
     # resetto l'indice di riga, perchè non più sequenziali dovuto alle eliminazioni delle righe
     gl.DF_TREE = gl.DF_TREE.reset_index(drop=True)
@@ -101,13 +107,14 @@ for level_actual in range(1, gl.hop_input + 1):
 
     print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- END LEVEL %s ---" % level_actual + gl.COLORS['end_line'])
 
-# print(gl.DF_TREE)
+#print(gl.DF_TREE)
 
 # subprocess.call('sh concatenate.sh', shell=True)
 gl.DF_TREE.to_csv('results/results_level.csv', sep=';', header=False, index=False)
 
 
 # genero il file di output file output_text.txt
+draw.run()
 # init_generate_output(gl.hop)
 
 # genero il file di output in json dal file output_text.txt

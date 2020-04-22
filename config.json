@@ -16,7 +16,7 @@
         "_comment": "<string>, gene di partenza"
     },
     "hop": {
-        "value": 2,
+        "value": 3,
         "_comment": "<integer>, rappresenta la profondità dell'analisi"
     }
 }

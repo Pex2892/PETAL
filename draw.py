@@ -1,49 +1,32 @@
 import globals as gl
+from joblib import Parallel, delayed
 import json
 import os
 
-def run():
-    generate_tree_json()
 
-def generate_tree_json():
+def run():
     gl.json_dict = {'name': gl.gene_input, 'children': []}
 
-    df_filter = gl.DF_TREE[gl.DF_TREE['hop'] == 1]
+    for i in range(1, gl.hop_input+1):
+        df_filter = gl.DF_TREE[gl.DF_TREE['hop'] == i]
 
-    list_t = [
-        [],  # salvo l'indice per poter poi recuperare la lista children di questo gene
-        []   # salvo i nomi dei geni
-    ]
-    for key, value in df_filter.iterrows():
-        list_t.append((key, value['name_end']))
-        gl.json_dict['children'].append({'name': value['name_end'], 'children': []})
-
-        list_t[0].append(key)
-        list_t[1].append(value['name_end'])
-
-    hop2(gl.json_dict['children'], list_t)
-    #print(list_t)
-    #print(list_t[0])
-    #print(list_t[1].index('MAP2K2'))
-
-
-
-def hop2(p, list_t):
-    df_filter = gl.DF_TREE[gl.DF_TREE['hop'] == 2]
-
-    list_t2 = [
-        [],  # salvo l'indice per poter poi recuperare la lista children di questo gene
-        []   # salvo i nomi dei geni
-    ]
-    for key, value in df_filter.iterrows():
-        # print(key, value)
-
-        search_index_gene = list_t[1].index(value['name_start'])
-        get_index_json_dict = list_t[0][search_index_gene]
-        print('hop2 - search_index_gene: ', search_index_gene)
-        print('hop2 - get_index_json_dict: ', list_t[0][search_index_gene])
-
-        p[get_index_json_dict]['children'].append({'name': value['name_end'], 'children': []})
+        Parallel(n_jobs=gl.num_cores_input, backend='threading')(
+            delayed(draw_hop_n)(item) for key, item in df_filter.iterrows())
 
     with open(os.path.join(os.getcwd(), 'demo', 'data-flare.json'), 'w') as outfile:
         json.dump(gl.json_dict, outfile, indent=4)
+
+
+def draw_hop_n(item):
+    p = search_key(item['path'], gl.json_dict['children'])
+    p.append({'name': item['name_end'], 'children': []})
+
+
+def search_key(path, p):
+    path_arr = path.split('/')
+    for elem_path in path_arr[1:]:
+        for i, item in enumerate(p):
+            if item['name'] == elem_path:
+                p = p[i]['children']
+                break
+    return p

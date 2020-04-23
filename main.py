@@ -4,7 +4,6 @@ import os
 import subprocess
 from joblib import Parallel, delayed
 import utility as utl
-# from generator import *
 import draw
 
 # --------------- INITIAL START TIME --------------
@@ -37,7 +36,8 @@ for level_actual in range(1, gl.hop_input + 1):
                                                                                          gl.gene_input)
 
         # read initial pathway, create and add genes to csv
-        list_rows_df_returned = utl.read_kgml(level_actual, gl.pathway_input, gl.gene_input, hsa_gene_input_finded)
+        list_rows_df_returned = utl.read_kgml(
+            level_actual, gl.pathway_input, gl.gene_input, hsa_gene_input_finded, gl.gene_input)
 
         # unifico i primi n geni che sono direttamente connessi
         utl.unified([list_rows_df_returned])
@@ -52,7 +52,7 @@ for level_actual in range(1, gl.hop_input + 1):
         # process single gene on each CPUs available
         list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(delayed(utl.analysis_hop_n)(
             level_actual, gl.gene_input, hsa_gene_input_finded,
-            pathway_this_gene) for pathway_this_gene in list_pathways_this_gene)
+            pathway_this_gene, gl.gene_input) for pathway_this_gene in list_pathways_this_gene)
 
         utl.unified(list_rows_df_returned)
 
@@ -77,7 +77,7 @@ for level_actual in range(1, gl.hop_input + 1):
             list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(
                 delayed(utl.analysis_hop_n)(
                     level_actual, row['name_end'], row['hsa_end'],
-                    pathway_this_gene) for pathway_this_gene in list_pathways_this_gene)
+                    pathway_this_gene, row['path']) for pathway_this_gene in list_pathways_this_gene)
 
             utl.unified(list_rows_df_returned)
 

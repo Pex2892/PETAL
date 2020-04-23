@@ -14,51 +14,62 @@
             "children": []
         },
         {
-            "name": "MAP2K3",
+            "name": "MAPK14",
             "children": [
                 {
-                    "name": "MAP3K2",
+                    "name": "MAP3K5",
                     "children": []
                 },
                 {
-                    "name": "MAP3K7",
+                    "name": "PRKCA",
                     "children": []
                 },
                 {
-                    "name": "TICAM1",
-                    "children": []
-                },
-                {
-                    "name": "IL1R1",
-                    "children": []
-                },
-                {
-                    "name": "RAP1A",
+                    "name": "HRAS",
                     "children": []
                 },
                 {
                     "name": "RAC1",
                     "children": []
-                }
-            ]
-        },
-        {
-            "name": "AKT3",
-            "children": [
+                },
                 {
-                    "name": "RHOB",
+                    "name": "NOS3",
                     "children": []
                 },
                 {
-                    "name": "RRAS",
+                    "name": "MAP2K7",
                     "children": []
                 },
                 {
-                    "name": "PDPK1",
+                    "name": "MAPK8",
                     "children": []
                 },
                 {
-                    "name": "NKX3-1",
+                    "name": "ZAP70",
+                    "children": []
+                },
+                {
+                    "name": "DLG1",
+                    "children": []
+                },
+                {
+                    "name": "CDC42",
+                    "children": []
+                },
+                {
+                    "name": "BMPR1A",
+                    "children": []
+                },
+                {
+                    "name": "PRKG1",
+                    "children": []
+                },
+                {
+                    "name": "MAP2K6",
+                    "children": []
+                },
+                {
+                    "name": "DUSP1",
                     "children": []
                 },
                 {
@@ -66,51 +77,60 @@
                     "children": []
                 },
                 {
-                    "name": "TRIB3",
+                    "name": "RAPGEF3",
                     "children": []
                 },
                 {
-                    "name": "PTPA",
+                    "name": "FCGR1A",
                     "children": []
                 },
                 {
-                    "name": "OGT",
+                    "name": "RIPK2",
                     "children": []
                 },
                 {
-                    "name": "CRTC2",
+                    "name": "GNAI1",
                     "children": []
                 },
                 {
-                    "name": "PHLPP2",
+                    "name": "TRAF6",
                     "children": []
                 },
                 {
-                    "name": "THEM4",
+                    "name": "MAP2K1",
                     "children": []
                 },
                 {
-                    "name": "MTCP1",
+                    "name": "MAP2K3",
                     "children": []
                 },
                 {
-                    "name": "PPP2R3B",
+                    "name": "MAPK1",
                     "children": []
                 },
                 {
-                    "name": "MAPK14",
+                    "name": "LAT",
                     "children": []
                 },
                 {
-                    "name": "PRKCZ",
+                    "name": "IL1R1",
                     "children": []
                 },
+                {
+                    "name": "MAP3K7",
+                    "children": []
+                },
+                {
+                    "name": "MAP3K1",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "PRKCZ",
+            "children": [
                 {
                     "name": "PIK3CA",
-                    "children": []
-                },
-                {
-                    "name": "ILK",
                     "children": []
                 },
                 {
@@ -120,59 +140,155 @@
             ]
         },
         {
-            "name": "MAP3K7",
+            "name": "DUSP1",
             "children": [
                 {
-                    "name": "TNFRSF1A",
-                    "children": []
-                },
-                {
-                    "name": "IL1R1",
-                    "children": []
-                },
-                {
-                    "name": "PRKCQ",
-                    "children": []
-                },
-                {
-                    "name": "MAP2K7",
-                    "children": []
-                },
-                {
-                    "name": "BCL10",
-                    "children": []
-                },
-                {
-                    "name": "TAB1",
-                    "children": []
-                },
-                {
-                    "name": "TRAF2",
-                    "children": []
-                },
-                {
-                    "name": "TRAF6",
-                    "children": []
-                },
-                {
-                    "name": "TAB3",
+                    "name": "NFE2L2",
                     "children": []
                 }
             ]
         },
         {
-            "name": "CAMK2A",
+            "name": "HRAS",
             "children": [
                 {
-                    "name": "PLCG1",
+                    "name": "PIK3CA",
                     "children": []
                 },
                 {
-                    "name": "ITPR1",
+                    "name": "PIK3R6",
                     "children": []
                 },
                 {
-                    "name": "PLCB1",
+                    "name": "CSF2RB",
+                    "children": []
+                },
+                {
+                    "name": "NTRK1",
+                    "children": []
+                },
+                {
+                    "name": "SPHK2",
+                    "children": []
+                },
+                {
+                    "name": "RASA1",
+                    "children": []
+                },
+                {
+                    "name": "FGFR3",
+                    "children": []
+                },
+                {
+                    "name": "PRKCA",
+                    "children": []
+                },
+                {
+                    "name": "EGFR",
+                    "children": []
+                },
+                {
+                    "name": "GNAQ",
+                    "children": []
+                },
+                {
+                    "name": "GNAI1",
+                    "children": []
+                },
+                {
+                    "name": "KIT",
+                    "children": []
+                },
+                {
+                    "name": "FGFR1",
+                    "children": []
+                },
+                {
+                    "name": "MAPK1",
+                    "children": []
+                },
+                {
+                    "name": "RPS6KA6",
+                    "children": []
+                },
+                {
+                    "name": "ALK",
+                    "children": []
+                },
+                {
+                    "name": "IFNGR1",
+                    "children": []
+                },
+                {
+                    "name": "TFG",
+                    "children": []
+                },
+                {
+                    "name": "RASSF1",
+                    "children": []
+                },
+                {
+                    "name": "RASGRP1",
+                    "children": []
+                },
+                {
+                    "name": "CAMK2A",
+                    "children": []
+                },
+                {
+                    "name": "IGF1R",
+                    "children": []
+                },
+                {
+                    "name": "SYK",
+                    "children": []
+                },
+                {
+                    "name": "GNB5",
+                    "children": []
+                },
+                {
+                    "name": "RET",
+                    "children": []
+                },
+                {
+                    "name": "RASGRP3",
+                    "children": []
+                },
+                {
+                    "name": "ICAM1",
+                    "children": []
+                },
+                {
+                    "name": "FDPS",
+                    "children": []
+                },
+                {
+                    "name": "CAMK1D",
+                    "children": []
+                },
+                {
+                    "name": "NOS1",
+                    "children": []
+                },
+                {
+                    "name": "MIRLET7C",
+                    "children": []
+                },
+                {
+                    "name": "MIRLET7A1",
+                    "children": []
+                },
+                {
+                    "name": "SOS1",
+                    "children": []
+                },
+                {
+                    "name": "AGER",
+                    "children": []
+                },
+                {
+                    "name": "NF1",
                     "children": []
                 },
                 {
@@ -180,69 +296,435 @@
                     "children": []
                 },
                 {
-                    "name": "RIPK3",
+                    "name": "SRC",
                     "children": []
                 },
                 {
-                    "name": "CYBB",
-                    "children": []
-                },
-                {
-                    "name": "PPP1CA",
+                    "name": "RASGRF1",
                     "children": []
                 }
             ]
         },
         {
-            "name": "MIR10A",
+            "name": "PTK2",
             "children": [
                 {
-                    "name": "TWIST2",
+                    "name": "RHOA",
                     "children": []
-                }
-            ]
-        },
-        {
-            "name": "MIR23A",
-            "children": []
-        },
-        {
-            "name": "MIR195",
-            "children": []
-        },
-        {
-            "name": "ERBB2",
-            "children": [
+                },
+                {
+                    "name": "FGR",
+                    "children": []
+                },
+                {
+                    "name": "PIK3R6",
+                    "children": []
+                },
+                {
+                    "name": "KDR",
+                    "children": []
+                },
+                {
+                    "name": "PIK3CA",
+                    "children": []
+                },
+                {
+                    "name": "SRC",
+                    "children": []
+                },
+                {
+                    "name": "NEO1",
+                    "children": []
+                },
+                {
+                    "name": "NCK2",
+                    "children": []
+                },
+                {
+                    "name": "SDC4",
+                    "children": []
+                },
+                {
+                    "name": "PRKACA",
+                    "children": []
+                },
+                {
+                    "name": "JAK2",
+                    "children": []
+                },
+                {
+                    "name": "ITGB1",
+                    "children": []
+                },
                 {
                     "name": "EGFR",
                     "children": []
                 },
                 {
-                    "name": "TGFA",
+                    "name": "PTEN",
                     "children": []
                 },
                 {
-                    "name": "EGF",
+                    "name": "PRKCA",
                     "children": []
                 },
                 {
-                    "name": "MIR125A",
+                    "name": "GPER1",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "TRAF6",
+            "children": [
+                {
+                    "name": "IRAK1",
                     "children": []
                 },
                 {
-                    "name": "MIR331",
+                    "name": "NGFR",
                     "children": []
                 },
                 {
-                    "name": "NOTCH1",
+                    "name": "CD40",
                     "children": []
                 },
                 {
-                    "name": "HES1",
+                    "name": "EDARADD",
                     "children": []
                 },
                 {
-                    "name": "HEY1",
+                    "name": "CYLD",
+                    "children": []
+                },
+                {
+                    "name": "PTPN6",
+                    "children": []
+                },
+                {
+                    "name": "IRAK4",
+                    "children": []
+                },
+                {
+                    "name": "RIPK1",
+                    "children": []
+                },
+                {
+                    "name": "AMBRA1",
+                    "children": []
+                },
+                {
+                    "name": "IL1R1",
+                    "children": []
+                },
+                {
+                    "name": "TLR4",
+                    "children": []
+                },
+                {
+                    "name": "TLR5",
+                    "children": []
+                },
+                {
+                    "name": "TIFA",
+                    "children": []
+                },
+                {
+                    "name": "TNFAIP3",
+                    "children": []
+                },
+                {
+                    "name": "MAVS",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "RIPK2",
+            "children": [
+                {
+                    "name": "NGFR",
+                    "children": []
+                },
+                {
+                    "name": "HSP90AA1",
+                    "children": []
+                },
+                {
+                    "name": "NOD2",
+                    "children": []
+                },
+                {
+                    "name": "RBCK1",
+                    "children": []
+                },
+                {
+                    "name": "CARD6",
+                    "children": []
+                },
+                {
+                    "name": "TRIP6",
+                    "children": []
+                },
+                {
+                    "name": "NOD1",
+                    "children": []
+                },
+                {
+                    "name": "XIAP",
+                    "children": []
+                },
+                {
+                    "name": "BIRC2",
+                    "children": []
+                },
+                {
+                    "name": "CARD9",
+                    "children": []
+                },
+                {
+                    "name": "TRAF2",
+                    "children": []
+                },
+                {
+                    "name": "TNFAIP3",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "PRKACA",
+            "children": [
+                {
+                    "name": "PRKCA",
+                    "children": []
+                },
+                {
+                    "name": "RAB13",
+                    "children": []
+                },
+                {
+                    "name": "PGR",
+                    "children": []
+                },
+                {
+                    "name": "AR",
+                    "children": []
+                },
+                {
+                    "name": "IGF1R",
+                    "children": []
+                },
+                {
+                    "name": "PKIA",
+                    "children": []
+                },
+                {
+                    "name": "SMO",
+                    "children": []
+                },
+                {
+                    "name": "ITGA2",
+                    "children": []
+                },
+                {
+                    "name": "ADCY1",
+                    "children": []
+                },
+                {
+                    "name": "PPP1R1B",
+                    "children": []
+                },
+                {
+                    "name": "RASD1",
+                    "children": []
+                },
+                {
+                    "name": "SLC12A2",
+                    "children": []
+                },
+                {
+                    "name": "KCNQ1",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "CAMK4",
+            "children": [
+                {
+                    "name": "CALML6",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "GRB2",
+            "children": [
+                {
+                    "name": "CSF1R",
+                    "children": []
+                },
+                {
+                    "name": "GAB1",
+                    "children": []
+                },
+                {
+                    "name": "KIT",
+                    "children": []
+                },
+                {
+                    "name": "MIR10A",
+                    "children": []
+                },
+                {
+                    "name": "MIR195",
+                    "children": []
+                },
+                {
+                    "name": "MIR129-1",
+                    "children": []
+                },
+                {
+                    "name": "CD28",
+                    "children": []
+                },
+                {
+                    "name": "BLNK",
+                    "children": []
+                },
+                {
+                    "name": "IL6ST",
+                    "children": []
+                },
+                {
+                    "name": "EGFR",
+                    "children": []
+                },
+                {
+                    "name": "FRS2",
+                    "children": []
+                },
+                {
+                    "name": "SH2B2",
+                    "children": []
+                },
+                {
+                    "name": "SH2B3",
+                    "children": []
+                },
+                {
+                    "name": "NTRK1",
+                    "children": []
+                },
+                {
+                    "name": "NTRK2",
+                    "children": []
+                },
+                {
+                    "name": "NTRK3",
+                    "children": []
+                },
+                {
+                    "name": "ABL1",
+                    "children": []
+                },
+                {
+                    "name": "PDGFRA",
+                    "children": []
+                },
+                {
+                    "name": "FLT3",
+                    "children": []
+                },
+                {
+                    "name": "MET",
+                    "children": []
+                },
+                {
+                    "name": "FGFR1",
+                    "children": []
+                },
+                {
+                    "name": "ERBB2",
+                    "children": []
+                },
+                {
+                    "name": "FGFR2",
+                    "children": []
+                },
+                {
+                    "name": "SRC",
+                    "children": []
+                },
+                {
+                    "name": "IRS1",
+                    "children": []
+                },
+                {
+                    "name": "PDGFRB",
+                    "children": []
+                },
+                {
+                    "name": "LCP2",
+                    "children": []
+                },
+                {
+                    "name": "SHC2",
+                    "children": []
+                },
+                {
+                    "name": "HCST",
+                    "children": []
+                },
+                {
+                    "name": "LAT",
+                    "children": []
+                },
+                {
+                    "name": "PTK2",
+                    "children": []
+                },
+                {
+                    "name": "IGF1R",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "ARRB1",
+            "children": [
+                {
+                    "name": "RXFP3",
+                    "children": []
+                },
+                {
+                    "name": "PTH1R",
+                    "children": []
+                },
+                {
+                    "name": "SMO",
+                    "children": []
+                },
+                {
+                    "name": "KIF3A",
+                    "children": []
+                },
+                {
+                    "name": "KISS1R",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "PRKCD",
+            "children": [
+                {
+                    "name": "PLCG1",
+                    "children": []
+                },
+                {
+                    "name": "PIK3CA",
                     "children": []
                 }
             ]
@@ -252,14 +734,54 @@
             "children": []
         },
         {
-            "name": "PRKCD",
+            "name": "PTPN11",
             "children": [
                 {
-                    "name": "PIK3CA",
+                    "name": "SYK",
                     "children": []
                 },
                 {
-                    "name": "PLCG1",
+                    "name": "GAB1",
+                    "children": []
+                },
+                {
+                    "name": "PILRA",
+                    "children": []
+                },
+                {
+                    "name": "JAK1",
+                    "children": []
+                },
+                {
+                    "name": "GRB2",
+                    "children": []
+                },
+                {
+                    "name": "EGFR",
+                    "children": []
+                },
+                {
+                    "name": "UNC5D",
+                    "children": []
+                },
+                {
+                    "name": "KIR3DL1",
+                    "children": []
+                },
+                {
+                    "name": "KIR3DL2",
+                    "children": []
+                },
+                {
+                    "name": "KIR2DL1",
+                    "children": []
+                },
+                {
+                    "name": "GAB2",
+                    "children": []
+                },
+                {
+                    "name": "JAK2",
                     "children": []
                 }
             ]
@@ -283,421 +805,6 @@
             ]
         },
         {
-            "name": "HRAS",
-            "children": [
-                {
-                    "name": "SRC",
-                    "children": []
-                },
-                {
-                    "name": "EGFR",
-                    "children": []
-                },
-                {
-                    "name": "PRKCA",
-                    "children": []
-                },
-                {
-                    "name": "CAMK1D",
-                    "children": []
-                },
-                {
-                    "name": "MIRLET7C",
-                    "children": []
-                },
-                {
-                    "name": "MIRLET7A1",
-                    "children": []
-                },
-                {
-                    "name": "PIK3CA",
-                    "children": []
-                },
-                {
-                    "name": "FGFR1",
-                    "children": []
-                },
-                {
-                    "name": "GNAQ",
-                    "children": []
-                },
-                {
-                    "name": "ICAM1",
-                    "children": []
-                },
-                {
-                    "name": "FDPS",
-                    "children": []
-                },
-                {
-                    "name": "SPHK2",
-                    "children": []
-                },
-                {
-                    "name": "SYK",
-                    "children": []
-                },
-                {
-                    "name": "GNB5",
-                    "children": []
-                },
-                {
-                    "name": "PIK3R6",
-                    "children": []
-                },
-                {
-                    "name": "FGFR3",
-                    "children": []
-                },
-                {
-                    "name": "KIT",
-                    "children": []
-                },
-                {
-                    "name": "RASGRP3",
-                    "children": []
-                },
-                {
-                    "name": "CSF2RB",
-                    "children": []
-                },
-                {
-                    "name": "NTRK1",
-                    "children": []
-                },
-                {
-                    "name": "ALK",
-                    "children": []
-                },
-                {
-                    "name": "IFNGR1",
-                    "children": []
-                },
-                {
-                    "name": "SOS1",
-                    "children": []
-                },
-                {
-                    "name": "IGF1R",
-                    "children": []
-                },
-                {
-                    "name": "MAPK1",
-                    "children": []
-                },
-                {
-                    "name": "RPS6KA6",
-                    "children": []
-                },
-                {
-                    "name": "GNAI1",
-                    "children": []
-                },
-                {
-                    "name": "RASGRF1",
-                    "children": []
-                },
-                {
-                    "name": "NF1",
-                    "children": []
-                },
-                {
-                    "name": "RET",
-                    "children": []
-                },
-                {
-                    "name": "TFG",
-                    "children": []
-                },
-                {
-                    "name": "RASSF1",
-                    "children": []
-                },
-                {
-                    "name": "RASGRP1",
-                    "children": []
-                },
-                {
-                    "name": "CAMK2A",
-                    "children": []
-                },
-                {
-                    "name": "CALML6",
-                    "children": []
-                },
-                {
-                    "name": "AGER",
-                    "children": []
-                },
-                {
-                    "name": "NOS1",
-                    "children": []
-                },
-                {
-                    "name": "RASA1",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "name": "TRAF6",
-            "children": [
-                {
-                    "name": "IL1R1",
-                    "children": []
-                },
-                {
-                    "name": "TLR4",
-                    "children": []
-                },
-                {
-                    "name": "TLR5",
-                    "children": []
-                },
-                {
-                    "name": "TIFA",
-                    "children": []
-                },
-                {
-                    "name": "IRAK1",
-                    "children": []
-                },
-                {
-                    "name": "TNFAIP3",
-                    "children": []
-                },
-                {
-                    "name": "IRAK4",
-                    "children": []
-                },
-                {
-                    "name": "RIPK1",
-                    "children": []
-                },
-                {
-                    "name": "PTPN6",
-                    "children": []
-                },
-                {
-                    "name": "AMBRA1",
-                    "children": []
-                },
-                {
-                    "name": "MAVS",
-                    "children": []
-                },
-                {
-                    "name": "NGFR",
-                    "children": []
-                },
-                {
-                    "name": "CD40",
-                    "children": []
-                },
-                {
-                    "name": "EDARADD",
-                    "children": []
-                },
-                {
-                    "name": "CYLD",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "name": "PRKACA",
-            "children": [
-                {
-                    "name": "SMO",
-                    "children": []
-                },
-                {
-                    "name": "PGR",
-                    "children": []
-                },
-                {
-                    "name": "AR",
-                    "children": []
-                },
-                {
-                    "name": "IGF1R",
-                    "children": []
-                },
-                {
-                    "name": "ITGA2",
-                    "children": []
-                },
-                {
-                    "name": "PKIA",
-                    "children": []
-                },
-                {
-                    "name": "RASD1",
-                    "children": []
-                },
-                {
-                    "name": "PPP1R1B",
-                    "children": []
-                },
-                {
-                    "name": "RAB13",
-                    "children": []
-                },
-                {
-                    "name": "PRKCA",
-                    "children": []
-                },
-                {
-                    "name": "ADCY1",
-                    "children": []
-                },
-                {
-                    "name": "SLC12A2",
-                    "children": []
-                },
-                {
-                    "name": "KCNQ1",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "name": "CAMK4",
-            "children": [
-                {
-                    "name": "CALML6",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "name": "NOS1",
-            "children": [
-                {
-                    "name": "CALML6",
-                    "children": []
-                },
-                {
-                    "name": "GRIN1",
-                    "children": []
-                },
-                {
-                    "name": "CACNA1I",
-                    "children": []
-                },
-                {
-                    "name": "ITPR1",
-                    "children": []
-                },
-                {
-                    "name": "RYR1",
-                    "children": []
-                },
-                {
-                    "name": "CACNA1C",
-                    "children": []
-                },
-                {
-                    "name": "CAMK2A",
-                    "children": []
-                },
-                {
-                    "name": "MAPK1",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "name": "GNB5",
-            "children": [
-                {
-                    "name": "GNAI1",
-                    "children": []
-                },
-                {
-                    "name": "GNAO1",
-                    "children": []
-                },
-                {
-                    "name": "GNAS",
-                    "children": []
-                },
-                {
-                    "name": "CXCR4",
-                    "children": []
-                },
-                {
-                    "name": "CCR5",
-                    "children": []
-                },
-                {
-                    "name": "PTGER1",
-                    "children": []
-                },
-                {
-                    "name": "RASD1",
-                    "children": []
-                },
-                {
-                    "name": "HTR7",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "name": "PTPN11",
-            "children": [
-                {
-                    "name": "GAB2",
-                    "children": []
-                },
-                {
-                    "name": "JAK1",
-                    "children": []
-                },
-                {
-                    "name": "JAK2",
-                    "children": []
-                },
-                {
-                    "name": "GAB1",
-                    "children": []
-                },
-                {
-                    "name": "UNC5D",
-                    "children": []
-                },
-                {
-                    "name": "KIR3DL1",
-                    "children": []
-                },
-                {
-                    "name": "KIR3DL2",
-                    "children": []
-                },
-                {
-                    "name": "KIR2DL1",
-                    "children": []
-                },
-                {
-                    "name": "SYK",
-                    "children": []
-                },
-                {
-                    "name": "GRB2",
-                    "children": []
-                },
-                {
-                    "name": "EGFR",
-                    "children": []
-                },
-                {
-                    "name": "PILRA",
-                    "children": []
-                }
-            ]
-        },
-        {
             "name": "PTPN6",
             "children": [
                 {
@@ -707,60 +814,59 @@
             ]
         },
         {
-            "name": "ARRB1",
+            "name": "ERBB2",
             "children": [
                 {
-                    "name": "SMO",
+                    "name": "EGFR",
                     "children": []
                 },
                 {
-                    "name": "KIF3A",
+                    "name": "MIR125A",
                     "children": []
                 },
                 {
-                    "name": "RXFP3",
+                    "name": "MIR331",
                     "children": []
                 },
                 {
-                    "name": "KISS1R",
+                    "name": "HES1",
                     "children": []
                 },
                 {
-                    "name": "PTH1R",
+                    "name": "HEY1",
+                    "children": []
+                },
+                {
+                    "name": "NOTCH1",
+                    "children": []
+                },
+                {
+                    "name": "EGF",
+                    "children": []
+                },
+                {
+                    "name": "TGFA",
                     "children": []
                 }
             ]
         },
         {
-            "name": "TLR4",
-            "children": [
-                {
-                    "name": "CD14",
-                    "children": []
-                },
-                {
-                    "name": "LY96",
-                    "children": []
-                },
-                {
-                    "name": "IRAK4",
-                    "children": []
-                },
-                {
-                    "name": "HSPA9",
-                    "children": []
-                },
-                {
-                    "name": "HSPD1",
-                    "children": []
-                }
-            ]
+            "name": "DAPK1",
+            "children": []
         },
         {
-            "name": "DUSP1",
+            "name": "PRKCB",
             "children": [
                 {
-                    "name": "NFE2L2",
+                    "name": "AGER",
+                    "children": []
+                },
+                {
+                    "name": "PLCG2",
+                    "children": []
+                },
+                {
+                    "name": "FCGR1A",
                     "children": []
                 }
             ]
@@ -769,11 +875,7 @@
             "name": "PRKCA",
             "children": [
                 {
-                    "name": "PLCB1",
-                    "children": []
-                },
-                {
-                    "name": "ITPR1",
+                    "name": "PLCG1",
                     "children": []
                 },
                 {
@@ -786,22 +888,6 @@
                 },
                 {
                     "name": "PLCZ1",
-                    "children": []
-                },
-                {
-                    "name": "PLCG1",
-                    "children": []
-                },
-                {
-                    "name": "MAPK1",
-                    "children": []
-                },
-                {
-                    "name": "ATP6AP1",
-                    "children": []
-                },
-                {
-                    "name": "MTOR",
                     "children": []
                 },
                 {
@@ -837,6 +923,22 @@
                     "children": []
                 },
                 {
+                    "name": "MAPK1",
+                    "children": []
+                },
+                {
+                    "name": "ITPR1",
+                    "children": []
+                },
+                {
+                    "name": "PLCB1",
+                    "children": []
+                },
+                {
+                    "name": "ATP6AP1",
+                    "children": []
+                },
+                {
                     "name": "ITGB1",
                     "children": []
                 },
@@ -851,245 +953,79 @@
                 {
                     "name": "PPP2CA",
                     "children": []
-                }
-            ]
-        },
-        {
-            "name": "GRB2",
-            "children": [
-                {
-                    "name": "IRS1",
-                    "children": []
                 },
                 {
-                    "name": "IL6ST",
-                    "children": []
-                },
-                {
-                    "name": "ERBB2",
-                    "children": []
-                },
-                {
-                    "name": "MET",
-                    "children": []
-                },
-                {
-                    "name": "CD28",
-                    "children": []
-                },
-                {
-                    "name": "PDGFRA",
-                    "children": []
-                },
-                {
-                    "name": "FLT3",
-                    "children": []
-                },
-                {
-                    "name": "FGFR1",
-                    "children": []
-                },
-                {
-                    "name": "KIT",
-                    "children": []
-                },
-                {
-                    "name": "PDGFRB",
-                    "children": []
-                },
-                {
-                    "name": "EGFR",
-                    "children": []
-                },
-                {
-                    "name": "CSF1R",
-                    "children": []
-                },
-                {
-                    "name": "SH2B2",
-                    "children": []
-                },
-                {
-                    "name": "SH2B3",
-                    "children": []
-                },
-                {
-                    "name": "NTRK1",
-                    "children": []
-                },
-                {
-                    "name": "NTRK2",
-                    "children": []
-                },
-                {
-                    "name": "NTRK3",
-                    "children": []
-                },
-                {
-                    "name": "SRC",
-                    "children": []
-                },
-                {
-                    "name": "GAB1",
-                    "children": []
-                },
-                {
-                    "name": "IGF1R",
-                    "children": []
-                },
-                {
-                    "name": "LCP2",
-                    "children": []
-                },
-                {
-                    "name": "HCST",
-                    "children": []
-                },
-                {
-                    "name": "MIR10A",
-                    "children": []
-                },
-                {
-                    "name": "MIR195",
-                    "children": []
-                },
-                {
-                    "name": "MIR129-1",
-                    "children": []
-                },
-                {
-                    "name": "BLNK",
-                    "children": []
-                },
-                {
-                    "name": "FRS2",
-                    "children": []
-                },
-                {
-                    "name": "PTK2",
-                    "children": []
-                },
-                {
-                    "name": "ABL1",
-                    "children": []
-                },
-                {
-                    "name": "SHC2",
-                    "children": []
-                },
-                {
-                    "name": "FGFR2",
-                    "children": []
-                },
-                {
-                    "name": "LAT",
+                    "name": "MTOR",
                     "children": []
                 }
             ]
         },
         {
-            "name": "INSR",
+            "name": "MAP3K7",
             "children": [
                 {
-                    "name": "PTPRF",
+                    "name": "TRAF6",
                     "children": []
                 },
                 {
-                    "name": "KL",
+                    "name": "TAB3",
                     "children": []
                 },
                 {
-                    "name": "IGF1",
+                    "name": "PRKCQ",
                     "children": []
                 },
                 {
-                    "name": "SOCS4",
+                    "name": "MAP2K7",
                     "children": []
                 },
                 {
-                    "name": "INS",
+                    "name": "BCL10",
                     "children": []
                 },
                 {
-                    "name": "PTPN1",
+                    "name": "TNFRSF1A",
                     "children": []
                 },
                 {
-                    "name": "PRKCB",
+                    "name": "IL1R1",
                     "children": []
                 },
                 {
-                    "name": "PRKCE",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "name": "RIPK2",
-            "children": [
-                {
-                    "name": "NGFR",
-                    "children": []
-                },
-                {
-                    "name": "RBCK1",
-                    "children": []
-                },
-                {
-                    "name": "XIAP",
-                    "children": []
-                },
-                {
-                    "name": "CARD6",
-                    "children": []
-                },
-                {
-                    "name": "TRIP6",
-                    "children": []
-                },
-                {
-                    "name": "NOD2",
-                    "children": []
-                },
-                {
-                    "name": "BIRC2",
-                    "children": []
-                },
-                {
-                    "name": "CARD9",
+                    "name": "TAB1",
                     "children": []
                 },
                 {
                     "name": "TRAF2",
                     "children": []
-                },
-                {
-                    "name": "TNFAIP3",
-                    "children": []
-                },
-                {
-                    "name": "NOD1",
-                    "children": []
-                },
-                {
-                    "name": "HSP90AA1",
-                    "children": []
                 }
             ]
         },
         {
-            "name": "PRKCB",
+            "name": "MAP2K3",
             "children": [
                 {
-                    "name": "FCGR1A",
+                    "name": "RAC1",
                     "children": []
                 },
                 {
-                    "name": "AGER",
+                    "name": "TICAM1",
                     "children": []
                 },
                 {
-                    "name": "PLCG2",
+                    "name": "IL1R1",
+                    "children": []
+                },
+                {
+                    "name": "RAP1A",
+                    "children": []
+                },
+                {
+                    "name": "MAP3K2",
+                    "children": []
+                },
+                {
+                    "name": "MAP3K7",
                     "children": []
                 }
             ]
@@ -1128,19 +1064,11 @@
             "name": "ARAF",
             "children": [
                 {
-                    "name": "PRKACA",
+                    "name": "KRAS",
                     "children": []
                 },
                 {
-                    "name": "NRAS",
-                    "children": []
-                },
-                {
-                    "name": "PRKCA",
-                    "children": []
-                },
-                {
-                    "name": "RAP1A",
+                    "name": "HRAS",
                     "children": []
                 },
                 {
@@ -1152,19 +1080,27 @@
                     "children": []
                 },
                 {
-                    "name": "KRAS",
-                    "children": []
-                },
-                {
                     "name": "YWHAQ",
                     "children": []
                 },
                 {
-                    "name": "HRAS",
+                    "name": "PRKACA",
+                    "children": []
+                },
+                {
+                    "name": "NRAS",
                     "children": []
                 },
                 {
                     "name": "GSK3B",
+                    "children": []
+                },
+                {
+                    "name": "PRKCA",
+                    "children": []
+                },
+                {
+                    "name": "RAP1A",
                     "children": []
                 }
             ]
@@ -1173,19 +1109,23 @@
             "name": "RRAS2",
             "children": [
                 {
-                    "name": "PRKCE",
-                    "children": []
-                },
-                {
-                    "name": "GNB5",
-                    "children": []
-                },
-                {
                     "name": "ARHGEF12",
                     "children": []
                 },
                 {
                     "name": "LSP1",
+                    "children": []
+                },
+                {
+                    "name": "GRB2",
+                    "children": []
+                },
+                {
+                    "name": "PRKCE",
+                    "children": []
+                },
+                {
+                    "name": "GNB5",
                     "children": []
                 },
                 {
@@ -1211,16 +1151,16 @@
                 {
                     "name": "SHOC2",
                     "children": []
-                },
-                {
-                    "name": "GRB2",
-                    "children": []
                 }
             ]
         },
         {
             "name": "FGFR1",
             "children": [
+                {
+                    "name": "FGF23",
+                    "children": []
+                },
                 {
                     "name": "FGF21",
                     "children": []
@@ -1234,10 +1174,6 @@
                     "children": []
                 },
                 {
-                    "name": "FGF23",
-                    "children": []
-                },
-                {
                     "name": "FGF2",
                     "children": []
                 }
@@ -1247,7 +1183,11 @@
             "name": "IGF1R",
             "children": [
                 {
-                    "name": "IGF2",
+                    "name": "KL",
+                    "children": []
+                },
+                {
+                    "name": "INS",
                     "children": []
                 },
                 {
@@ -1255,97 +1195,61 @@
                     "children": []
                 },
                 {
-                    "name": "KL",
-                    "children": []
-                },
-                {
-                    "name": "INS",
+                    "name": "IGF2",
                     "children": []
                 }
             ]
         },
         {
-            "name": "MAP2K1",
+            "name": "TLR4",
             "children": [
                 {
-                    "name": "PRNP",
+                    "name": "LY96",
                     "children": []
                 },
                 {
-                    "name": "BRAF",
+                    "name": "HSPA9",
                     "children": []
                 },
                 {
-                    "name": "MAP3K7",
+                    "name": "HSPD1",
                     "children": []
                 },
                 {
-                    "name": "PAK1",
+                    "name": "IRAK4",
                     "children": []
                 },
                 {
-                    "name": "MIR195",
-                    "children": []
-                },
-                {
-                    "name": "GRB2",
-                    "children": []
-                },
-                {
-                    "name": "HRAS",
-                    "children": []
-                },
-                {
-                    "name": "ARAF",
-                    "children": []
-                },
-                {
-                    "name": "RAF1",
-                    "children": []
-                },
-                {
-                    "name": "TRAF6",
-                    "children": []
-                },
-                {
-                    "name": "MAP3K8",
-                    "children": []
-                },
-                {
-                    "name": "TICAM1",
-                    "children": []
-                },
-                {
-                    "name": "PRKCD",
-                    "children": []
-                },
-                {
-                    "name": "PRKACA",
-                    "children": []
-                },
-                {
-                    "name": "GSK3B",
-                    "children": []
-                },
-                {
-                    "name": "PPP2CA",
-                    "children": []
-                },
-                {
-                    "name": "EGFR",
+                    "name": "CD14",
                     "children": []
                 }
             ]
-        },
-        {
-            "name": "DAPK1",
-            "children": []
         },
         {
             "name": "GNAI1",
             "children": [
                 {
-                    "name": "SSTR1",
+                    "name": "ADORA1",
+                    "children": []
+                },
+                {
+                    "name": "S1PR1",
+                    "children": []
+                },
+                {
+                    "name": "S1PR2",
+                    "children": []
+                },
+                {
+                    "name": "S1PR3",
+                    "children": []
+                },
+                {
+                    "name": "S1PR4",
+                    "children": []
+                },
+                {
+                    "name": "S1PR5",
                     "children": []
                 },
                 {
@@ -1365,7 +1269,35 @@
                     "children": []
                 },
                 {
-                    "name": "SSTR2",
+                    "name": "CXCR6",
+                    "children": []
+                },
+                {
+                    "name": "PTGER3",
+                    "children": []
+                },
+                {
+                    "name": "NPY1R",
+                    "children": []
+                },
+                {
+                    "name": "LPAR1",
+                    "children": []
+                },
+                {
+                    "name": "P2RY12",
+                    "children": []
+                },
+                {
+                    "name": "CXCR4",
+                    "children": []
+                },
+                {
+                    "name": "RGS3",
+                    "children": []
+                },
+                {
+                    "name": "RASD1",
                     "children": []
                 },
                 {
@@ -1373,11 +1305,11 @@
                     "children": []
                 },
                 {
-                    "name": "TLR4",
+                    "name": "CASR",
                     "children": []
                 },
                 {
-                    "name": "LPAR1",
+                    "name": "PTH1R",
                     "children": []
                 },
                 {
@@ -1405,63 +1337,15 @@
                     "children": []
                 },
                 {
-                    "name": "CHRM1",
+                    "name": "TLR4",
                     "children": []
                 },
                 {
-                    "name": "CXCR6",
+                    "name": "SSTR1",
                     "children": []
                 },
                 {
-                    "name": "CASR",
-                    "children": []
-                },
-                {
-                    "name": "PTH1R",
-                    "children": []
-                },
-                {
-                    "name": "ADORA1",
-                    "children": []
-                },
-                {
-                    "name": "S1PR1",
-                    "children": []
-                },
-                {
-                    "name": "S1PR2",
-                    "children": []
-                },
-                {
-                    "name": "S1PR3",
-                    "children": []
-                },
-                {
-                    "name": "S1PR4",
-                    "children": []
-                },
-                {
-                    "name": "S1PR5",
-                    "children": []
-                },
-                {
-                    "name": "P2RY12",
-                    "children": []
-                },
-                {
-                    "name": "CXCR4",
-                    "children": []
-                },
-                {
-                    "name": "RGS3",
-                    "children": []
-                },
-                {
-                    "name": "PTGER3",
-                    "children": []
-                },
-                {
-                    "name": "NPY1R",
+                    "name": "SSTR2",
                     "children": []
                 },
                 {
@@ -1469,166 +1353,114 @@
                     "children": []
                 },
                 {
-                    "name": "RASD1",
+                    "name": "CHRM1",
                     "children": []
                 }
             ]
         },
         {
-            "name": "LAT",
+            "name": "NOS1",
+            "children": [
+                {
+                    "name": "MAPK1",
+                    "children": []
+                },
+                {
+                    "name": "CALML6",
+                    "children": []
+                },
+                {
+                    "name": "CACNA1I",
+                    "children": []
+                },
+                {
+                    "name": "ITPR1",
+                    "children": []
+                },
+                {
+                    "name": "RYR1",
+                    "children": []
+                },
+                {
+                    "name": "GRIN1",
+                    "children": []
+                },
+                {
+                    "name": "CACNA1C",
+                    "children": []
+                },
+                {
+                    "name": "CAMK2A",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "CAMK2A",
             "children": [
                 {
                     "name": "PLCG1",
                     "children": []
                 },
                 {
-                    "name": "GRB2",
+                    "name": "RIPK3",
                     "children": []
                 },
                 {
-                    "name": "ZAP70",
+                    "name": "CYBB",
                     "children": []
                 },
                 {
-                    "name": "CD244",
+                    "name": "ITPR1",
                     "children": []
                 },
                 {
-                    "name": "PTPN6",
+                    "name": "PPP1CA",
                     "children": []
                 },
                 {
-                    "name": "PTPN11",
+                    "name": "PLCB1",
                     "children": []
                 },
                 {
-                    "name": "SYK",
+                    "name": "CALML6",
                     "children": []
                 }
             ]
         },
         {
-            "name": "PRKCZ",
+            "name": "GNB5",
             "children": [
-                {
-                    "name": "PIK3CA",
-                    "children": []
-                },
-                {
-                    "name": "PIK3R6",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "name": "MAPK14",
-            "children": [
-                {
-                    "name": "MAP2K3",
-                    "children": []
-                },
-                {
-                    "name": "MAP2K7",
-                    "children": []
-                },
-                {
-                    "name": "FCGR1A",
-                    "children": []
-                },
-                {
-                    "name": "BMPR1A",
-                    "children": []
-                },
-                {
-                    "name": "PTK2",
-                    "children": []
-                },
-                {
-                    "name": "MAP2K6",
-                    "children": []
-                },
-                {
-                    "name": "DUSP1",
-                    "children": []
-                },
-                {
-                    "name": "ZAP70",
-                    "children": []
-                },
-                {
-                    "name": "DLG1",
-                    "children": []
-                },
-                {
-                    "name": "PRKCA",
-                    "children": []
-                },
-                {
-                    "name": "RAC1",
-                    "children": []
-                },
-                {
-                    "name": "NOS3",
-                    "children": []
-                },
-                {
-                    "name": "RAPGEF3",
-                    "children": []
-                },
                 {
                     "name": "GNAI1",
                     "children": []
                 },
                 {
-                    "name": "CDC42",
+                    "name": "GNAO1",
                     "children": []
                 },
                 {
-                    "name": "TRAF6",
+                    "name": "CXCR4",
                     "children": []
                 },
                 {
-                    "name": "LAT",
+                    "name": "CCR5",
                     "children": []
                 },
                 {
-                    "name": "IL1R1",
+                    "name": "RASD1",
                     "children": []
                 },
                 {
-                    "name": "MAP3K7",
+                    "name": "GNAS",
                     "children": []
                 },
                 {
-                    "name": "MAP3K1",
+                    "name": "HTR7",
                     "children": []
                 },
                 {
-                    "name": "HRAS",
-                    "children": []
-                },
-                {
-                    "name": "MAP2K1",
-                    "children": []
-                },
-                {
-                    "name": "MAPK1",
-                    "children": []
-                },
-                {
-                    "name": "MAPK8",
-                    "children": []
-                },
-                {
-                    "name": "MAP3K5",
-                    "children": []
-                },
-                {
-                    "name": "PRKG1",
-                    "children": []
-                },
-                {
-                    "name": "RIPK2",
+                    "name": "PTGER1",
                     "children": []
                 }
             ]
@@ -1647,18 +1479,96 @@
             ]
         },
         {
-            "name": "PTK2",
+            "name": "LAT",
             "children": [
                 {
-                    "name": "JAK2",
+                    "name": "SYK",
                     "children": []
                 },
                 {
-                    "name": "SRC",
+                    "name": "CD244",
                     "children": []
                 },
                 {
-                    "name": "SDC4",
+                    "name": "PTPN6",
+                    "children": []
+                },
+                {
+                    "name": "PTPN11",
+                    "children": []
+                },
+                {
+                    "name": "PLCG1",
+                    "children": []
+                },
+                {
+                    "name": "GRB2",
+                    "children": []
+                },
+                {
+                    "name": "ZAP70",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "MIR10A",
+            "children": [
+                {
+                    "name": "TWIST2",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "MIR23A",
+            "children": []
+        },
+        {
+            "name": "MIR195",
+            "children": []
+        },
+        {
+            "name": "MAP2K1",
+            "children": [
+                {
+                    "name": "PRNP",
+                    "children": []
+                },
+                {
+                    "name": "GRB2",
+                    "children": []
+                },
+                {
+                    "name": "PRKCD",
+                    "children": []
+                },
+                {
+                    "name": "TRAF6",
+                    "children": []
+                },
+                {
+                    "name": "BRAF",
+                    "children": []
+                },
+                {
+                    "name": "PAK1",
+                    "children": []
+                },
+                {
+                    "name": "RAF1",
+                    "children": []
+                },
+                {
+                    "name": "TICAM1",
+                    "children": []
+                },
+                {
+                    "name": "ARAF",
+                    "children": []
+                },
+                {
+                    "name": "HRAS",
                     "children": []
                 },
                 {
@@ -1666,31 +1576,7 @@
                     "children": []
                 },
                 {
-                    "name": "GPER1",
-                    "children": []
-                },
-                {
-                    "name": "KDR",
-                    "children": []
-                },
-                {
-                    "name": "RHOA",
-                    "children": []
-                },
-                {
-                    "name": "FGR",
-                    "children": []
-                },
-                {
-                    "name": "PIK3CA",
-                    "children": []
-                },
-                {
-                    "name": "PIK3R6",
-                    "children": []
-                },
-                {
-                    "name": "ITGB1",
+                    "name": "PPP2CA",
                     "children": []
                 },
                 {
@@ -1698,19 +1584,133 @@
                     "children": []
                 },
                 {
-                    "name": "PTEN",
+                    "name": "MIR195",
                     "children": []
                 },
                 {
-                    "name": "PRKCA",
+                    "name": "GSK3B",
                     "children": []
                 },
                 {
-                    "name": "NEO1",
+                    "name": "MAP3K7",
                     "children": []
                 },
                 {
-                    "name": "NCK2",
+                    "name": "MAP3K8",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "INSR",
+            "children": [
+                {
+                    "name": "PTPN1",
+                    "children": []
+                },
+                {
+                    "name": "PRKCB",
+                    "children": []
+                },
+                {
+                    "name": "PRKCE",
+                    "children": []
+                },
+                {
+                    "name": "KL",
+                    "children": []
+                },
+                {
+                    "name": "SOCS4",
+                    "children": []
+                },
+                {
+                    "name": "IGF1",
+                    "children": []
+                },
+                {
+                    "name": "PTPRF",
+                    "children": []
+                },
+                {
+                    "name": "INS",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "AKT3",
+            "children": [
+                {
+                    "name": "PDPK1",
+                    "children": []
+                },
+                {
+                    "name": "PIK3R6",
+                    "children": []
+                },
+                {
+                    "name": "MAPK14",
+                    "children": []
+                },
+                {
+                    "name": "PRKCZ",
+                    "children": []
+                },
+                {
+                    "name": "ILK",
+                    "children": []
+                },
+                {
+                    "name": "NKX3-1",
+                    "children": []
+                },
+                {
+                    "name": "PPP2R3B",
+                    "children": []
+                },
+                {
+                    "name": "CRTC2",
+                    "children": []
+                },
+                {
+                    "name": "PHLPP2",
+                    "children": []
+                },
+                {
+                    "name": "THEM4",
+                    "children": []
+                },
+                {
+                    "name": "MTCP1",
+                    "children": []
+                },
+                {
+                    "name": "TRIB3",
+                    "children": []
+                },
+                {
+                    "name": "PTPA",
+                    "children": []
+                },
+                {
+                    "name": "OGT",
+                    "children": []
+                },
+                {
+                    "name": "RHOB",
+                    "children": []
+                },
+                {
+                    "name": "RRAS",
+                    "children": []
+                },
+                {
+                    "name": "PTK2",
+                    "children": []
+                },
+                {
+                    "name": "PIK3CA",
                     "children": []
                 }
             ]

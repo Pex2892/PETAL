@@ -268,7 +268,7 @@ def concat_multiple_subtype(list_subtype):
     return 'None'
 
 
-def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start):
+def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path):
     # print('[%s][hop: %s][pathway: %s][gene: %s]\n' % (i, hop, pathway_hsa, name_gene_start))
 
     filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
@@ -345,6 +345,7 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start):
                                 'relation': elem.attributes['type'].value,
                                 'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
                                 'pathway_origin': pathway_hsa,
+                                'path': path+'/'+list_gene_relation[0][2],
                                 'occurrences_gene_start': 1,
                                 'occurrences': 1
                             }
@@ -352,7 +353,7 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start):
         return list_rows
 
 
-def analysis_hop_n(hop, gene, gene_hsa, pathway_this_gene):
+def analysis_hop_n(hop, gene, gene_hsa, pathway_this_gene, path):
     # print('[i: %s][hop: %s][gene: %s][hsa: %s][pathway: %s]\n' % (iteration, hop, gene, gene_hsa, pathway_this_gene))
 
     # download_xml(pathway_this_gene)
@@ -360,7 +361,7 @@ def analysis_hop_n(hop, gene, gene_hsa, pathway_this_gene):
                   os.path.join(os.getcwd(), 'database', 'pathways', 'xml'),
                   pathway_this_gene + '.xml.gz')
 
-    list_rows = read_kgml(hop, pathway_this_gene, gene, gene_hsa)
+    list_rows = read_kgml(hop, pathway_this_gene, gene, gene_hsa, path)
 
     return list_rows
 

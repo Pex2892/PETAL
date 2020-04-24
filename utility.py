@@ -384,9 +384,7 @@ def get_info_row_duplicated(i, hop, df_filtered, gene):
 
 
         hsa_end_refactor = ' '.join(group["hsa_end"].tolist())
-        #print('[i_par: %s][key: %s][iter_for: %s] hsa_end_refactor1: %s\n' % (i, key, iter, hsa_end_refactor))
-
-        hsa_end_refactor = list(set(hsa_end_refactor.split(' ')))
+        hsa_end_refactor = sorted(set(hsa_end_refactor.split(' ')))
         hsa_end_refactor = ' '.join(hsa_end_refactor)
         #print('[i_par: %s][key: %s][iter_for: %s] hsa_end_refactor2: %s\n' % (i, key, iter, hsa_end_refactor))
 

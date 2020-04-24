@@ -1,7 +1,6 @@
 import globals as gl
 import time
 import os
-import subprocess
 from joblib import Parallel, delayed
 import utility as utl
 from draw import draw_json_run

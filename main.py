@@ -4,7 +4,7 @@ import os
 import subprocess
 from joblib import Parallel, delayed
 import utility as utl
-import draw
+from draw import draw_json_run
 
 # --------------- INITIAL START TIME --------------
 start_time = time.time()
@@ -32,8 +32,13 @@ for level_actual in range(1, gl.hop_input + 1):
                           gl.pathway_input + '.xml.gz')
 
         # get info first gene from hsa name of pathway
-        hsa_gene_input_finded, url_pathway_gene_input_finded = utl.get_info_gene_initial(gl.pathway_input,
-                                                                                         gl.gene_input)
+        hsa_gene_input_finded, url_pathway_gene_input_finded = utl.get_info_gene_initial(
+            gl.pathway_input, gl.gene_input)
+
+        # set globals variables
+        gl.gene_input_hsa = hsa_gene_input_finded
+        gl.gene_input_url = url_pathway_gene_input_finded
+
 
         # read initial pathway, create and add genes to csv
         list_rows_df_returned = utl.read_kgml(
@@ -109,16 +114,11 @@ for level_actual in range(1, gl.hop_input + 1):
 
 #print(gl.DF_TREE)
 
-# subprocess.call('sh concatenate.sh', shell=True)
-gl.DF_TREE.to_csv('results/results_level.csv', sep=';', header=False, index=False)
+# salvo il dataframe finale
+gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'results', 'df_resulted.csv'), sep=';', header=False, index=False)
 
-
-# genero il file di output file output_text.txt
-draw.run()
-# init_generate_output(gl.hop)
-
-# genero il file di output in json dal file output_text.txt
-# output_json()
+# genero il file di output in json
+draw_json_run()
 
 m, s = divmod(time.time() - start_time, 60)
 

@@ -1,22 +1,22 @@
 {
     "log": {
         "value": 0,
-        "_comment": "<integer>, [0, 1]"
+        "_comment": "<integer>, 0=OFF / 1=ON"
     },
     "n_CPU": {
         "value": 0,
-        "_comment": "<integer>, 0 le usa tutte, se mette un numero grosso setta al limite It depends on the number of CPUs installed on the local machine"
+        "_comment": "<integer>, It depends on the number of CPUs installed on the local machine. If the number is 0, it will use all the CPUs."
     },
     "pathway": {
         "value": "hsa04010",
-        "_comment": "<string>, pathway da dove inizierà l'analisi"
+        "_comment": "<string>, Name of the pathway where begin the analysis. Ex: hsa04010"
     },
     "gene": {
         "value": "MAPK1",
-        "_comment": "<string>, gene di partenza"
+        "_comment": "<string>, Name of the gene located in the selected pathway. Ex: MAPK1"
     },
     "hop": {
-        "value": 2,
-        "_comment": "<integer>, rappresenta la profondità dell'analisi"
+        "value": 1,
+        "_comment": "<integer>, Set the maximum depth of the analysis."
     }
 }

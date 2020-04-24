@@ -52,13 +52,11 @@ def set_logger(flag):
     fh.setFormatter(formatter)
     gl.logger.addHandler(fh)
 
-    gl.logger.debug('Messaggio di debug')
-    gl.logger.info('Messaggio info')
-    gl.logger.warning('Avviso')
-    gl.logger.error('Messaggio di errore')
-    gl.logger.critical('Errore grave')
-
-
+    # gl.logger.debug('Messaggio di debug')
+    # gl.logger.info('Messaggio info')
+    # gl.logger.warning('Avviso')
+    # gl.logger.error('Messaggio di errore')
+    # gl.logger.critical('Errore grave')
 
 
 def clear_previous_results():
@@ -381,20 +379,45 @@ def get_info_row_duplicated(i, hop, df_filtered, gene):
     for key, group in grouped_df:
         # key = gene
         # group = group of this gene
-        # print('[i_par: %s][key: %s][iter_for: %s] group2: %s\n' % (i, key, iter, group))
-        # print('[i_par: %s][key: %s][iter_for: %s] shape_row: %s\n' % (i, key, iter, group.shape[0]))
+        #print('[i_par: %s][key: %s][iter_for: %s] group2: %s\n' % (i, key, iter, group))
+        #print('[i_par: %s][key: %s][iter_for: %s] shape_row: %s\n' % (i, key, iter, group.shape[0]))
 
-        # riga duplicate ma che ha più info rispetta alle altre
-        index_gene_more_info = group[group['hsa_end'] == group['hsa_end'].max()].index[0]
 
-        # riga da aggiornare e conservare
+        hsa_end_refactor = ' '.join(group["hsa_end"].tolist())
+        #print('[i_par: %s][key: %s][iter_for: %s] hsa_end_refactor1: %s\n' % (i, key, iter, hsa_end_refactor))
+
+        hsa_end_refactor = list(set(hsa_end_refactor.split(' ')))
+        hsa_end_refactor = ' '.join(hsa_end_refactor)
+        #print('[i_par: %s][key: %s][iter_for: %s] hsa_end_refactor2: %s\n' % (i, key, iter, hsa_end_refactor))
+
+        url_gene_end_refactor = 'https://www.kegg.jp/dbget-bin/www_bget?' + hsa_end_refactor.replace(' ', '+')
+        #print('[i_par: %s][key: %s][iter_for: %s] url_gene_end_refactor: %s\n' % (i, key, iter, url_gene_end_refactor))
+
+        # # riga duplicate ma che ha più info rispetta alle altre
+        # #index_gene_more_info = group[group['hsa_end'] == group['hsa_end'].max()].index[0]
+        # abc = group["url_gene_end"].str.len().idxmax()
+        #
+        # print('[i_par: %s][key: %s][iter_for: %s] abc: %s\n' % (i, key, iter, abc))
+        # print('[i_par: %s][key: %s][iter_for: %s] abc_row: %s\n' % (i, key, iter, group.loc[abc]))
+        #
+        #
+        # index_gene_more_info = group[group['hsa_end'] == group['hsa_end'].max()].index[0]
+        #
+        # print('[i_par: %s][key: %s][iter_for: %s] index_gene_more_info: %s\n' % (i, key, iter, index_gene_more_info))
+        # print('[i_par: %s][key: %s][iter_for: %s] index_gene_more_info_row: %s\n' % (i, key, iter, group.loc[index_gene_more_info]))
+
+        # riga da aggiornare (prendo la prima perchè devo aggiornare tutti i campi)
         # lista di righe da rimuovere meno quella da conservare
+        # nuovo hsa_end del gene
+        # nuovo url_end del gene
         # unisco tutte le relation in base ai pathway di origine
         # unisco tutte le type_rel in base ai pathway di origine
         # unisco tutti i pathway_origine
         list_to_do_df.append((
-            index_gene_more_info,
-            list(filter(index_gene_more_info.__ne__, group.index.values.tolist())),
+            group.index[0],
+            list(filter(group.index[0].__ne__, group.index.values.tolist())),
+            hsa_end_refactor,
+            url_gene_end_refactor,
             '§§'.join(group['relation'].tolist()),
             '§§'.join(group['type_rel'].tolist()),
             '§§'.join(group['pathway_origin'].tolist())
@@ -411,9 +434,9 @@ def clean_update_row_duplicates(list_to_do_df):
             # print(row, '\n')
 
             # aggiorno la riga selezionata, con le nuove stringhe nelle 4 colonne
-            cols = ['relation', 'type_rel', 'pathway_origin']
+            cols = ['hsa_end', 'url_gene_end', 'relation', 'type_rel', 'pathway_origin']
 
-            gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4]]
+            gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4], cell[5], cell[6]]
 
             # rimuovo le righe selezionate
             if len(cell[1]) > 0:

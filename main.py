@@ -41,7 +41,7 @@ for level_actual in range(1, gl.hop_input + 1):
 
         # read initial pathway, create and add genes to csv
         list_rows_df_returned = utl.read_kgml(
-            level_actual, gl.pathway_input, gl.gene_input, hsa_gene_input_finded, gl.gene_input)
+            level_actual, gl.pathway_input, gl.gene_input, hsa_gene_input_finded, gl.gene_input, 1)
 
         # unifico i primi n geni che sono direttamente connessi
         utl.unified([list_rows_df_returned])
@@ -56,7 +56,7 @@ for level_actual in range(1, gl.hop_input + 1):
         # process single gene on each CPUs available
         list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(delayed(utl.analysis_hop_n)(
             level_actual, gl.gene_input, hsa_gene_input_finded,
-            pathway_this_gene, gl.gene_input) for pathway_this_gene in list_pathways_this_gene)
+            pathway_this_gene, gl.gene_input, 1) for pathway_this_gene in list_pathways_this_gene)
 
         utl.unified(list_rows_df_returned)
 
@@ -66,6 +66,7 @@ for level_actual in range(1, gl.hop_input + 1):
             (gl.DF_TREE['hop'] == level_actual - 1) &
             (gl.DF_TREE['name_end'] != gl.gene_input)
         ])
+
 
         for index, row in df_genes_resulted.iterrows():
             # print('[%s] SONO ARRIVATOOOOOO: %s ' % (level_actual, index))
@@ -80,8 +81,8 @@ for level_actual in range(1, gl.hop_input + 1):
             # process single gene on each CPUs available
             list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input, backend='threading')(
                 delayed(utl.analysis_hop_n)(
-                    level_actual, row['name_end'], row['hsa_end'],
-                    pathway_this_gene, row['path']) for pathway_this_gene in list_pathways_this_gene)
+                    level_actual, row['name_end'], row['hsa_end'], pathway_this_gene,
+                    row['path'], row['occurrences']) for pathway_this_gene in list_pathways_this_gene)
 
             utl.unified(list_rows_df_returned)
 

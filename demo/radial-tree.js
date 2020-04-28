@@ -65,7 +65,7 @@ d3.json(file_json, function(error, treeData) {
   // d3 tree layout
   var tree = d3.layout.tree()
     // .nodeSize([4.5, 120])
-    .size([360, Math.min(width, height) / 2 - 120])
+    .size([360, Math.min(width, height) / 2 - 80])
     .separation(function(a, b) {
       return a.depth === 0 ? 1 : (a.parent === b.parent ? 1 : 2) / a.depth;
   });
@@ -98,11 +98,11 @@ d3.json(file_json, function(error, treeData) {
   selectNode(root); // current selected node
 
   // Collapse all children of root's children before rendering
-  // if (root.children) {
-  //   root.children.forEach(function(child) {
-  //       collapseTree(child);
-  //   });
-  // }
+  if (root.children) {
+    root.children.forEach(function(child) {
+      collapseTree(child);
+    });
+  }
 
   update(root, true); // Layout the tree initially and center on the root node
 
@@ -204,7 +204,7 @@ d3.json(file_json, function(error, treeData) {
       .delay( transition ? function(d, i) {
           return i * STAGGERN; } : 0)
       .attr('transform', function() {
-        return 'rotate(' + (source.x - 90) +')translate(' + source.y + ')';
+        return 'rotate(' + (sourcde.x - 90) +')translate(' + source.y + ')';
     }).remove();
 
     nodeExit.select('circle').attr('r', 0);
@@ -344,6 +344,8 @@ d3.json(file_json, function(error, treeData) {
     curNode.selected = true;
     curPath = []; // filled in by fullpath
     d3.select('#selection').html(fullpath(node));
+    d3.select('#n_occur').html(occurences(node));
+    d3.select('#info').html(info(node));
   }
 
   // for displaying full path of node in tree
@@ -354,6 +356,21 @@ d3.json(file_json, function(error, treeData) {
       '/<span class="nodepath'+(d.name === root.name ? ' highlight' : '')+
       '" data-sel="'+ idx +'" title="Set Root to '+ d.name +'">' +
       d.name + '</span>';
+  }
+
+  // for displaying number of occurences of node in tree
+  function occurences(d) {
+    return d.occurrences;
+  }
+
+  // for displaying info of the node in tree
+  function info(d) {
+    var res = d.info.split(" - ");
+    var html = '';
+    for (var i = 0; i < res.length; i++) {
+      html += res[i] +"<br />";
+    }
+    return html;
   }
 
   // d3 event handlers

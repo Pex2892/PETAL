@@ -266,7 +266,7 @@ def concat_multiple_subtype(list_subtype):
     return 'None'
 
 
-def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path):
+def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
     # print('[%s][hop: %s][pathway: %s][gene: %s]\n' % (i, hop, pathway_hsa, name_gene_start))
 
     filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
@@ -344,14 +344,13 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path):
                                 'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
                                 'pathway_origin': pathway_hsa,
                                 'path': path+'/'+list_gene_relation[0][2],
-                                'occurrences_gene_start': 1,
-                                'occurrences': 1
+                                'occurrences': occu
                             }
                             list_rows.append(row)
         return list_rows
 
 
-def analysis_hop_n(hop, gene, gene_hsa, pathway_this_gene, path):
+def analysis_hop_n(hop, gene, gene_hsa, pathway_this_gene, path, occu):
     # print('[i: %s][hop: %s][gene: %s][hsa: %s][pathway: %s]\n' % (iteration, hop, gene, gene_hsa, pathway_this_gene))
 
     # download_xml(pathway_this_gene)
@@ -359,7 +358,7 @@ def analysis_hop_n(hop, gene, gene_hsa, pathway_this_gene, path):
                   os.path.join(os.getcwd(), 'database', 'pathways', 'xml'),
                   pathway_this_gene + '.xml.gz')
 
-    list_rows = read_kgml(hop, pathway_this_gene, gene, gene_hsa, path)
+    list_rows = read_kgml(hop, pathway_this_gene, gene, gene_hsa, path, occu)
 
     return list_rows
 
@@ -379,8 +378,8 @@ def get_info_row_duplicated(i, hop, df_filtered, gene):
     for key, group in grouped_df:
         # key = gene
         # group = group of this gene
-        #print('[i_par: %s][key: %s][iter_for: %s] group2: %s\n' % (i, key, iter, group))
-        #print('[i_par: %s][key: %s][iter_for: %s] shape_row: %s\n' % (i, key, iter, group.shape[0]))
+        # print('[i_par: %s][key: %s][iter_for: %s] group2: %s\n' % (i, key, iter, group.iloc[0]['path']))
+        # print('[i_par: %s][key: %s][iter_for: %s] shape_row: %s\n' % (i, key, iter, group.shape[0]))
 
 
         hsa_end_refactor = ' '.join(group["hsa_end"].tolist())
@@ -389,20 +388,9 @@ def get_info_row_duplicated(i, hop, df_filtered, gene):
         #print('[i_par: %s][key: %s][iter_for: %s] hsa_end_refactor2: %s\n' % (i, key, iter, hsa_end_refactor))
 
         url_gene_end_refactor = 'https://www.kegg.jp/dbget-bin/www_bget?' + hsa_end_refactor.replace(' ', '+')
-        #print('[i_par: %s][key: %s][iter_for: %s] url_gene_end_refactor: %s\n' % (i, key, iter, url_gene_end_refactor))
+        occurences_calculated = group.iloc[0]['occurrences'] * group.shape[0]
 
-        # # riga duplicate ma che ha più info rispetta alle altre
-        # #index_gene_more_info = group[group['hsa_end'] == group['hsa_end'].max()].index[0]
-        # abc = group["url_gene_end"].str.len().idxmax()
-        #
-        # print('[i_par: %s][key: %s][iter_for: %s] abc: %s\n' % (i, key, iter, abc))
-        # print('[i_par: %s][key: %s][iter_for: %s] abc_row: %s\n' % (i, key, iter, group.loc[abc]))
-        #
-        #
-        # index_gene_more_info = group[group['hsa_end'] == group['hsa_end'].max()].index[0]
-        #
-        # print('[i_par: %s][key: %s][iter_for: %s] index_gene_more_info: %s\n' % (i, key, iter, index_gene_more_info))
-        # print('[i_par: %s][key: %s][iter_for: %s] index_gene_more_info_row: %s\n' % (i, key, iter, group.loc[index_gene_more_info]))
+        #print('[i_par: %s][key: %s][iter_for: %s] url_gene_end_refactor: %s\n' % (i, key, iter, url_gene_end_refactor))
 
         # riga da aggiornare (prendo la prima perchè devo aggiornare tutti i campi)
         # lista di righe da rimuovere meno quella da conservare
@@ -418,7 +406,8 @@ def get_info_row_duplicated(i, hop, df_filtered, gene):
             url_gene_end_refactor,
             '§§'.join(group['relation'].tolist()),
             '§§'.join(group['type_rel'].tolist()),
-            '§§'.join(group['pathway_origin'].tolist())
+            '§§'.join(group['pathway_origin'].tolist()),
+            occurences_calculated
             )
         )
         iter = iter + 1
@@ -432,9 +421,9 @@ def clean_update_row_duplicates(list_to_do_df):
             # print(row, '\n')
 
             # aggiorno la riga selezionata, con le nuove stringhe nelle 4 colonne
-            cols = ['hsa_end', 'url_gene_end', 'relation', 'type_rel', 'pathway_origin']
+            cols = ['hsa_end', 'url_gene_end', 'relation', 'type_rel', 'pathway_origin', 'occurrences']
 
-            gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4], cell[5], cell[6]]
+            gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4], cell[5], cell[6], cell[7]]
 
             # rimuovo le righe selezionate
             if len(cell[1]) > 0:

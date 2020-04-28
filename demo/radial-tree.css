@@ -12,6 +12,7 @@
   box-shadow: 1px 1px 3px;
   background-color: #ECEFF1;
 }
+
 .tool {
   display: flex;
   flex-direction: column;
@@ -126,4 +127,24 @@
   fill: none;
   stroke: #ccc;
   stroke-width: 1.5px;
+}
+
+.tocc {
+  margin: 4px 3px;
+  vertical-align: middle;
+  font-family: "Courier New", Courier, monospace;
+  color: #a00;
+  background-color: white;
+  text-align: center;
+  font-weight: bold;
+}
+
+.tinfo {
+  margin: 4px 3px;
+  vertical-align: middle;
+  font-family: "Courier New", Courier, monospace;
+  color: #a00;
+  background-color: white;
+  text-align: center;
+  font-weight: bold;
 }

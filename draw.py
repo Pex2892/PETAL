@@ -17,7 +17,7 @@ def draw_json_run():
         'name': gl.gene_input,
         'hsa': gl.gene_input_hsa,
         'url': gl.gene_input_url,
-        'info': '',
+        'info': 'Nothing',
         'occurrences': 0,
         'children': []}
 
@@ -49,7 +49,7 @@ def draw_hop_n(item):
         'hsa': item['hsa_end'],
         'url': item['url_gene_end'],
         'info': concat_info(item['relation'], item['type_rel'], item['pathway_origin']),
-        'occurrences': 0,
+        'occurrences': item['occurrences'],
         'children': []
     })
 

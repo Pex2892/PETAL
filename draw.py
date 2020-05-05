@@ -19,6 +19,7 @@ def draw_json_run():
         'url': gl.gene_input_url,
         'info': 'Nothing',
         'occurrences': 0,
+        'hop': 0,
         'children': []}
 
     # ciclo per numero di hop in input
@@ -28,14 +29,14 @@ def draw_json_run():
 
         # avvio in parallelo l'aggiunta dei geni nel dict del
         Parallel(n_jobs=gl.num_cores_input, backend='threading')(
-            delayed(draw_hop_n)(item) for key, item in df_filter.iterrows())
+            delayed(draw_hop_n)(i, item) for key, item in df_filter.iterrows())
 
     # salvo il dict in json
     with open(os.path.join(os.getcwd(), 'results', 'data-flare.json'), 'w') as outfile:
         json.dump(gl.json_dict, outfile, indent=4)
 
 
-def draw_hop_n(item):
+def draw_hop_n(hop, item):
     """
     Questo metodo, nel pointer restituito si appende il gene passato al dict globale.
 
@@ -50,6 +51,7 @@ def draw_hop_n(item):
         'url': item['url_gene_end'],
         'info': concat_info(item['relation'], item['type_rel'], item['pathway_origin']),
         'occurrences': item['occurrences'],
+        'hop': hop,
         'children': []
     })
 
@@ -86,6 +88,6 @@ def concat_info(rel, type_rel, patwhay):
     type_rel_arr = type_rel.split('§§')
     patwhay_arr = patwhay.split('§§')
 
-    str_info = ' - '.join([c + '|' + a + '|' + b for a, b, c in zip(rel_arr, type_rel_arr, patwhay_arr)])
+    str_info = ' - '.join([c + ' | ' + a + ' | ' + b for a, b, c in zip(rel_arr, type_rel_arr, patwhay_arr)])
 
     return str_info

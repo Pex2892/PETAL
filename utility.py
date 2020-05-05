@@ -19,15 +19,25 @@ def read_config():
     with open(gl.filename_config) as f:
         data = json.load(f)
 
-        gl.num_cores_input = int(data['n_CPU']['value'])
-        if gl.num_cores_input == 0 or gl.num_cores_input > mlp.cpu_count():
-            gl.num_cores_input = mlp.cpu_count()
-
         set_logger(not bool(data['log']['value']))
 
+        gl.logger.info('Reading of the initial parameters')
+
+        gl.num_cores_input = int(data['n_CPU']['value'])
+        if gl.num_cores_input == 0 or gl.num_cores_input > mlp.cpu_count():
+            gl.logger.info('Selected all CPUs or an excessive number')
+            gl.num_cores_input = mlp.cpu_count()
+        gl.logger.debug('Number of CPUs: ' + str(gl.num_cores_input))
+
         gl.pathway_input = data['pathway']['value']
+        gl.logger.debug('Pathway selected: ' + gl.pathway_input)
+
         gl.gene_input = data['gene']['value']
+        gl.logger.debug('Gene selected: ' + gl.gene_input)
+
         gl.hop_input = int(data['hop']['value'])
+        gl.logger.debug('Maximum depth selected: ' + str(gl.hop_input))
+
 
     print(gl.COLORS['yellow'] + gl.COLORS['bold'] + "--- INITIAL SHELL PARAMETERS ---" + gl.COLORS['end_line'])
     print(gl.COLORS['blue'] + gl.COLORS['bold'] + "#CPUs: %s" % gl.num_cores_input + gl.COLORS['end_line'])
@@ -37,47 +47,42 @@ def read_config():
 
 
 def set_logger(flag):
-    #rimuovo il file di log vecchio
-    os.remove(os.path.join(os.getcwd(), 'debug.log'))
-
     gl.logger = logging.getLogger(__name__)
-    gl.logger.disabled = flag
-
     gl.logger.setLevel(logging.DEBUG)
 
-    fh = logging.FileHandler('debug.log')
+    # enabled or disabled
+    gl.logger.disabled = flag
+
+    fh = logging.FileHandler('PETAL-debug.log', mode='w')
     fh.setLevel(logging.DEBUG)
     gl.logger.addHandler(fh)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)
     gl.logger.addHandler(fh)
 
-    # gl.logger.debug('Messaggio di debug')
-    # gl.logger.info('Messaggio info')
-    # gl.logger.warning('Avviso')
-    # gl.logger.error('Messaggio di errore')
-    # gl.logger.critical('Errore grave')
-
 
 def clear_previous_results():
     pathdir = os.path.join(os.getcwd(), 'results')
 
-    # elimino cartella results
+    # Remove the previous results folder
     shutil.rmtree(pathdir)
+    gl.logger.warning('Removed the previous results folder')
 
-    # creo cartella results
+    # Create the results folder
     os.makedirs(pathdir)
+    gl.logger.warning('Created the results folder')
 
 
 def check_pathway_update_history(url):
     # download and return list of the updated pathway
 
     print(gl.COLORS['yellow'] + gl.COLORS['bold'] + "--- CHECK UPDATED PATHWAYS ---" + gl.COLORS['end_line'])
+    gl.logger.info('Check for pathway updates')
 
     pathfile = os.path.join(os.getcwd(), 'database')
     filename = 'pathway_update_history.html.gz'
 
-    # scarico, se non esiste file html con tutti i pathway aggiornati recentemente
+    # If it does not exist, download the html file with all the pathways recently updated
     download_file(url, pathfile, filename)
 
     # retrieve datetime to file
@@ -86,13 +91,15 @@ def check_pathway_update_history(url):
     # check different time (in seconds) > 24h (seconds), download file
     if (datetime.now() - datetime.fromtimestamp(filetime)).total_seconds() > 86400:
         print(gl.COLORS['green'] + "Download updated list!" + gl.COLORS['end_line'])
-        # elimino il vecchio file
+        gl.logger.info('The saved file has not been updated for more than 24 hours')
+
+        # deleting the oldest file
         os.remove(os.path.join(pathfile, filename))
 
-        # scarico il nuovo file
+        # download the html file with all the pathways recently updated
         download_file(url, pathfile, filename)
 
-    # leggo il file compresso
+    # reading the compressed file
     with gzip.open(os.path.join(pathfile, filename), "rb") as f:
         content = f.read().decode('utf-8')
 
@@ -100,9 +107,11 @@ def check_pathway_update_history(url):
 
         items = soup.findAll('td')
 
+        gl.logger.debug('Check the pathways updated from 2020 onwards')
+
         i = 0
         while i < len(items):
-            # controllo se il campo è una data e se dal 2020 in poi
+            # check if the field is a date and if from 2020 onwards
             if is_date(items[i].text) and int(items[i].text[0:4]) >= 2020:
                 if 'Deleted; ' in items[i + 3].text:
 
@@ -193,17 +202,23 @@ def get_info_gene_initial(pathway_hsa, name_gene):
 
 
 def download_file(url, pathfile, filename):
-    # se il pathway (xml o html) non esiste all'interno della directory
     if not os.path.exists(os.path.join(pathfile, filename)):
+        gl.logger.warning('The file "' + filename + '" does not exist in the selected path (' + pathfile + ')')
         try:
             req = requests.get(url)
 
             with gzip.open(os.path.join(pathfile, filename), "wb") as f:
                 f.write(req.content)
+            gl.logger.warning('The file "' + filename + '" was created in the selected path (' + pathfile + ')')
 
         except requests.exceptions.ConnectionError:
             print("Connection refused from KEGG")
+            gl.logger.error('Connection refused from KEGG')
             exit(1)
+    else:
+        gl.logger.warning('The file "' + filename + '" exists in the selected path (' + pathfile + ')')
+
+
 
 
 def download_read_html(url):

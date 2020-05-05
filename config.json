@@ -1,6 +1,6 @@
 {
     "log": {
-        "value": 0,
+        "value": 1,
         "_comment": "<integer>, 0=OFF / 1=ON"
     },
     "n_CPU": {
@@ -16,7 +16,7 @@
         "_comment": "<string>, Name of the gene located in the selected pathway. Ex: MAPK1"
     },
     "hop": {
-        "value": 2,
+        "value": 1,
         "_comment": "<integer>, Set the maximum depth of the analysis."
     }
 }

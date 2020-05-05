@@ -10,9 +10,7 @@ start_time = time.time()
 
 # -------------- INITIAL MAIN --------------
 # read initial parameters
-#gl.logger.debug('Leggo i parametri di input')
 utl.read_config()
-gl.logger.debug('finito di leggere i parametri di input')
 
 # delete all results of previous execution
 utl.clear_previous_results()
@@ -20,16 +18,19 @@ utl.clear_previous_results()
 # download and return list of the update pathway
 utl.check_pathway_update_history('https://www.genome.jp/kegg/docs/upd_map.html')
 
+gl.logger.info('Starting the analysis')
 # hop+1 = because it has to analyze the last level
 for level_actual in range(1, gl.hop_input + 1):
     print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- START LEVEL %s ---" % level_actual + gl.COLORS['end_line'])
 
     if level_actual == 1:
+        gl.logger.debug('HOP 1')
+
         # download initial pathway
         utl.download_file('http://rest.kegg.jp/get/' + gl.pathway_input + '/kgml',
                           os.path.join(os.getcwd(), 'database', 'pathways', 'xml'),
                           gl.pathway_input + '.xml.gz')
-
+                
         # get info first gene from hsa name of pathway
         hsa_gene_input_finded, url_pathway_gene_input_finded = utl.get_info_gene_initial(
             gl.pathway_input, gl.gene_input)

@@ -21,16 +21,16 @@ utl.check_pathway_update_history('https://www.genome.jp/kegg/docs/upd_map.html')
 gl.logger.info('Starting the analysis')
 # hop+1 = because it has to analyze the last level
 for level_actual in range(1, gl.hop_input + 1):
-    print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- START LEVEL %s ---" % level_actual + gl.COLORS['end_line'])
+    print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- START HOP %s ---" % level_actual + gl.COLORS['end_line'])
+    gl.logger.debug('Start of depth analysis %d' % level_actual)
 
     if level_actual == 1:
-        gl.logger.debug('HOP 1')
 
         # download initial pathway
         utl.download_file('http://rest.kegg.jp/get/' + gl.pathway_input + '/kgml',
                           os.path.join(os.getcwd(), 'database', 'pathways', 'xml'),
                           gl.pathway_input + '.xml.gz')
-                
+
         # get info first gene from hsa name of pathway
         hsa_gene_input_finded, url_pathway_gene_input_finded = utl.get_info_gene_initial(
             gl.pathway_input, gl.gene_input)
@@ -38,7 +38,6 @@ for level_actual in range(1, gl.hop_input + 1):
         # set globals variables
         gl.gene_input_hsa = hsa_gene_input_finded
         gl.gene_input_url = url_pathway_gene_input_finded
-
 
         # read initial pathway, create and add genes to csv
         list_rows_df_returned = utl.read_kgml(
@@ -63,15 +62,13 @@ for level_actual in range(1, gl.hop_input + 1):
 
     else:
         # estraggo i geni finali del livello precedente, evitando il gene di input così evito un loop
+        gl.logger.debug('Retrieve the genes children of the hop %d' % (level_actual-1))
         df_genes_resulted = (gl.DF_TREE[
             (gl.DF_TREE['hop'] == level_actual - 1) &
             (gl.DF_TREE['name_end'] != gl.gene_input)
         ])
 
-
         for index, row in df_genes_resulted.iterrows():
-            # print('[%s] SONO ARRIVATOOOOOO: %s ' % (level_actual, index))
-
             # ottengo la lista di pathway in riferimento al gene che sto passando
             list_pathways_this_gene = utl.download_read_html(row['url_gene_end'])
 
@@ -111,7 +108,7 @@ for level_actual in range(1, gl.hop_input + 1):
 
     # ----- DROP DUPLICATES -----
 
-    print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- END LEVEL %s ---" % level_actual + gl.COLORS['end_line'])
+    print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- END HOP %s ---" % level_actual + gl.COLORS['end_line'])
 
 #print(gl.DF_TREE)
 

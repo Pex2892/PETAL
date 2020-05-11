@@ -27,17 +27,16 @@ def read_config():
         if gl.num_cores_input == 0 or gl.num_cores_input > mlp.cpu_count():
             gl.logger.info('Selected all CPUs or an excessive number')
             gl.num_cores_input = mlp.cpu_count()
-        gl.logger.debug('Number of CPUs: ' + str(gl.num_cores_input))
+        gl.logger.debug('Number of CPUs: %d' % gl.num_cores_input)
 
         gl.pathway_input = data['pathway']['value']
-        gl.logger.debug('Pathway selected: ' + gl.pathway_input)
+        gl.logger.debug('Pathway selected: "%s"' % gl.pathway_input)
 
         gl.gene_input = data['gene']['value']
-        gl.logger.debug('Gene selected: ' + gl.gene_input)
+        gl.logger.debug('Gene selected: "%s"' + gl.gene_input + '"')
 
         gl.hop_input = int(data['hop']['value'])
-        gl.logger.debug('Maximum depth selected: ' + str(gl.hop_input))
-
+        gl.logger.debug('Maximum depth selected: %d' % gl.hop_input)
 
     print(gl.COLORS['yellow'] + gl.COLORS['bold'] + "--- INITIAL SHELL PARAMETERS ---" + gl.COLORS['end_line'])
     print(gl.COLORS['blue'] + gl.COLORS['bold'] + "#CPUs: %s" % gl.num_cores_input + gl.COLORS['end_line'])
@@ -73,6 +72,7 @@ def clear_previous_results():
     gl.logger.warning('Created the results folder')
 
 
+# da fare
 def check_pathway_update_history(url):
     # download and return list of the updated pathway
 
@@ -130,12 +130,13 @@ def check_pathway_update_history(url):
 
                         # convert time
                         update_time_from_kegg = datetime.strptime(
-                            items[i].text+' 00:00:00.000000', '%Y-%m-%d %H:%M:%S.%f')
+                            items[i].text + ' 00:00:00.000000', '%Y-%m-%d %H:%M:%S.%f')
 
                         if filetime < update_time_from_kegg:
                             print('il pathway di kegg è più aggiornato')
 
-                            print('cancello il pathway vecchio (locale), ma aggiornato su kegg: %s' % 'hsa'+merged_pathway)
+                            print(
+                                'cancello il pathway vecchio (locale), ma aggiornato su kegg: %s' % 'hsa' + merged_pathway)
                             os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + merged_pathway + '.xml.gz'))
 
                             # scaricare il pathway con cui è stato unito
@@ -157,7 +158,7 @@ def check_pathway_update_history(url):
 
                         # convert time
                         update_time_from_kegg = datetime.strptime(
-                            items[i].text+' 00:00:00.000000', '%Y-%m-%d %H:%M:%S.%f')
+                            items[i].text + ' 00:00:00.000000', '%Y-%m-%d %H:%M:%S.%f')
 
                         if filetime < update_time_from_kegg:
                             print('il pathway di kegg è più aggiornato')
@@ -181,6 +182,8 @@ def check_pathway_update_history(url):
 
 
 def get_info_gene_initial(pathway_hsa, name_gene):
+    gl.logger.debug('Get information about the input gene "%s" in the pathway "%s"' % (name_gene, pathway_hsa))
+
     filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
 
     with gzip.open(filename, "rb") as f:
@@ -194,31 +197,36 @@ def get_info_gene_initial(pathway_hsa, name_gene):
             string_check = name_gene + ','
             if elem.attributes['type'].value == 'gene' and string_check in \
                     elem.getElementsByTagName('graphics')[0].attributes['name'].value:
+
+                gl.logger.debug('Find gene information "%s"! hsa: "%s" and url: "%s"' % (
+                    name_gene, elem.attributes['name'].value, elem.attributes['link'].value))
+
                 return elem.attributes['name'].value, elem.attributes['link'].value
 
         print(gl.COLORS['red'] + gl.COLORS['bold'] + "The gene entered not exit into pathway selected! " +
               gl.COLORS['end_line'])
+        gl.logger.error('The gene "%s" entered not exit into pathway selected "%s"' % (name_gene, pathway_hsa))
+
         exit(1)
 
 
 def download_file(url, pathfile, filename):
     if not os.path.exists(os.path.join(pathfile, filename)):
-        gl.logger.warning('The file "' + filename + '" does not exist in the selected path (' + pathfile + ')')
+        gl.logger.warning('The file "%s" does not exist in the selected path ("%s")' % (filename, pathfile))
         try:
             req = requests.get(url)
 
             with gzip.open(os.path.join(pathfile, filename), "wb") as f:
                 f.write(req.content)
-            gl.logger.warning('The file "' + filename + '" was created in the selected path (' + pathfile + ')')
+            gl.logger.warning('The file "%s" was created in the selected path ("%s")' % (filename, pathfile))
+
 
         except requests.exceptions.ConnectionError:
             print("Connection refused from KEGG")
             gl.logger.error('Connection refused from KEGG')
             exit(1)
     else:
-        gl.logger.warning('The file "' + filename + '" exists in the selected path (' + pathfile + ')')
-
-
+        gl.logger.warning('The file "%s" exists in the selected path ("%s")' % (filename, pathfile))
 
 
 def download_read_html(url):
@@ -230,6 +238,8 @@ def download_read_html(url):
 
     # open pathway of the genes in html
     with gzip.open(os.path.join(os.getcwd(), 'database', 'pathways', 'html', filename), "rb") as f:
+        gl.logger.debug('Reading of the html file obtained, downloaded from the url "%s"' % url)
+
         content = f.read().decode('utf-8')
 
         soup = bs.BeautifulSoup(content, 'html.parser')
@@ -283,10 +293,13 @@ def concat_multiple_subtype(list_subtype):
 
 def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
     # print('[%s][hop: %s][pathway: %s][gene: %s]\n' % (i, hop, pathway_hsa, name_gene_start))
+    gl.logger.debug('[hop: %s] Reading the gene "%s" contained in the pathway "%s"' % (
+        hop, name_gene_start, pathway_hsa))
 
     filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
 
     with gzip.open(filename, "rb") as f:
+
         content = f.read().decode('utf-8')
         mydoc = minidom.parseString(content)
 
@@ -347,6 +360,11 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
 
                         # verifico se esiste una relazione effettivamente
                         if len(list_gene_relation) > 0:
+                            gl.logger.debug('[hop: %s] Found a direct relationship between "%s" and "%s" in the '
+                                            'pathway "%s" with a relationship "%s"' % (
+                                                hop, name_gene_start, list_gene_relation[0][2], pathway_hsa,
+                                                elem.attributes['type'].value))
+
                             # in concat_multiple_subtype, concateno tutti i subtype della relazione analizzata
                             row = {
                                 'hop': hop,
@@ -358,7 +376,7 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
                                 'relation': elem.attributes['type'].value,
                                 'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
                                 'pathway_origin': pathway_hsa,
-                                'path': path+'/'+list_gene_relation[0][2],
+                                'path': path + '/' + list_gene_relation[0][2],
                                 'occurrences': occu
                             }
                             list_rows.append(row)
@@ -379,6 +397,7 @@ def analysis_hop_n(hop, gene, gene_hsa, pathway_this_gene, path, occu):
 
 
 def unified(list_rows_returned):
+    gl.logger.info('Add the results obtained by the threads in parallel in the main data frame')
     for row in list_rows_returned:
         if row is not None:
             for cell in row:
@@ -396,16 +415,15 @@ def get_info_row_duplicated(i, hop, df_filtered, gene):
         # print('[i_par: %s][key: %s][iter_for: %s] group2: %s\n' % (i, key, iter, group.iloc[0]['path']))
         # print('[i_par: %s][key: %s][iter_for: %s] shape_row: %s\n' % (i, key, iter, group.shape[0]))
 
-
         hsa_end_refactor = ' '.join(group["hsa_end"].tolist())
         hsa_end_refactor = sorted(set(hsa_end_refactor.split(' ')))
         hsa_end_refactor = ' '.join(hsa_end_refactor)
-        #print('[i_par: %s][key: %s][iter_for: %s] hsa_end_refactor2: %s\n' % (i, key, iter, hsa_end_refactor))
+        # print('[i_par: %s][key: %s][iter_for: %s] hsa_end_refactor2: %s\n' % (i, key, iter, hsa_end_refactor))
 
         url_gene_end_refactor = 'https://www.kegg.jp/dbget-bin/www_bget?' + hsa_end_refactor.replace(' ', '+')
         occurences_calculated = group.iloc[0]['occurrences'] * group.shape[0]
 
-        #print('[i_par: %s][key: %s][iter_for: %s] url_gene_end_refactor: %s\n' % (i, key, iter, url_gene_end_refactor))
+        # print('[i_par: %s][key: %s][iter_for: %s] url_gene_end_refactor: %s\n' % (i, key, iter, url_gene_end_refactor))
 
         # riga da aggiornare (prendo la prima perchè devo aggiornare tutti i campi)
         # lista di righe da rimuovere meno quella da conservare
@@ -423,7 +441,7 @@ def get_info_row_duplicated(i, hop, df_filtered, gene):
             '§§'.join(group['type_rel'].tolist()),
             '§§'.join(group['pathway_origin'].tolist()),
             occurences_calculated
-            )
+        )
         )
         iter = iter + 1
 

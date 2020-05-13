@@ -212,21 +212,19 @@ def get_info_gene_initial(pathway_hsa, name_gene):
 
 def download_file(url, pathfile, filename):
     if not os.path.exists(os.path.join(pathfile, filename)):
-        gl.logger.warning('The file "%s" does not exist in the selected path ("%s")' % (filename, pathfile))
+        #gl.logger.warning('The file "%s" does not exist in the selected path ("%s")' % (filename, pathfile))
         try:
             req = requests.get(url)
 
             with gzip.open(os.path.join(pathfile, filename), "wb") as f:
                 f.write(req.content)
-            gl.logger.warning('The file "%s" was created in the selected path ("%s")' % (filename, pathfile))
-
-
+            #gl.logger.warning('The file "%s" was created in the selected path ("%s")' % (filename, pathfile))
         except requests.exceptions.ConnectionError:
             print("Connection refused from KEGG")
-            gl.logger.error('Connection refused from KEGG')
+            #gl.logger.error('Connection refused from KEGG')
             exit(1)
-    else:
-        gl.logger.warning('The file "%s" exists in the selected path ("%s")' % (filename, pathfile))
+    #else:
+    #    gl.logger.warning('The file "%s" exists in the selected path ("%s")' % (filename, pathfile))
 
 
 def download_read_html(url):
@@ -293,8 +291,8 @@ def concat_multiple_subtype(list_subtype):
 
 def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
     # print('[%s][hop: %s][pathway: %s][gene: %s]\n' % (i, hop, pathway_hsa, name_gene_start))
-    gl.logger.debug('[hop: %s] Reading the gene "%s" contained in the pathway "%s"' % (
-        hop, name_gene_start, pathway_hsa))
+    #gl.logger.debug('[hop: %s] Reading the gene "%s" contained in the pathway "%s"' % (
+     #   hop, name_gene_start, pathway_hsa))
 
     filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
 
@@ -360,10 +358,10 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
 
                         # verifico se esiste una relazione effettivamente
                         if len(list_gene_relation) > 0:
-                            gl.logger.debug('[hop: %s] Found a direct relationship between "%s" and "%s" in the '
-                                            'pathway "%s" with a relationship "%s"' % (
-                                                hop, name_gene_start, list_gene_relation[0][2], pathway_hsa,
-                                                elem.attributes['type'].value))
+                            #gl.logger.debug('[hop: %s] Found a direct relationship between "%s" and "%s" in the '
+                            #                'pathway "%s" with a relationship "%s"' % (
+                            #                    hop, name_gene_start, list_gene_relation[0][2], pathway_hsa,
+                            #                    elem.attributes['type'].value))
 
                             # in concat_multiple_subtype, concateno tutti i subtype della relazione analizzata
                             row = {

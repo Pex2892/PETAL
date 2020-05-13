@@ -21,9 +21,9 @@ gene_input_url = None
 
 """
 display.max_colwidth sets the maximum width of columns.
-If the value is -1, the max length is disabled.
+If the value is "None", the max length is disabled.
 """
-pd.set_option('display.max_colwidth', -1)
+pd.set_option('display.max_colwidth', None)
 
 
 """

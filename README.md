@@ -41,6 +41,7 @@ After completing an analysis, to view the final output just open the index.html 
 
 # How to resolve the errors
 
+### bz2 error 
 When trying to execute the python script, if the following error occurs:
 
 ```bash
@@ -51,9 +52,23 @@ You need to install libbz2 and .so files, so that python will be compiled with b
 ```bash
 sudo apt install libbz2-dev  # on ubuntu/debian or
 sudo yum install bzip2-devel # on fedora
+
+cp /usr/lib/python3.7/lib-dynload/_bz2.cpython-37m-x86_64-linux-gnu.so  /usr/local/lib/python3.7/
 ```
 
+### lzma error 
+When trying to execute the python script, if the following error occurs:
 
+```bash
+UserWarning: Could not import the lzma module. Your installed Python is incomplete. Attempting to use lzma compression will result in a RuntimeError.
+```
 
+You need to install liblzma and .so files, so that python will be compiled with lzma support.
+```bash
+sudo apt install liblzma-dev  # on ubuntu/debian or
+sudo yum install -y xz-devel # on fedora
+
+cp cp /usr/lib/python3.7/lib-dynload/_lzma.cpython-37m-x86_64-linux-gnu.so /usr/local/lib/python3.7/
+```
 
 

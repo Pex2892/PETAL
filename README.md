@@ -60,13 +60,14 @@ cp /usr/lib/python3.7/lib-dynload/_bz2.cpython-37m-x86_64-linux-gnu.so  /usr/loc
 When trying to execute the python script, if the following error occurs:
 
 ```bash
-UserWarning: Could not import the lzma module. Your installed Python is incomplete. Attempting to use lzma compression will result in a RuntimeError.
+UserWarning: Could not import the lzma module. Your installed Python is incomplete. 
+Attempting to use lzma compression will result in a RuntimeError.
 ```
 
 You need to install liblzma and .so files, so that python will be compiled with lzma support.
 ```bash
 sudo apt install liblzma-dev  # on ubuntu/debian or
-sudo yum install -y xz-devel # on fedora
+sudo yum install -y xz-devel  # on fedora
 
 cp cp /usr/lib/python3.7/lib-dynload/_lzma.cpython-37m-x86_64-linux-gnu.so /usr/local/lib/python3.7/
 ```

@@ -1,4 +1,7 @@
-pandas
-joblib
-requests
-beautifulsoup4
+pandas~=1.0.3
+joblib~=0.14.1
+requests~=2.23.0
+beautifulsoup4~=4.9.0
+bs4~=0.0.1
+python-dateutil~=2.8.1
+progressbar2~=3.51.3

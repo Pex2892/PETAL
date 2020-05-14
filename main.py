@@ -5,7 +5,6 @@ from joblib import Parallel, delayed
 import utility as utl
 from draw import draw_json_run
 
-
 # --------------- INITIAL START TIME --------------
 start_time = time.time()
 
@@ -22,7 +21,7 @@ utl.check_pathway_update_history('https://www.genome.jp/kegg/docs/upd_map.html')
 gl.logger.info('Starting the analysis')
 # hop+1 = because it has to analyze the last level
 for level_actual in range(1, gl.hop_input + 1):
-    print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- START HOP %s ---" % level_actual + gl.COLORS['end_line'])
+    # print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- START HOP %s ---" % level_actual + gl.COLORS['end_line'])
     gl.logger.debug('Start of depth analysis %d' % level_actual)
 
     if level_actual == 1:
@@ -57,19 +56,21 @@ for level_actual in range(1, gl.hop_input + 1):
         # process single gene on each CPUs available
         list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(delayed(utl.analysis_hop_n)(
             level_actual, gl.gene_input, hsa_gene_input_finded,
-            pathway_this_gene, gl.gene_input, 1) for pathway_this_gene in list_pathways_this_gene)
+            pathway_this_gene, gl.gene_input, 1) for pathway_this_gene in utl.set_progress_bar(
+            '[Deep: %d]' % level_actual, str(len(list_pathways_this_gene)))(list_pathways_this_gene))
 
         utl.unified(list_rows_df_returned)
 
     else:
         # estraggo i geni finali del livello precedente, evitando il gene di input così evito un loop
-        gl.logger.debug('Retrieve the genes children of the hop %d' % (level_actual-1))
+        gl.logger.debug('Retrieve the genes children of the hop %d' % (level_actual - 1))
         df_genes_resulted = (gl.DF_TREE[
             (gl.DF_TREE['hop'] == level_actual - 1) &
             (gl.DF_TREE['name_end'] != gl.gene_input)
-        ])
+            ])
 
-        for index, row in df_genes_resulted.iterrows():
+        for index, row in utl.set_progress_bar(
+                '[Deep: %d]' % level_actual, str(df_genes_resulted.shape[0]))(df_genes_resulted.iterrows()):
             # ottengo la lista di pathway in riferimento al gene che sto passando
             list_pathways_this_gene = utl.download_read_html(row['url_gene_end'])
 
@@ -98,7 +99,7 @@ for level_actual in range(1, gl.hop_input + 1):
     # process single gene on each CPUs available
     list_rows_to_do_df_returned = Parallel(n_jobs=gl.num_cores_input)(
         delayed(utl.get_info_row_duplicated)(iter1,
-            level_actual, df_duplicated_filtered, gene_duplicate)
+                                             level_actual, df_duplicated_filtered, gene_duplicate)
         for iter1, gene_duplicate in enumerate(list_name_genes_duplicated))
 
     # aggiorno e elimino le righe del dataframe
@@ -109,9 +110,9 @@ for level_actual in range(1, gl.hop_input + 1):
 
     # ----- DROP DUPLICATES -----
 
-    print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- END HOP %s ---" % level_actual + gl.COLORS['end_line'])
+    # print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- END HOP %s ---" % level_actual + gl.COLORS['end_line'])
 
-#print(gl.DF_TREE)
+# print(gl.DF_TREE)
 
 # salvo il dataframe finale
 gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'results', 'df_resulted.csv'), sep=';', header=False, index=False)

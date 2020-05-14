@@ -74,6 +74,7 @@ def search_key(path, p):
                 break
     return p
 
+
 def concat_info(rel, type_rel, patwhay):
     """
     Questo metodo, concatena le info (relations, type relations and pathway origin).

@@ -1,7 +1,8 @@
 import globals as gl
-from joblib import Parallel, delayed
 import json
 import os
+from joblib import Parallel, delayed
+from utility import set_progress_bar
 
 
 def draw_json_run():
@@ -23,9 +24,9 @@ def draw_json_run():
         'children': []}
 
     # ciclo per numero di hop in input
-    for i in range(1, gl.hop_input+1):
+    for i in set_progress_bar('[Drawing]', str(gl.hop_input))(range(1, gl.hop_input+1)):
         # filtro i geni per hop
-        df_filter = gl.DF_TREE[gl.DF_TREE['hop'] == i]
+        df_filter = gl.DF_TREE[gl.DF_TREE['deep'] == i]
 
         # avvio in parallelo l'aggiunta dei geni nel dict del
         Parallel(n_jobs=gl.num_cores_input, backend='threading')(
@@ -43,13 +44,13 @@ def draw_hop_n(hop, item):
     :param item: pandas.Series, contiene tutte le info del gene passato.
     """
     # prendo il pointer dove salvare i geni
-    p = search_key(item['path'], gl.json_dict['children'])
+    p = search_key(item['fullpath'], gl.json_dict['children'])
     # inserisco i geni in quel punto trovato
     p.append({
-        'name': item['name_end'],
-        'hsa': item['hsa_end'],
-        'url': item['url_gene_end'],
-        'info': concat_info(item['relation'], item['type_rel'], item['pathway_origin']),
+        'name': item['name_son'],
+        'hsa': item['hsa_son'],
+        'url': item['url_kegg_son'],
+        'info': concat_info(item['relation'], item['type_rel'], item['pathway_of_origin']),
         'occurrences': item['occurrences'],
         'hop': hop,
         'children': []

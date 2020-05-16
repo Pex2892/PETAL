@@ -1,61 +1,47 @@
 import globals as gl
-from datetime import datetime
 import bs4 as bs
 import requests
 import os
 import shutil
-from xml.dom import minidom
-import json
-import time
 import multiprocessing as mlp
 import gzip
 import hashlib
-from dateutil.parser import parse
 import logging
-import logging.config
+import configparser
+from dateutil.parser import parse
 from progressbar import Bar, Counter, ETA, Percentage, ProgressBar
-
-
-def set_progress_bar(action, max_elem):
-    """
-    Progressbar can't guess maxval.
-
-    :param action: str, ....
-    :param max_elem: str, ......
-    """
-    pb = ProgressBar(widgets=[action, ' ', Percentage(), ' (', Counter(), ' of ',
-                              max_elem, ') ', Bar('#'), ' ', ETA()], maxval=int(max_elem))
-    return pb
+from xml.dom.minidom import parseString
+from datetime import datetime
 
 
 def read_config():
-    with open(gl.filename_config) as f:
-        data = json.load(f)
+    config = configparser.ConfigParser()
+    config.read(gl.filename_config)
 
-        set_logger(not bool(data['log']['value']))
+    set_logger(not config['debug'].getboolean('log'))
 
-        gl.logger.info('Reading of the initial parameters')
+    gl.logger.info('Reading of the initial parameters')
 
-        gl.num_cores_input = int(data['n_CPU']['value'])
-        if gl.num_cores_input == 0 or gl.num_cores_input > mlp.cpu_count():
-            gl.logger.info('Selected all CPUs or an excessive number')
-            gl.num_cores_input = mlp.cpu_count()
-        gl.logger.debug('Number of CPUs: %d' % gl.num_cores_input)
+    gl.num_cores_input = config['analysis'].getint('n_cpu')
+    if gl.num_cores_input == 0 or gl.num_cores_input > mlp.cpu_count():
+        gl.logger.info('Selected all CPUs or an excessive number')
+        gl.num_cores_input = mlp.cpu_count()
+    gl.logger.debug('Number of CPUs: %d' % gl.num_cores_input)
 
-        gl.pathway_input = data['pathway']['value']
-        gl.logger.debug('Pathway selected: "%s"' % gl.pathway_input)
+    gl.pathway_input = config['analysis'].get('pathway')
+    gl.logger.debug('Pathway selected: "%s"' % gl.pathway_input)
 
-        gl.gene_input = data['gene']['value']
-        gl.logger.debug('Gene selected: "%s"' + gl.gene_input + '"')
+    gl.gene_input = config['analysis'].get('gene')
+    gl.logger.debug('Gene selected: "%s"' % gl.gene_input)
 
-        gl.hop_input = int(data['hop']['value'])
-        gl.logger.debug('Maximum depth selected: %d' % gl.hop_input)
+    gl.hop_input = config['analysis'].getint('deep')
+    gl.logger.debug('Maximum depth selected: %d' % gl.hop_input)
 
-    print(gl.COLORS['yellow'] + gl.COLORS['bold'] + "--- INITIAL SHELL PARAMETERS ---" + gl.COLORS['end_line'])
-    print(gl.COLORS['blue'] + gl.COLORS['bold'] + "#CPUs: %s" % gl.num_cores_input + gl.COLORS['end_line'])
-    print(gl.COLORS['blue'] + gl.COLORS['bold'] + "Pathway: %s" % gl.pathway_input + gl.COLORS['end_line'])
-    print(gl.COLORS['blue'] + gl.COLORS['bold'] + "Gene: %s" % gl.gene_input + gl.COLORS['end_line'])
-    print(gl.COLORS['blue'] + gl.COLORS['bold'] + "Hop: %s" % gl.hop_input + gl.COLORS['end_line'])
+    print("----- INITIAL SHELL PARAMETERS -----")
+    print("#CPUs: %d" % gl.num_cores_input)
+    print("Pathway: %s" % gl.pathway_input)
+    print("Gene: %s" % gl.gene_input)
+    print("Hop: %s" % gl.hop_input)
 
 
 def set_logger(flag):
@@ -65,10 +51,9 @@ def set_logger(flag):
     # enabled or disabled
     gl.logger.disabled = flag
 
-    fh = logging.FileHandler('PETAL-debug.log', mode='w')
-    fh.setLevel(logging.DEBUG)
-    gl.logger.addHandler(fh)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh = logging.FileHandler('PETAL.log', mode='w')
+    fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
     gl.logger.addHandler(fh)
 
@@ -88,8 +73,6 @@ def clear_previous_results():
 # da fare
 def check_pathway_update_history(url):
     # download and return list of the updated pathway
-
-    print(gl.COLORS['yellow'] + gl.COLORS['bold'] + "--- CHECK UPDATED PATHWAYS ---" + gl.COLORS['end_line'])
     gl.logger.info('Check for pathway updates')
 
     pathfile = os.path.join(os.getcwd(), 'database')
@@ -103,7 +86,7 @@ def check_pathway_update_history(url):
 
     # check different time (in seconds) > 24h (seconds), download file
     if (datetime.now() - datetime.fromtimestamp(filetime)).total_seconds() > 86400:
-        print(gl.COLORS['green'] + "Download updated list!" + gl.COLORS['end_line'])
+        print('Download updated list!')
         gl.logger.info('The saved file has not been updated for more than 24 hours')
 
         # deleting the oldest file
@@ -201,7 +184,7 @@ def get_info_gene_initial(pathway_hsa, name_gene):
 
     with gzip.open(filename, "rb") as f:
         content = f.read().decode('utf-8')
-        mydoc = minidom.parseString(content)
+        mydoc = parseString(content)
 
         # GENES
         entry = mydoc.getElementsByTagName('entry')
@@ -215,8 +198,7 @@ def get_info_gene_initial(pathway_hsa, name_gene):
 
                 return elem.attributes['name'].value, elem.attributes['link'].value
 
-        print(gl.COLORS['red'] + gl.COLORS['bold'] + "The gene entered not exit into pathway selected! " +
-              gl.COLORS['end_line'])
+        print('The gene entered not exit into pathway selected!')
         gl.logger.error('The gene "%s" entered not exit into pathway selected "%s"' % (name_gene, pathway_hsa))
 
         exit(1)
@@ -311,7 +293,7 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
     with gzip.open(filename, "rb") as f:
 
         content = f.read().decode('utf-8')
-        mydoc = minidom.parseString(content)
+        mydoc = parseString(content)
 
         # GENES
         entry = mydoc.getElementsByTagName('entry')
@@ -370,23 +352,23 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
 
                         # verifico se esiste una relazione effettivamente
                         if len(list_gene_relation) > 0:
-                            # gl.logger.debug('[hop: %s] Found a direct relationship between "%s" and "%s" in the '
+                            #gl.logger.debug('[hop: %s] Found a direct relationship between "%s" and "%s" in the '
                             #                'pathway "%s" with a relationship "%s"' % (
                             #                    hop, name_gene_start, list_gene_relation[0][2], pathway_hsa,
                             #                    elem.attributes['type'].value))
 
                             # in concat_multiple_subtype, concateno tutti i subtype della relazione analizzata
                             row = {
-                                'hop': hop,
-                                'name_start': name_gene_start,
-                                'hsa_start': hsa_gene_start,
-                                'name_end': list_gene_relation[0][2],
-                                'hsa_end': list_gene_relation[0][1],
-                                'url_gene_end': list_gene_relation[0][3],
+                                'deep': hop,
+                                'name_father': name_gene_start,
+                                'hsa_father': hsa_gene_start,
+                                'name_son': list_gene_relation[0][2],
+                                'hsa_son': list_gene_relation[0][1],
+                                'url_kegg_son': list_gene_relation[0][3],
                                 'relation': elem.attributes['type'].value,
                                 'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
-                                'pathway_origin': pathway_hsa,
-                                'path': path + '/' + list_gene_relation[0][2],
+                                'pathway_of_origin': pathway_hsa,
+                                'fullpath': path + '/' + list_gene_relation[0][2],
                                 'occurrences': occu
                             }
                             list_rows.append(row)
@@ -394,7 +376,7 @@ def read_kgml(hop, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
 
 
 def analysis_hop_n(hop, gene, gene_hsa, pathway_this_gene, path, occu):
-    # print('[i: %s][hop: %s][gene: %s][hsa: %s][pathway: %s]\n' % (iteration, hop, gene, gene_hsa, pathway_this_gene))
+    #print('[hop: %s][gene: %s][hsa: %s][pathway: %s]\n' % (hop, gene, gene_hsa, pathway_this_gene))
 
     # download_xml(pathway_this_gene)
     download_file('http://rest.kegg.jp/get/' + pathway_this_gene + '/kgml',
@@ -415,17 +397,17 @@ def unified(list_rows_returned):
 
 
 def get_info_row_duplicated(i, hop, df_filtered, gene):
-    grouped_df = (df_filtered[df_filtered['name_end'] == gene]).groupby("name_start")
+    grouped_df = (df_filtered[df_filtered['name_son'] == gene]).groupby('name_father')
 
     list_to_do_df = list()
     iter = 0
     for key, group in grouped_df:
         # key = gene
         # group = group of this gene
-        # print('[i_par: %s][key: %s][iter_for: %s] group2: %s\n' % (i, key, iter, group.iloc[0]['path']))
+        # print('[i_par: %s][key: %s][iter_for: %s] group2: %s\n' % (i, key, iter, group.iloc[0]['fullpath']))
         # print('[i_par: %s][key: %s][iter_for: %s] shape_row: %s\n' % (i, key, iter, group.shape[0]))
 
-        hsa_end_refactor = ' '.join(group["hsa_end"].tolist())
+        hsa_end_refactor = ' '.join(group['hsa_son'].tolist())
         hsa_end_refactor = sorted(set(hsa_end_refactor.split(' ')))
         hsa_end_refactor = ' '.join(hsa_end_refactor)
         # print('[i_par: %s][key: %s][iter_for: %s] hsa_end_refactor2: %s\n' % (i, key, iter, hsa_end_refactor))
@@ -449,7 +431,7 @@ def get_info_row_duplicated(i, hop, df_filtered, gene):
             url_gene_end_refactor,
             '§§'.join(group['relation'].tolist()),
             '§§'.join(group['type_rel'].tolist()),
-            '§§'.join(group['pathway_origin'].tolist()),
+            '§§'.join(group['pathway_of_origin'].tolist()),
             occurences_calculated
         )
         )
@@ -464,10 +446,22 @@ def clean_update_row_duplicates(list_to_do_df):
             # print(row, '\n')
 
             # aggiorno la riga selezionata, con le nuove stringhe nelle 4 colonne
-            cols = ['hsa_end', 'url_gene_end', 'relation', 'type_rel', 'pathway_origin', 'occurrences']
+            cols = ['hsa_son', 'url_kegg_son', 'relation', 'type_rel', 'pathway_of_origin', 'occurrences']
 
             gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4], cell[5], cell[6], cell[7]]
 
             # rimuovo le righe selezionate
             if len(cell[1]) > 0:
                 gl.DF_TREE = gl.DF_TREE.drop(cell[1])
+
+
+def set_progress_bar(action, max_elem):
+    """
+    Progressbar can't guess maxval.
+
+    :param action: str, ....
+    :param max_elem: str, ......
+    """
+    pb = ProgressBar(widgets=[action, ' ', Percentage(), ' (', Counter(), ' of ',
+                              max_elem, ') ', Bar('#'), ' ', ETA()], maxval=int(max_elem))
+    return pb

@@ -1,9 +1,10 @@
 import globals as gl
 import time
 import os
-from joblib import Parallel, delayed
 import utility as utl
+from joblib import Parallel, delayed
 from draw import draw_json_run
+
 
 # --------------- INITIAL START TIME --------------
 start_time = time.time()
@@ -16,12 +17,12 @@ utl.read_config()
 utl.clear_previous_results()
 
 # download and return list of the update pathway
+print("----- CHECK UPDATED PATHWAYS -----")
 utl.check_pathway_update_history('https://www.genome.jp/kegg/docs/upd_map.html')
 
-gl.logger.info('Starting the analysis')
+print("----- START ANALYSIS -----")
 # hop+1 = because it has to analyze the last level
 for level_actual in range(1, gl.hop_input + 1):
-    # print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- START HOP %s ---" % level_actual + gl.COLORS['end_line'])
     gl.logger.debug('Start of depth analysis %d' % level_actual)
 
     if level_actual == 1:
@@ -65,14 +66,14 @@ for level_actual in range(1, gl.hop_input + 1):
         # estraggo i geni finali del livello precedente, evitando il gene di input così evito un loop
         gl.logger.debug('Retrieve the genes children of the hop %d' % (level_actual - 1))
         df_genes_resulted = (gl.DF_TREE[
-            (gl.DF_TREE['hop'] == level_actual - 1) &
-            (gl.DF_TREE['name_end'] != gl.gene_input)
+            (gl.DF_TREE['deep'] == level_actual - 1) &
+            (gl.DF_TREE['name_son'] != gl.gene_input)
             ])
 
         for index, row in utl.set_progress_bar(
                 '[Deep: %d]' % level_actual, str(df_genes_resulted.shape[0]))(df_genes_resulted.iterrows()):
             # ottengo la lista di pathway in riferimento al gene che sto passando
-            list_pathways_this_gene = utl.download_read_html(row['url_gene_end'])
+            list_pathways_this_gene = utl.download_read_html(row['url_kegg_son'])
 
             # rimuovo il pathway di origine, cioè passato in input dal file di config così evito un loop continuo
             if gl.pathway_input in list_pathways_this_gene:
@@ -81,20 +82,20 @@ for level_actual in range(1, gl.hop_input + 1):
             # process single gene on each CPUs available
             list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(
                 delayed(utl.analysis_hop_n)(
-                    level_actual, row['name_end'], row['hsa_end'], pathway_this_gene,
-                    row['path'], row['occurrences']) for pathway_this_gene in list_pathways_this_gene)
+                    level_actual, row['name_son'], row['hsa_son'], pathway_this_gene,
+                    row['fullpath'], row['occurrences']) for pathway_this_gene in list_pathways_this_gene)
 
             utl.unified(list_rows_df_returned)
 
     # ----- DROP DUPLICATES -----
 
     # estraggo i duplicati dello stesso livello e ordinati in ordine alfabetico
-    df_genes_this_level = (gl.DF_TREE[gl.DF_TREE['hop'] == level_actual])
+    df_genes_this_level = (gl.DF_TREE[gl.DF_TREE['deep'] == level_actual])
     df_duplicated_filtered = df_genes_this_level[df_genes_this_level.duplicated(
-        subset=['name_end'], keep=False)].sort_values('name_end')
+        subset=['name_son'], keep=False)].sort_values('name_son')
 
     # lista con i nomi dei geni duplicati
-    list_name_genes_duplicated = df_duplicated_filtered.name_end.unique()
+    list_name_genes_duplicated = df_duplicated_filtered.name_son.unique()
 
     # process single gene on each CPUs available
     list_rows_to_do_df_returned = Parallel(n_jobs=gl.num_cores_input)(
@@ -110,17 +111,11 @@ for level_actual in range(1, gl.hop_input + 1):
 
     # ----- DROP DUPLICATES -----
 
-    # print(gl.COLORS['pink'] + gl.COLORS['bold'] + "--- END HOP %s ---" % level_actual + gl.COLORS['end_line'])
-
-# print(gl.DF_TREE)
-
-# salvo il dataframe finale
+print("----- EXPORT DATAFRAME -----")
 gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'results', 'df_resulted.csv'), sep=';', header=False, index=False)
 
-# genero il file di output in json
+print("----- START GENERATE OUTPUT -----")
 draw_json_run()
 
 m, s = divmod(time.time() - start_time, 60)
-
-print(gl.COLORS['red'] + gl.COLORS['bold'] + "--- %s minutes and %s seconds ---" % (round(m), round(s)) + gl.COLORS[
-    'end_line'])
+print("----- DONE EXECUTION (%d mins, %d secs) -----" % (round(m), round(s)))

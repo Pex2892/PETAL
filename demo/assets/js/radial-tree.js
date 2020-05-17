@@ -1,17 +1,3 @@
-function fileExists(url) {
-    const http = new XMLHttpRequest();
-    http.open('HEAD', url, false);
-    http.send();
-    return http.status !== 404;
-}
-
-//Check exist file json
-var file_json = '../results/data-flare.json'
-if (!fileExists(file_json)) {
-    file_json = 'data-flare.json'
-}
-
-
 // Get JSON data
 d3.json(file_json, function(error, treeData) {
 

@@ -33,7 +33,7 @@ def draw_json_run():
             delayed(draw_hop_n)(i, item) for key, item in df_filter.iterrows())
 
     # salvo il dict in json
-    with open(os.path.join(os.getcwd(), 'results', 'data-flare.json'), 'w') as outfile:
+    with open(os.path.join(os.getcwd(), 'demo', 'data-flare.json'), 'w') as outfile:
         json.dump(gl.json_dict, outfile, indent=4)
 
 

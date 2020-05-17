@@ -59,11 +59,12 @@ def set_logger(flag):
 
 
 def clear_previous_results():
-    pathdir = os.path.join(os.getcwd(), 'results')
+    pathdir = os.path.join(os.getcwd(), 'export_data')
 
-    # Remove the previous results folder
-    shutil.rmtree(pathdir)
-    gl.logger.warning('Removed the previous results folder')
+    if os.path.exists(pathdir):
+        # Remove the previous results folder
+        shutil.rmtree(pathdir)
+        gl.logger.warning('Removed the previous results folder')
 
     # Create the results folder
     os.makedirs(pathdir)

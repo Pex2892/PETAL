@@ -111,8 +111,8 @@ for level_actual in range(1, gl.hop_input + 1):
 
     # ----- DROP DUPLICATES -----
 
-print("----- EXPORT DATAFRAME -----")
-gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'results', 'df_resulted.csv'), sep=';', header=False, index=False)
+print("----- EXPORT DATA -----")
+gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', 'df_resulted.csv'), sep=';', header=False, index=False)
 
 print("----- START GENERATE OUTPUT -----")
 draw_json_run()

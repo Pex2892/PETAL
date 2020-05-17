@@ -5,10 +5,9 @@ import pandas as pd
 Initial parameters set through the configuration file.
 """
 filename_config = 'config.ini'
-logger = None
 pathway_input = None
 gene_input = None
-hop_input = None
+deep_input = None
 num_cores_input = None
 
 

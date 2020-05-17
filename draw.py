@@ -20,24 +20,24 @@ def draw_json_run():
         'url': gl.gene_input_url,
         'info': 'Nothing',
         'occurrences': 0,
-        'hop': 0,
+        'deep': 0,
         'children': []}
 
     # ciclo per numero di hop in input
-    for i in set_progress_bar('[Drawing]', str(gl.hop_input))(range(1, gl.hop_input+1)):
+    for i in set_progress_bar('[Drawing]', str(gl.deep_input))(range(1, gl.deep_input+1)):
         # filtro i geni per hop
         df_filter = gl.DF_TREE[gl.DF_TREE['deep'] == i]
 
         # avvio in parallelo l'aggiunta dei geni nel dict del
         Parallel(n_jobs=gl.num_cores_input, backend='threading')(
-            delayed(draw_hop_n)(i, item) for key, item in df_filter.iterrows())
+            delayed(draw_deep_n)(i, item) for key, item in df_filter.iterrows())
 
     # salvo il dict in json
     with open(os.path.join(os.getcwd(), 'demo', 'data-flare.json'), 'w') as outfile:
         json.dump(gl.json_dict, outfile, indent=4)
 
 
-def draw_hop_n(hop, item):
+def draw_deep_n(deep, item):
     """
     Questo metodo, nel pointer restituito si appende il gene passato al dict globale.
 
@@ -52,7 +52,7 @@ def draw_hop_n(hop, item):
         'url': item['url_kegg_son'],
         'info': concat_info(item['relation'], item['type_rel'], item['pathway_of_origin']),
         'occurrences': item['occurrences'],
-        'hop': hop,
+        'deep': deep,
         'children': []
     })
 

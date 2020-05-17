@@ -5,7 +5,6 @@ import utility as utl
 from joblib import Parallel, delayed
 from draw import draw_json_run
 
-
 # --------------- INITIAL START TIME --------------
 start_time = time.time()
 
@@ -21,16 +20,11 @@ print("----- CHECK UPDATED PATHWAYS -----")
 utl.check_pathway_update_history('https://www.genome.jp/kegg/docs/upd_map.html')
 
 print("----- START ANALYSIS -----")
-# hop+1 = because it has to analyze the last level
-for level_actual in range(1, gl.hop_input + 1):
-    gl.logger.debug('Start of depth analysis %d' % level_actual)
-
-    if level_actual == 1:
-
+for deep in range(1, gl.deep_input + 1):
+    if deep == 1:
         # download initial pathway
         utl.download_file('http://rest.kegg.jp/get/' + gl.pathway_input + '/kgml',
-                          os.path.join(os.getcwd(), 'database', 'pathways', 'xml'),
-                          gl.pathway_input + '.xml.gz')
+                          os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), gl.pathway_input + '.xml.gz')
 
         # get info first gene from hsa name of pathway
         hsa_gene_input_finded, url_pathway_gene_input_finded = utl.get_info_gene_initial(
@@ -42,7 +36,7 @@ for level_actual in range(1, gl.hop_input + 1):
 
         # read initial pathway, create and add genes to csv
         list_rows_df_returned = utl.read_kgml(
-            level_actual, gl.pathway_input, gl.gene_input, hsa_gene_input_finded, gl.gene_input, 1)
+            deep, gl.pathway_input, gl.gene_input, hsa_gene_input_finded, gl.gene_input, 1)
 
         # unifico i primi n geni che sono direttamente connessi
         utl.unified([list_rows_df_returned])
@@ -55,23 +49,19 @@ for level_actual in range(1, gl.hop_input + 1):
             list_pathways_this_gene.remove(gl.pathway_input)
 
         # process single gene on each CPUs available
-        list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(delayed(utl.analysis_hop_n)(
-            level_actual, gl.gene_input, hsa_gene_input_finded,
-            pathway_this_gene, gl.gene_input, 1) for pathway_this_gene in utl.set_progress_bar(
-            '[Deep: %d]' % level_actual, str(len(list_pathways_this_gene)))(list_pathways_this_gene))
+        list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(delayed(utl.analysis_deep_n)(
+            deep, gl.gene_input, hsa_gene_input_finded, pathway_this_gene, gl.gene_input, 1)
+                                                                    for pathway_this_gene in utl.set_progress_bar(
+            '[Deep: %d]' % deep, str(len(list_pathways_this_gene)))(list_pathways_this_gene))
 
         utl.unified(list_rows_df_returned)
 
     else:
-        # estraggo i geni finali del livello precedente, evitando il gene di input così evito un loop
-        gl.logger.debug('Retrieve the genes children of the hop %d' % (level_actual - 1))
-        df_genes_resulted = (gl.DF_TREE[
-            (gl.DF_TREE['deep'] == level_actual - 1) &
-            (gl.DF_TREE['name_son'] != gl.gene_input)
-            ])
+        # Retrieve the genes found at depth-1, avoiding the input gene
+        df_genes_resulted = (gl.DF_TREE[(gl.DF_TREE['deep'] == deep - 1) & (gl.DF_TREE['name_son'] != gl.gene_input)])
 
-        for index, row in utl.set_progress_bar(
-                '[Deep: %d]' % level_actual, str(df_genes_resulted.shape[0]))(df_genes_resulted.iterrows()):
+        for index, row in utl.set_progress_bar('[Deep: %d]' % deep, str(df_genes_resulted.shape[0]))\
+                    (df_genes_resulted.iterrows()):
             # ottengo la lista di pathway in riferimento al gene che sto passando
             list_pathways_this_gene = utl.download_read_html(row['url_kegg_son'])
 
@@ -81,16 +71,17 @@ for level_actual in range(1, gl.hop_input + 1):
 
             # process single gene on each CPUs available
             list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(
-                delayed(utl.analysis_hop_n)(
-                    level_actual, row['name_son'], row['hsa_son'], pathway_this_gene,
-                    row['fullpath'], row['occurrences']) for pathway_this_gene in list_pathways_this_gene)
+                delayed(utl.analysis_deep_n)(deep, row['name_son'], row['hsa_son'], pathway_this_gene,
+                                             row['fullpath'], row['occurrences']) for pathway_this_gene in
+                list_pathways_this_gene
+            )
 
             utl.unified(list_rows_df_returned)
 
     # ----- DROP DUPLICATES -----
 
     # estraggo i duplicati dello stesso livello e ordinati in ordine alfabetico
-    df_genes_this_level = (gl.DF_TREE[gl.DF_TREE['deep'] == level_actual])
+    df_genes_this_level = (gl.DF_TREE[gl.DF_TREE['deep'] == deep])
     df_duplicated_filtered = df_genes_this_level[df_genes_this_level.duplicated(
         subset=['name_son'], keep=False)].sort_values('name_son')
 
@@ -99,9 +90,9 @@ for level_actual in range(1, gl.hop_input + 1):
 
     # process single gene on each CPUs available
     list_rows_to_do_df_returned = Parallel(n_jobs=gl.num_cores_input)(
-        delayed(utl.get_info_row_duplicated)(iter1,
-                                             level_actual, df_duplicated_filtered, gene_duplicate)
-        for iter1, gene_duplicate in enumerate(list_name_genes_duplicated))
+        delayed(utl.get_info_row_duplicated)(df_duplicated_filtered, gene_duplicate)
+        for gene_duplicate in list_name_genes_duplicated
+    )
 
     # aggiorno e elimino le righe del dataframe
     utl.clean_update_row_duplicates(list_rows_to_do_df_returned)

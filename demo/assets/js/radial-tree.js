@@ -350,7 +350,7 @@ d3.json(file_json, function(error, treeData) {
         d3.select('#modal-hsa').property('value', d.hsa);
         d3.select('#modal-path').property('value', d3.select('#selection').text());
         d3.select('#modal-occurences').property('value', d.occurrences);
-        d3.select('#modal-hop').property('value', d.hop);
+        d3.select('#modal-deep').property('value', d.deep);
 
         var res = d.info.split(" - ");
         var html = '';

@@ -1,7 +1,5 @@
-import globals as gl
 import time
-import os
-from utility import read_config, clear_previous_results, check_pathway_update_history
+from utility import read_config, clear_previous_results, check_pathway_update_history, export_data
 from draw import draw_json_run
 from analysis import run_analysis
 
@@ -22,9 +20,10 @@ print("----- START ANALYSIS -----")
 run_analysis()
 
 print("----- EXPORT DATA -----")
-gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', 'df_resulted.csv'), sep=';', header=False, index=False)
+export_data()
 
 print("----- START GENERATE OUTPUT -----")
+
 draw_json_run()
 
 m, s = divmod(time.time() - start_time, 60)

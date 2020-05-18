@@ -9,7 +9,6 @@ import hashlib
 import configparser
 from dateutil.parser import parse
 from progressbar import Bar, Counter, ETA, Percentage, ProgressBar
-from xml.dom.minidom import parseString
 from datetime import datetime
 
 
@@ -99,8 +98,8 @@ def check_pathway_update_history(url):
                         if filetime < update_time_from_kegg:
                             print('il pathway di kegg è più aggiornato')
 
-                            print(
-                                'cancello il pathway vecchio (locale), ma aggiornato su kegg: %s' % 'hsa' + merged_pathway)
+                            print('cancello il pathway vecchio (locale), ma aggiornato su kegg: %s' %
+                                  ('hsa' + merged_pathway))
                             os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + merged_pathway + '.xml.gz'))
 
                             # scaricare il pathway con cui è stato unito
@@ -158,31 +157,12 @@ def download_file(url, pathfile, filename):
             exit(1)
 
 
-def get_info_gene_initial(pathway_hsa, name_gene):
-    filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
-
-    with gzip.open(filename, "rb") as f:
-        content = f.read().decode('utf-8')
-        mydoc = parseString(content)
-
-        # GENES
-        entry = mydoc.getElementsByTagName('entry')
-
-        for elem in entry:
-            string_check = name_gene + ','
-            if elem.attributes['type'].value == 'gene' and string_check in \
-                    elem.getElementsByTagName('graphics')[0].attributes['name'].value:
-                return elem.attributes['name'].value, elem.attributes['link'].value
-
-        print('The gene entered not exit into pathway selected!')
-        exit(1)
-
-
 def download_read_html(url):
+    # download and read of the html page containing all the genes, passed as parameters in the url
+
     filename = url.split('?')[1].replace('+', '_').replace(':', '')
     filename = hashlib.md5(filename.encode("utf-8")).hexdigest() + '.html.gz'
 
-    # download of the html page containing all the genes, passed as parameters in the url
     download_file(url, os.path.join(os.getcwd(), 'database', 'pathways', 'html'), filename)
 
     # open pathway of the genes in html
@@ -219,154 +199,11 @@ def is_date(string, fuzzy=False):
         return False
 
 
-def search_id_to_hsa(list_genes_this_pathway, hsa_gene):
-    return [item for item in list_genes_this_pathway if hsa_gene == item[1]]
-
-
-def search_gene_to_id(list_genes_this_pathway, id_gene):
-    return [item for item in list_genes_this_pathway if id_gene in item]
-
-
-def concat_multiple_subtype(list_subtype):
-    # in concat_multiple_subtype, concateno tutti i subtype della relazione analizzata
-    if len(list_subtype) > 0:
-        subtype = []
-        for item in list_subtype:
-            subtype.append(item.attributes['name'].value)
-        return '//'.join(subtype)
-    return 'None'
-
-
-def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
-    filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
-
-    with gzip.open(filename, "rb") as f:
-        content = f.read().decode('utf-8')
-        mydoc = parseString(content)
-
-        # GENES
-        entry = mydoc.getElementsByTagName('entry')
-        graphics = mydoc.getElementsByTagName('graphics')
-
-        # RELATIONS
-        relation = mydoc.getElementsByTagName('relation')
-
-        list_genes_this_pathway = []
-        for elem, elem2 in zip(entry, graphics):
-            if 'hsa:' in elem.attributes['name'].value and elem.attributes['type'].value == 'gene':
-                # salvo i geni che hanno hsa e sono di tipo gene
-                list_genes_this_pathway.append((elem.attributes['id'].value, elem.attributes['name'].value,
-                                                elem2.attributes['name'].value.split(',')[0],
-                                                elem.attributes['link'].value))
-
-        # cerco gli id all'interno della mappa per quello specifico hsa(gene)
-        # perchè in ogni pathway è diverso, anche se è lo stesso gene
-        # se li trova restituisce tuple di diversi id che fanno riferimento al gene
-        list_ids_gene_input = search_id_to_hsa(list_genes_this_pathway, hsa_gene_start)
-
-        list_rows = list()
-        if len(list_ids_gene_input) > 0:
-
-            # scorro tutte le relazioni all'interno della mappa
-            for elem in relation:
-                # scorro tutta la lista degli id che fanno riferimento allo stesso gene della stessa mappa
-                for id_gene in list_ids_gene_input:
-                    # verifico se l'entry2(id di partenza) è uguale a uno degli id salvati nella lista
-                    if elem.attributes['entry2'].value == id_gene[0]:
-
-                        # estraggo le info dei geni che ha una relazione con id_gene tornato vuoto perchè potrebbe
-                        # essere che l'entry1 non esiste o non è di tipo gene (group, compund)
-                        list_gene_relation = search_gene_to_id(list_genes_this_pathway, elem.attributes['entry1'].value)
-
-                        # verifico se esiste una relazione effettivamente
-                        if len(list_gene_relation) > 0:
-                            row = {
-                                'deep': deep,
-                                'name_father': name_gene_start,
-                                'hsa_father': hsa_gene_start,
-                                'name_son': list_gene_relation[0][2],
-                                'hsa_son': list_gene_relation[0][1],
-                                'url_kegg_son': list_gene_relation[0][3],
-                                'relation': elem.attributes['type'].value,
-                                'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
-                                'pathway_of_origin': pathway_hsa,
-                                'fullpath': path + '/' + list_gene_relation[0][2],
-                                'occurrences': occu
-                            }
-                            list_rows.append(row)
-        return list_rows
-
-
-def analysis_deep_n(deep, gene, gene_hsa, pathway_this_gene, path, occu):
-    download_file('http://rest.kegg.jp/get/' + pathway_this_gene + '/kgml',
-                  os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), pathway_this_gene + '.xml.gz')
-
-    list_rows = read_kgml(deep, pathway_this_gene, gene, gene_hsa, path, occu)
-
-    return list_rows
-
-
-def unified(list_rows_returned):
-    # Add the results obtained by the threads in parallel in the main data frame
-    for row in list_rows_returned:
-        if row is not None:
-            for cell in row:
-                gl.DF_TREE = gl.DF_TREE.append(cell, ignore_index=True)
-
-
-def get_info_row_duplicated(df_filtered, gene):
-    grouped_df = (df_filtered[df_filtered['name_son'] == gene]).groupby('name_father')
-
-    list_to_do_df = list()
-    for key, group in grouped_df:
-        hsa_end_refactor = ' '.join(group['hsa_son'].tolist())
-        hsa_end_refactor = sorted(set(hsa_end_refactor.split(' ')))
-        hsa_end_refactor = ' '.join(hsa_end_refactor)
-
-        url_gene_end_refactor = 'https://www.kegg.jp/dbget-bin/www_bget?' + hsa_end_refactor.replace(' ', '+')
-        occurences_calculated = group.iloc[0]['occurrences'] * group.shape[0]
-
-        # riga da aggiornare (prendo la prima perchè devo aggiornare tutti i campi)
-        # lista di righe da rimuovere meno quella da conservare
-        # nuovo hsa_end del gene
-        # nuovo url_end del gene
-        # unisco tutte le relation in base ai pathway di origine
-        # unisco tutte le type_rel in base ai pathway di origine
-        # unisco tutti i pathway_origine
-        list_to_do_df.append((
-                group.index[0],
-                list(filter(group.index[0].__ne__, group.index.values.tolist())),
-                hsa_end_refactor,
-                url_gene_end_refactor,
-                '§§'.join(group['relation'].tolist()),
-                '§§'.join(group['type_rel'].tolist()),
-                '§§'.join(group['pathway_of_origin'].tolist()),
-                occurences_calculated
-            )
-        )
-    return list_to_do_df
-
-
-def clean_update_row_duplicates(list_to_do_df):
-    for row in list_to_do_df:
-        for cell in row:
-            # aggiorno la riga selezionata, con le nuove stringhe nelle 4 colonne
-            cols = ['hsa_son', 'url_kegg_son', 'relation', 'type_rel', 'pathway_of_origin', 'occurrences']
-
-            gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4], cell[5], cell[6], cell[7]]
-
-            # rimuovo le righe selezionate
-            if len(cell[1]) > 0:
-                gl.DF_TREE = gl.DF_TREE.drop(cell[1])
-
-
 def set_progress_bar(action, max_elem):
-    """
-    Progressbar can't guess maxval.
-
-    :param action: str, ....
-    :param max_elem: str, ......
-    """
     pb = ProgressBar(widgets=[action, ' ', Percentage(), ' (', Counter(), ' of ',
                               max_elem, ') ', Bar('#'), ' ', ETA()], maxval=int(max_elem))
     return pb
+
+
+def export_data():
+    gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', 'df_resulted.csv'), sep=';', header=False, index=False)

@@ -14,8 +14,6 @@ from datetime import datetime
 
 
 def read_config():
-    print("----- INITIAL SHELL PARAMETERS -----")
-
     config = configparser.ConfigParser()
     config.read(gl.filename_config)
 
@@ -36,8 +34,6 @@ def read_config():
 
 
 def clear_previous_results():
-    print("----- CLEAN PREVIOUS RESULTS -----")
-
     pathdir = os.path.join(os.getcwd(), 'export_data')
 
     if os.path.exists(pathdir):

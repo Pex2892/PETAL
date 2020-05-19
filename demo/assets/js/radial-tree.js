@@ -330,7 +330,7 @@ d3.json(file_json, function(error, treeData) {
         curNode.selected = true;
         curPath = []; // filled in by fullpath
         d3.select('#selection').html(fullpath(node));
-        d3.select('#info').html(info(node));
+        info(node);
     }
 
     // for displaying full path of node in tree

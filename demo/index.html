@@ -56,9 +56,59 @@
                 <div class="tlabel" style="text-align:left" title="Change Root">&nbsp;Path</div>
                 <div id="selection" class="tlabel"></div>
             </div>
-            <div class="tool">
-                <div class="tlabel" style="text-align:left" title="Info">&nbsp;info</div>
-                <div id="info" style="margin-left: 4px;margin-right: 4px;"></div>
+        </div>
+        <div id="toolbar2">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="modal-gene" class="col-form-label">Gene:</label>
+                            <input type="text" class="form-control" id="modal-gene" readonly style="background: white;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="modal-deep" class="col-form-label">Deep:</label>
+                            <input type="text" class="form-control" id="modal-deep" readonly style="background: white;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="modal-occurences" class="col-form-label">#Occurrences:</label>
+                            <input type="text" class="form-control" id="modal-occurences" readonly style="background: white;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="modal-path" class="col-form-label">Path:</label>
+                            <input type="text" class="form-control" id="modal-path" readonly style="background: white;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="modal-path" class="col-form-label">Hsa:</label>
+                            <input type="text" class="form-control" id="modal-hsa" readonly style="background: white;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="modal-info" class="col-form-label" style="font-size: 14px;">
+                                Pathway of origin | Relation | Type of relation
+                            </label>
+                            <textarea class="form-control" id="modal-info" rows="5" readonly style="background: white;"></textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -71,71 +121,8 @@
             <div data-key="191">Set Root</div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">further information | <a href="#" id="modal-url" target="_blank">See on Kegg</a></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-6 ml-auto">
-                                    <div class="form-group">
-                                        <label for="modal-gene" class="col-form-label">Gene:</label>
-                                        <input type="text" class="form-control" id="modal-gene">
-                                    </div>
-                                </div>
-                                <div class="col-md-2 ml-auto">
-                                    <div class="form-group">
-                                        <label for="modal-deep" class="col-form-label">Deep:</label>
-                                        <input type="text" class="form-control" id="modal-deep">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 ml-auto">
-                                    <div class="form-group">
-                                        <label for="modal-occurences" class="col-form-label">#Occurrences:</label>
-                                        <input type="text" class="form-control" id="modal-occurences">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 ml-auto">
-                                    <div class="form-group">
-                                        <label for="modal-path" class="col-form-label">Path:</label>
-                                        <input type="text" class="form-control" id="modal-path">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 ml-auto">
-                                    <div class="form-group">
-                                        <label for="modal-path" class="col-form-label">Hsa:</label>
-                                        <input type="text" class="form-control" id="modal-hsa">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 ml-auto">
-                                    <div class="form-group">
-                                        <label for="modal-info" class="col-form-label">Pathway of origin | Relation | Type of relation:</label>
-                                        <textarea class="form-control" id="modal-info" rows="8" readonly></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <script>
-            //var file_json = 'data-flare-example.json'
-            var file_json = 'data-flare.json'
+            const file_json = 'data-flare.json';
         </script>
         <script src="assets/js/d3.min.js" charset="utf-8"></script>
         <script src="assets/js/jquery-3.5.0.min.js"></script>

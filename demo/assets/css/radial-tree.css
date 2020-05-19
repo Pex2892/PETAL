@@ -13,6 +13,28 @@
   background-color: #ECEFF1;
 }
 
+#toolbar2 {
+  display: flex;
+  display: -webkit-box;
+  display: moz-box-flex;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  font-family: Roboto, Helvetica, sans-serif;
+  box-shadow: 1px 1px 3px;
+  background-color: #ECEFF1;
+  width: auto;
+}
+
+.read_only {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
 .tool {
   display: flex;
   flex-direction: column;

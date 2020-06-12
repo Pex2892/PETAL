@@ -1,6 +1,6 @@
 # About PETAL (ParallEl paThways AnaLyzer)
 
-The Petal software is written in the Python 3 programming language, contains a set of tools for pathway analysis and discovery of novel therapeutic targets. The approach allows you to scan and perform a search in-depth of the biological pathway in order to analyze less recurrent pathways, detect nodes that are far from the initial target nodes and showing the pathway of origin from which it was taken the gene.
+PETAL software is written in the Python 3 programming language. It contains a set of tools for pathway analysis and discovery of novel therapeutic targets. The approach allows you to scan and perform a in-depth search of the biological pathway to analyze less recurrent pathways, detect nodes that are far from the initial target nodes and showing the pathway of origin from which it was taken the gene.
 
 ![welcome-page](https://github.com/Pex2892/PETAL/blob/master/gui.png)
 

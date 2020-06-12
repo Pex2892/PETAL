@@ -39,7 +39,7 @@ python3 main.py
 After completing an analysis, to view the final output just open the index.html file located in the "demo" folder.
 
 
-# How to resolve the errors
+# How to resolve the common errors
 
 ### bz2 error 
 When trying to execute the python script, if the following error occurs:

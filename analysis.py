@@ -29,7 +29,7 @@ def run_analysis():
             # retrive other list pathways in reference to initial pathway
             list_pathways_this_gene = download_read_html(url_finded)
 
-            # rimuovo il pathway di origine, cioè passato in input dal file di config
+            # The pathway set as input from the config file is removed
             if gl.pathway_input in list_pathways_this_gene:
                 list_pathways_this_gene.remove(gl.pathway_input)
 
@@ -48,10 +48,10 @@ def run_analysis():
 
             for index, row in set_progress_bar(
                     '[Deep: %d]' % deep, str(df_genes_resulted.shape[0]))(df_genes_resulted.iterrows()):
-                # ottengo la lista di pathway in riferimento al gene che sto passando
+                # Return a list of pathways about the gene passed in input
                 list_pathways_this_gene = download_read_html(row['url_kegg_son'])
 
-                # rimuovo il pathway di origine, cioè passato in input dal file di config così evito un loop continuo
+                # The pathway set as input from the config file is removed, so as to avoid an endless loop
                 if gl.pathway_input in list_pathways_this_gene:
                     list_pathways_this_gene.remove(gl.pathway_input)
 
@@ -66,12 +66,12 @@ def run_analysis():
 
         # ----- DROP DUPLICATES -----
 
-        # estraggo i duplicati dello stesso livello e ordinati in ordine alfabetico
+        # Duplicates of the same level are extracted and sorted in alphabetical order
         df_genes_this_level = (gl.DF_TREE[gl.DF_TREE['deep'] == deep])
         df_duplicated_filtered = df_genes_this_level[df_genes_this_level.duplicated(
             subset=['name_son'], keep=False)].sort_values('name_son')
 
-        # lista con i nomi dei geni duplicati
+        # The names of the genes that are duplicated are recovered
         list_name_genes_duplicated = df_duplicated_filtered.name_son.unique()
 
         # process single gene on each CPUs available
@@ -80,10 +80,10 @@ def run_analysis():
             for gene_duplicate in list_name_genes_duplicated
         )
 
-        # aggiorno e elimino le righe del dataframe
+        # The number of occurrences of the found links is updated and the duplicates will be deleted
         clean_update_row_duplicates(list_rows_to_do_df_returned)
 
-        # resetto l'indice di riga, perchè non più sequenziali dovuto alle eliminazioni delle righe
+        # Row indexes are reset, because they are no longer sequential due to the elimination of duplicates
         gl.DF_TREE = gl.DF_TREE.reset_index(drop=True)
 
         # ----- DROP DUPLICATES -----
@@ -118,7 +118,7 @@ def search_gene_to_id(list_genes_this_pathway, id_gene):
 
 
 def concat_multiple_subtype(list_subtype):
-    # in concat_multiple_subtype, concateno tutti i subtype della relazione analizzata
+    # All the "subtypes" of the selected relationship are concatenated
     if len(list_subtype) > 0:
         subtype = []
         for item in list_subtype:
@@ -144,31 +144,30 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
         list_genes_this_pathway = []
         for elem, elem2 in zip(entry, graphics):
             if 'hsa:' in elem.attributes['name'].value and elem.attributes['type'].value == 'gene':
-                # salvo i geni che hanno hsa e sono di tipo gene
+                # Genes are saved are of the "gene" type
                 list_genes_this_pathway.append((elem.attributes['id'].value, elem.attributes['name'].value,
                                                 elem2.attributes['name'].value.split(',')[0],
                                                 elem.attributes['link'].value))
 
-        # cerco gli id all'interno della mappa per quello specifico hsa(gene)
-        # perchè in ogni pathway è diverso, anche se è lo stesso gene
-        # se li trova restituisce tuple di diversi id che fanno riferimento al gene
+        # All the ids contained in the pathway are recovered, because a gene can have
+        # different ids in different pathways or in the same pathway
         list_ids_gene_input = search_id_to_hsa(list_genes_this_pathway, hsa_gene_start)
 
         list_rows = list()
         if len(list_ids_gene_input) > 0:
 
-            # scorro tutte le relazioni all'interno della mappa
+            # You scroll through the relationships found within the pathway
             for elem in relation:
-                # scorro tutta la lista degli id che fanno riferimento allo stesso gene della stessa mappa
+                # Scroll the list of ids found
                 for id_gene in list_ids_gene_input:
-                    # verifico se l'entry2(id di partenza) è uguale a uno degli id salvati nella lista
+                    # Check that "entry2" has at least one match in the id list
                     if elem.attributes['entry2'].value == id_gene[0]:
 
-                        # estraggo le info dei geni che ha una relazione con id_gene tornato vuoto perchè potrebbe
-                        # essere che l'entry1 non esiste o non è di tipo gene (group, compund)
+                        # We try to find a correspondence between gene and your id. If it returns zero,
+                        # it indicates that that gene does not exist or is group or compund type and not gene type
                         list_gene_relation = search_gene_to_id(list_genes_this_pathway, elem.attributes['entry1'].value)
 
-                        # verifico se esiste una relazione effettivamente
+                        # Checks if at least one connection has been found
                         if len(list_gene_relation) > 0:
                             row = {
                                 'deep': deep,
@@ -216,13 +215,13 @@ def get_info_row_duplicated(df_filtered, gene):
         url_gene_end_refactor = 'https://www.kegg.jp/dbget-bin/www_bget?' + hsa_end_refactor.replace(' ', '+')
         occurences_calculated = group.iloc[0]['occurrences'] * group.shape[0]
 
-        # riga da aggiornare (prendo la prima perchè devo aggiornare tutti i campi)
-        # lista di righe da rimuovere meno quella da conservare
-        # nuovo hsa_end del gene
-        # nuovo url_end del gene
-        # unisco tutte le relation in base ai pathway di origine
-        # unisco tutte le type_rel in base ai pathway di origine
-        # unisco tutti i pathway_origine
+        # row to update (take the first one by updating all fields)
+        # list of rows to be removed, keeping only one
+        # the hsa_end of the gene is created
+        # url_end of the gene is created
+        # concatenation of all relations based on the source pathways
+        # concatenation of all type_rel based on the source pathway
+        # concatenation of all path_origin
         list_to_do_df.append((
             group.index[0],
             list(filter(group.index[0].__ne__, group.index.values.tolist())),
@@ -240,11 +239,11 @@ def get_info_row_duplicated(df_filtered, gene):
 def clean_update_row_duplicates(list_to_do_df):
     for row in list_to_do_df:
         for cell in row:
-            # aggiorno la riga selezionata, con le nuove stringhe nelle 4 colonne
+            # The selected row is updated, in the 4 specified columns, with the new information
             cols = ['hsa_son', 'url_kegg_son', 'relation', 'type_rel', 'pathway_of_origin', 'occurrences']
 
             gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4], cell[5], cell[6], cell[7]]
 
-            # rimuovo le righe selezionate
+            # The selected rows are removed, because they are duplicated
             if len(cell[1]) > 0:
                 gl.DF_TREE = gl.DF_TREE.drop(cell[1])

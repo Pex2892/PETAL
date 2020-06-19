@@ -41,7 +41,6 @@ def clear_previous_results():
     os.makedirs(pathdir)
 
 
-# da fare
 def check_pathway_update_history(url):
     # download and return list of the updated pathway
 
@@ -78,13 +77,11 @@ def check_pathway_update_history(url):
             if is_date(items[i].text) and int(items[i].text[0:4]) >= 2020:
                 if 'Deleted; ' in items[i + 3].text:
 
-                    # se esiste, rimuovere il pathway eliminato
+                    #If the pathway deleted by KEGG exists locally, it is removed
                     if os.path.exists(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz')):
-                        print('cancello il pathway rimosso da kegg: %s' % items[i + 1].text)
+                        print('Deleting the "%s" pathway, removed from KEGG' % items[i + 1].text)
                         os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz'))
 
-                    # se esiste, rimuovere il vecchio pathway con cui è stato unito quello cancellato e scarico
-                    # quello aggiornato
                     merged_pathway = items[i + 3].text.split('merged into ')[1]
                     if os.path.exists(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + merged_pathway + '.xml.gz')):
                         # retrieve datetime to file
@@ -96,24 +93,21 @@ def check_pathway_update_history(url):
                             items[i].text + ' 00:00:00.000000', '%Y-%m-%d %H:%M:%S.%f')
 
                         if filetime < update_time_from_kegg:
-                            print('il pathway di kegg è più aggiornato')
+                            print('The pathway "%s" is more recent on KEGG than the one saved locally' % 'hsa' +
+                                  merged_pathway)
 
-                            print('cancello il pathway vecchio (locale), ma aggiornato su kegg: %s' %
-                                  ('hsa' + merged_pathway))
+                            print('Deleting the locally saved "%s" pathway' % 'hsa' + merged_pathway)
                             os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + merged_pathway + '.xml.gz'))
 
                             # scaricare il pathway con cui è stato unito
-                            print('scarico il pathway aggiornato da kegg: %s' % 'hsa' + merged_pathway)
+                            print('Downloading the most updated pathway from KEGG: %s' % 'hsa' + merged_pathway)
                             download_file('http://rest.kegg.jp/get/' + 'hsa' + merged_pathway + '/kgml',
                                           os.path.join(pathfile, 'pathways', 'xml'),
                                           'hsa' + merged_pathway + '.xml.gz')
                         else:
-                            print('il pathway locale è più aggiornato')
-
+                            print('The saved pathway "%s" is more recent!' % 'hsa' + merged_pathway)
                 elif 'Newly added' in items[i + 3].text:
-                    print('aggiunto')
-
-                    # verificare se esiste il file
+                    # check if the file exists locally
                     if os.path.exists(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz')):
                         # retrieve datetime to file
                         filetime = datetime.fromtimestamp(os.path.getmtime(
@@ -124,21 +118,18 @@ def check_pathway_update_history(url):
                             items[i].text + ' 00:00:00.000000', '%Y-%m-%d %H:%M:%S.%f')
 
                         if filetime < update_time_from_kegg:
-                            print('il pathway di kegg è più aggiornato')
-
-                            # rimuovere il vecchio pathway
-                            print('cancello il pathway vecchio (locale), ma aggiornato su kegg: %s' % 'hsa' + items[
+                            print('The pathway "%s" is more recent on KEGG than the one saved locally' % 'hsa' + items[
                                 i + 1].text)
+
+                            print('Deleting the locally saved "%s" pathway' % 'hsa' + items[i + 1].text)
                             os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz'))
 
-                            # scaricare il pathway aggiornato
-                            print('scarico il pathway aggiornato da kegg: %s' % 'hsa' + items[i + 1].text)
+                            print('Downloading the most updated pathway from KEGG: %s' % 'hsa' + items[i + 1].text)
                             download_file('http://rest.kegg.jp/get/' + 'hsa' + items[i + 1].text + '/kgml',
                                           os.path.join(pathfile, 'pathways', 'xml'),
                                           'hsa' + items[i + 1].text + '.xml.gz')
                         else:
-                            print('il pathway locale è più aggiornato')
-
+                            print('The saved pathway "%s" is more recent!' % 'hsa' + items[i + 1].text)
                 i = i + 4
             else:
                 break

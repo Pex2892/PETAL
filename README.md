@@ -69,7 +69,7 @@ You need to install liblzma and .so files, so that python will be compiled with 
 sudo apt install liblzma-dev  # on ubuntu/debian or
 sudo yum install -y xz-devel  # on fedora
 
-cp cp /usr/lib/python3.7/lib-dynload/_lzma.cpython-37m-x86_64-linux-gnu.so /usr/local/lib/python3.7/
+cp /usr/lib/python3.7/lib-dynload/_lzma.cpython-37m-x86_64-linux-gnu.so /usr/local/lib/python3.7/
 ```
 
 

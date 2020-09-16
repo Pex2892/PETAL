@@ -41,6 +41,17 @@ After completing an analysis, to view the final output just open the index.html 
 
 # How to resolve the common errors
 
+### "index.html" blank
+You cannot do Ajax calls locally (file://). You can use the built-in python server in your project directory. Running from a console:
+```sh
+$ cd petal-dir/demo/
+$ python3 -m http.server 9090
+```
+Now you can open the browser with the URL:
+```sh
+$ http://localhost:9090/
+```
+
 ### bz2 error 
 When trying to execute the python script, if the following error occurs:
 

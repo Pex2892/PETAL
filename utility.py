@@ -198,3 +198,8 @@ def set_progress_bar(action, max_elem):
 
 def export_data():
     gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', 'df_resulted.csv'), sep=';', header=False, index=False)
+
+
+def export_data_for_level(deep):
+    gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', 'df_resulted_deep_%d.csv' % deep), sep=';', header=False, index=False)
+    print('----- Deep %d - CSV SAVED ----- ' % deep)

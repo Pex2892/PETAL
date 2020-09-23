@@ -1,5 +1,5 @@
 import globals as gl
-from utility import download_file, download_read_html, set_progress_bar
+from utility import download_file, download_read_html, set_progress_bar, export_data_for_level
 import os
 import gzip
 from joblib import Parallel, delayed
@@ -85,6 +85,8 @@ def run_analysis():
 
         # Row indexes are reset, because they are no longer sequential due to the elimination of duplicates
         gl.DF_TREE = gl.DF_TREE.reset_index(drop=True)
+
+        export_data_for_level(deep)
 
         # ----- DROP DUPLICATES -----
 

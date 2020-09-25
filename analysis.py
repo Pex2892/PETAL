@@ -33,14 +33,16 @@ def run_analysis():
             if gl.pathway_input in list_pathways_this_gene:
                 list_pathways_this_gene.remove(gl.pathway_input)
 
-            # process single gene on each CPUs available
-            list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(delayed(analysis_deep_n)(
-                deep, gl.gene_input, hsa_finded, pathway_this_gene, gl.gene_input, 1)
-                                                                        for pathway_this_gene in set_progress_bar(
-                '[Deep: %d]' % deep, str(len(list_pathways_this_gene)))(list_pathways_this_gene))
+            if len(list_pathways_this_gene) > 0:
+                # process single gene on each CPUs available
+                list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(delayed(analysis_deep_n)(
+                    deep, gl.gene_input, hsa_finded, pathway_this_gene, gl.gene_input, 1)
+                                                                            for pathway_this_gene in set_progress_bar(
+                    '[Deep: %d]' % deep, str(len(list_pathways_this_gene)))(list_pathways_this_gene))
 
-            unified(list_rows_df_returned)
-
+                unified(list_rows_df_returned)
+            else:
+                print('[Deep: 1] Only directly connected genes were found')
         else:
             # Retrieve the genes found at depth-1, avoiding the input gene
             df_genes_resulted = (
@@ -48,12 +50,17 @@ def run_analysis():
 
             for index, row in set_progress_bar(
                     '[Deep: %d]' % deep, str(df_genes_resulted.shape[0]))(df_genes_resulted.iterrows()):
+
+                #print(row)
+
                 # Return a list of pathways about the gene passed in input
                 list_pathways_this_gene = download_read_html(row['url_kegg_son'])
 
+                #print('a', list_pathways_this_gene)
+
                 # The pathway set as input from the config file is removed, so as to avoid an endless loop
-                if gl.pathway_input in list_pathways_this_gene:
-                    list_pathways_this_gene.remove(gl.pathway_input)
+                #if gl.pathway_input in list_pathways_this_gene:
+                #    list_pathways_this_gene.remove(gl.pathway_input)
 
                 # process single gene on each CPUs available
                 list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(
@@ -163,11 +170,12 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
                 # Scroll the list of ids found
                 for id_gene in list_ids_gene_input:
                     # Check that "entry2" has at least one match in the id list
-                    if elem.attributes['entry2'].value == id_gene[0]:
+                    if elem.attributes['entry1'].value == id_gene[0]:
 
                         # We try to find a correspondence between gene and your id. If it returns zero,
                         # it indicates that that gene does not exist or is group or compund type and not gene type
-                        list_gene_relation = search_gene_to_id(list_genes_this_pathway, elem.attributes['entry1'].value)
+                        if elem.attributes['entry1'].value == id_gene[0]:
+                            list_gene_relation = search_gene_to_id(list_genes_this_pathway, elem.attributes['entry2'].value)
 
                         # Checks if at least one connection has been found
                         if len(list_gene_relation) > 0:

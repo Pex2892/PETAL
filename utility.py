@@ -241,7 +241,7 @@ def load_last_csv():
     elif deep_last_csv < gl.deep_input:
         gl.DF_TREE = read_csv(path_last_csv, sep=";", names=gl.COLS_DF)
         print(f"The analysis will start from the depth of {gl.deep_input}")
-        return gl.deep_input
+        return deep_last_csv + 1
 
 
 def create_zip():

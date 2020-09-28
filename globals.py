@@ -9,6 +9,7 @@ pathway_input = None
 gene_input = None
 deep_input = None
 num_cores_input = None
+mode_input = None
 
 
 """

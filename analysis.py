@@ -1,13 +1,13 @@
 import globals as gl
-from utility import download_file, download_read_html, set_progress_bar, export_data_for_level
+from utility import download_file, download_read_html, set_progress_bar, export_data_for_deep
 import os
 import gzip
 from joblib import Parallel, delayed
 from xml.dom.minidom import parseString
 
 
-def run_analysis():
-    for deep in range(1, gl.deep_input + 1):
+def run_analysis(starting_depth):
+    for deep in range(starting_depth, gl.deep_input + 1):
         if deep == 1:
             # download initial pathway
             download_file('http://rest.kegg.jp/get/' + gl.pathway_input + '/kgml',
@@ -51,15 +51,11 @@ def run_analysis():
             for index, row in set_progress_bar(
                     '[Deep: %d]' % deep, str(df_genes_resulted.shape[0]))(df_genes_resulted.iterrows()):
 
-                #print(row)
-
                 # Return a list of pathways about the gene passed in input
                 list_pathways_this_gene = download_read_html(row['url_kegg_son'])
 
-                #print('a', list_pathways_this_gene)
-
                 # The pathway set as input from the config file is removed, so as to avoid an endless loop
-                #if gl.pathway_input in list_pathways_this_gene:
+                # if gl.pathway_input in list_pathways_this_gene:
                 #    list_pathways_this_gene.remove(gl.pathway_input)
 
                 # process single gene on each CPUs available
@@ -71,7 +67,7 @@ def run_analysis():
 
                 unified(list_rows_df_returned)
 
-        # ----- DROP DUPLICATES -----
+        # ----- START DROP DUPLICATES -----
 
         # Duplicates of the same level are extracted and sorted in alphabetical order
         df_genes_this_level = (gl.DF_TREE[gl.DF_TREE['deep'] == deep])
@@ -90,12 +86,15 @@ def run_analysis():
         # The number of occurrences of the found links is updated and the duplicates will be deleted
         clean_update_row_duplicates(list_rows_to_do_df_returned)
 
+        gl.DF_TREE = gl.DF_TREE[(gl.DF_TREE['deep'] == deep)]
+
+        # export in csv per deep
+        export_data_for_deep(deep)
+
         # Row indexes are reset, because they are no longer sequential due to the elimination of duplicates
         gl.DF_TREE = gl.DF_TREE.reset_index(drop=True)
 
-        export_data_for_level(deep)
-
-        # ----- DROP DUPLICATES -----
+        # ----- END DROP DUPLICATES -----
 
 
 def get_info_gene_initial(pathway_hsa, name_gene):

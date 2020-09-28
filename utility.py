@@ -10,6 +10,10 @@ import configparser
 from dateutil.parser import parse
 from progressbar import Bar, Counter, ETA, Percentage, ProgressBar
 from datetime import datetime
+import glob
+import re
+from pandas import read_csv
+from zipfile import ZipFile
 
 
 def read_config():
@@ -31,6 +35,8 @@ def read_config():
     gl.deep_input = config['analysis'].getint('deep')
     print("Deep: %s" % gl.deep_input)
 
+    gl.mode_input = config['analysis'].getboolean('mode')
+
 
 def clear_previous_results():
     pathdir = os.path.join(os.getcwd(), 'export_data')
@@ -39,6 +45,10 @@ def clear_previous_results():
         shutil.rmtree(pathdir)
 
     os.makedirs(pathdir)
+
+    namezip = '%s_%s_%d.zip' % (gl.pathway_input, gl.gene_input, gl.deep_input)
+    if os.path.isfile(os.path.join(os.getcwd(), namezip)):
+        os.remove(os.path.join(os.getcwd(), namezip))
 
 
 def check_pathway_update_history(url):
@@ -77,7 +87,7 @@ def check_pathway_update_history(url):
             if is_date(items[i].text) and int(items[i].text[0:4]) >= 2020:
                 if 'Deleted; ' in items[i + 3].text:
 
-                    #If the pathway deleted by KEGG exists locally, it is removed
+                    # If the pathway deleted by KEGG exists locally, it is removed
                     if os.path.exists(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz')):
                         print('Deleting the "%s" pathway, removed from KEGG' % items[i + 1].text)
                         os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz'))
@@ -196,10 +206,54 @@ def set_progress_bar(action, max_elem):
     return pb
 
 
-def export_data():
-    gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', 'df_resulted.csv'), sep=';', header=False, index=False)
+def export_data_for_deep(deep):
+    gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', 'df_resulted_deep_%d.csv' % deep), sep=';',
+                      header=False, index=False)
 
+    gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', 'df_resulted.csv'), sep=';', mode='a',
+                      header=False, index=False)
 
-def export_data_for_level(deep):
-    gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', 'df_resulted_deep_%d.csv' % deep), sep=';', header=False, index=False)
     print('----- Deep %d - CSV SAVED ----- ' % deep)
+
+
+def numericalSort(value):
+    numbers = re.compile(r'(\d+)')
+    parts = numbers.split(value)
+    parts[1::2] = map(int, parts[1::2])
+    return parts
+
+
+def load_last_csv():
+    files = glob.glob(os.path.join(os.getcwd(), 'export_data', 'df_resulted_deep_*.csv'))
+
+    path_last_csv = sorted(files, key=numericalSort)[-1]
+    filename_last_csv = os.path.basename(path_last_csv)
+    print(f'Found last csv: {filename_last_csv}')
+
+    deep_last_csv = int(re.compile(r'\d+').findall(filename_last_csv)[0])
+
+    if deep_last_csv == gl.deep_input:
+        print('la profondità selezionata è uguale all\'ultima salvata!')
+        exit(1)
+    elif deep_last_csv > gl.deep_input:
+        print('la profondità dello csv è maggiore di quella selezionata!')
+        exit(1)
+    elif deep_last_csv < gl.deep_input:
+        gl.DF_TREE = read_csv(path_last_csv, sep=";", names=gl.COLS_DF)
+        print(f"The analysis will start from the depth of {gl.deep_input}")
+        return gl.deep_input
+
+
+def create_zip():
+    path = os.path.join(os.getcwd(), 'export_data')
+    namezip = '%s_%s_%d.zip' % (gl.pathway_input, gl.gene_input, gl.deep_input)
+
+    # create a ZipFile object
+    with ZipFile(namezip, 'w') as zipObj:
+        # Iterate over all the files in directory
+        for folderName, subfolders, filenames in os.walk(path):
+            for filename in filenames:
+                # create complete filepath of file in directory
+                filepath = os.path.join(folderName, filename)
+                # Add file to zip
+                zipObj.write(filepath, os.path.basename(filepath))

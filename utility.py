@@ -233,14 +233,14 @@ def load_last_csv():
     deep_last_csv = int(re.compile(r'\d+').findall(filename_last_csv)[0])
 
     if deep_last_csv == gl.deep_input:
-        print('la profondità selezionata è uguale all\'ultima salvata!')
+        print('The maximum depth selected has already been analyzed.\nYou will find the results in the "exporta_data" folder.')
         exit(1)
     elif deep_last_csv > gl.deep_input:
-        print('la profondità dello csv è maggiore di quella selezionata!')
+        print('Warning!\nThe maximum depth analyzed is greater than that selected in input.')
         exit(1)
     elif deep_last_csv < gl.deep_input:
         gl.DF_TREE = read_csv(path_last_csv, sep=";", names=gl.COLS_DF)
-        print(f"The analysis will start from the depth of {gl.deep_input}")
+        print(f"The analysis will start from the depth of {(deep_last_csv+1)}")
         return deep_last_csv + 1
 
 

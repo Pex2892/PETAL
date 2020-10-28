@@ -205,21 +205,42 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
                             # qui verifico l'hsa end se è > 0 come hsa totali
                             # Se si, ricavo name and hsa degli altri trovati
 
-                            row = {
-                                'deep': deep,
-                                'name_father': name_gene_start,
-                                'hsa_father': hsa_gene_start,
-                                'name_son': list_gene_relation[0][2],
-                                'hsa_son': list_gene_relation[0][1],
-                                'url_kegg_son': list_gene_relation[0][3],
-                                'relation': elem.attributes['type'].value,
-                                'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
-                                'pathway_of_origin': pathway_hsa,
-                                'fullpath': path + '/' + list_gene_relation[0][2],
-                                'occurrences': occu
-                            }
-                            list_rows.append(row)
+                            split_hsa = list_gene_relation[0][1].split(" ")
+                            if len(split_hsa) > 1:
 
+                                for i_hsa in split_hsa:
+                                    name_gene = API_KEGG_get_name_gene(i_hsa)
+                                    url_gene = "https://www.kegg.jp/dbget-bin/www_bget?%s" % i_hsa
+
+                                    row = {
+                                        'deep': deep,
+                                        'name_father': name_gene_start,
+                                        'hsa_father': hsa_gene_start,
+                                        'name_son': name_gene,
+                                        'hsa_son': i_hsa,
+                                        'url_kegg_son': url_gene,
+                                        'relation': elem.attributes['type'].value,
+                                        'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
+                                        'pathway_of_origin': pathway_hsa,
+                                        'fullpath': "%s/%s" % (path, name_gene),
+                                        'occurrences': occu
+                                    }
+                                    list_rows.append(row)
+                            else:
+                                row = {
+                                    'deep': deep,
+                                    'name_father': name_gene_start,
+                                    'hsa_father': hsa_gene_start,
+                                    'name_son': list_gene_relation[0][2],
+                                    'hsa_son': list_gene_relation[0][1],
+                                    'url_kegg_son': list_gene_relation[0][3],
+                                    'relation': elem.attributes['type'].value,
+                                    'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
+                                    'pathway_of_origin': pathway_hsa,
+                                    'fullpath': "%s/%s" % (path, list_gene_relation[0][2]),
+                                    'occurrences': occu
+                                }
+                                list_rows.append(row)
         return list_rows
 
 
@@ -245,30 +266,22 @@ def get_info_row_duplicated(df_filtered, gene):
 
     list_to_do_df = list()
     for key, group in grouped_df:
-        hsa_end_refactor = ' '.join(group['hsa_son'].tolist())
-        hsa_end_refactor = sorted(set(hsa_end_refactor.split(' ')))
-        hsa_end_refactor = ' '.join(hsa_end_refactor)
-
-        url_gene_end_refactor = 'https://www.kegg.jp/dbget-bin/www_bget?' + hsa_end_refactor.replace(' ', '+')
         occurences_calculated = group.iloc[0]['occurrences'] * group.shape[0]
 
         # row to update (take the first one by updating all fields)
         # list of rows to be removed, keeping only one
-        # the hsa_end of the gene is created
-        # url_end of the gene is created
         # concatenation of all relations based on the source pathways
         # concatenation of all type_rel based on the source pathway
         # concatenation of all path_origin
-        list_to_do_df.append((
-            group.index[0],
-            list(filter(group.index[0].__ne__, group.index.values.tolist())),
-            hsa_end_refactor,
-            url_gene_end_refactor,
-            '§§'.join(group['relation'].tolist()),
-            '§§'.join(group['type_rel'].tolist()),
-            '§§'.join(group['pathway_of_origin'].tolist()),
-            occurences_calculated
-        )
+        list_to_do_df.append(
+            (
+                group.index[0],
+                list(filter(group.index[0].__ne__, group.index.values.tolist())),
+                '§§'.join(group['relation'].tolist()),
+                '§§'.join(group['type_rel'].tolist()),
+                '§§'.join(group['pathway_of_origin'].tolist()),
+                occurences_calculated
+            )
         )
     return list_to_do_df
 
@@ -277,9 +290,9 @@ def clean_update_row_duplicates(list_to_do_df):
     for row in list_to_do_df:
         for cell in row:
             # The selected row is updated, in the 4 specified columns, with the new information
-            cols = ['hsa_son', 'url_kegg_son', 'relation', 'type_rel', 'pathway_of_origin', 'occurrences']
+            cols = ['relation', 'type_rel', 'pathway_of_origin', 'occurrences']
 
-            gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4], cell[5], cell[6], cell[7]]
+            gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4], cell[5]]
 
             # The selected rows are removed, because they are duplicated
             if len(cell[1]) > 0:

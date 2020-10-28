@@ -18,7 +18,7 @@ from zipfile import ZipFile
 
 def read_config():
     config = configparser.ConfigParser()
-    config.read(gl.filename_config)
+    config.read(os.path.join(os.getcwd(), gl.filename_config))
 
     gl.num_cores_input = config['analysis'].getint('n_cpu')
     if gl.num_cores_input == 0 or gl.num_cores_input > mlp.cpu_count():

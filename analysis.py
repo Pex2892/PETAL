@@ -28,11 +28,11 @@ def run_analysis(starting_depth):
                         break
             else:
                 # set globals variables
-                gl.gene_input_hsa = hsa_finded
+                gl.gene_input_hsa = split_hsa[0]
                 gl.gene_input_url = "https://www.kegg.jp/dbget-bin/www_bget?%s" % hsa_finded
 
             # read initial pathway, create and add genes to csv
-            list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input, hsa_finded, gl.gene_input, 1)
+            list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input, gl.gene_input_hsa, gl.gene_input, 1)
 
             # add n genes found to the dataframe
             unified([list_rows_df_returned])
@@ -47,7 +47,7 @@ def run_analysis(starting_depth):
             if len(list_pathways_this_gene) > 0:
                 # process single gene on each CPUs available
                 list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(delayed(analysis_deep_n)(
-                    deep, gl.gene_input, hsa_finded, pathway_this_gene, gl.gene_input, 1)
+                    deep, gl.gene_input, gl.gene_input_hsa, pathway_this_gene, gl.gene_input, 1)
                                                                             for pathway_this_gene in set_progress_bar(
                     '[Deep: %d]' % deep, str(len(list_pathways_this_gene)))(list_pathways_this_gene))
 
@@ -142,7 +142,7 @@ def get_info_gene_initial(pathway_hsa, name_gene):
 
 
 def search_id_to_hsa(list_genes_this_pathway, hsa_gene):
-    return [item for item in list_genes_this_pathway if hsa_gene == item[1]]
+    return [item for item in list_genes_this_pathway if hsa_gene in item[1]+" "]
 
 
 def search_gene_to_id(list_genes_this_pathway, id_gene):
@@ -197,8 +197,7 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
 
                         # We try to find a correspondence between gene and your id. If it returns zero,
                         # it indicates that that gene does not exist or is group or compund type and not gene type
-                        if elem.attributes['entry1'].value == id_gene[0]:
-                            list_gene_relation = search_gene_to_id(list_genes_this_pathway, elem.attributes['entry2'].value)
+                        list_gene_relation = search_gene_to_id(list_genes_this_pathway, elem.attributes['entry2'].value)
 
                         # Checks if at least one connection has been found
                         if len(list_gene_relation) > 0:

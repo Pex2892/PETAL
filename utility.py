@@ -161,7 +161,7 @@ def download_file(url, pathfile, filename):
 def download_read_html(url):
     # download and read of the html page containing all the genes, passed as parameters in the url
 
-    filename = url.split('?')[1]
+    filename = "%s.html" % url.split('?')[1]
 
     download_file(url, os.path.join(os.getcwd(), 'database', 'pathways', 'html'), filename)
 
@@ -186,7 +186,6 @@ def download_read_html(url):
 
 
 def API_KEGG_get_name_gene(hsa):
-    # http: // rest.kegg.jp / list / hsa: 2872
     url = "http://rest.kegg.jp/list/%s" % hsa
     try:
         req = requests.get(url).content.decode('utf-8')

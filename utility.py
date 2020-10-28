@@ -14,6 +14,8 @@ import glob
 import re
 from pandas import read_csv
 from zipfile import ZipFile
+import io
+
 
 
 def read_config():
@@ -185,16 +187,31 @@ def download_read_html(url):
     return list_pathway
 
 
-def API_KEGG_get_name_gene(hsa):
-    url = "http://rest.kegg.jp/list/%s" % hsa
+def API_KEGG_get_list_human_genes():
+    url = "http://rest.kegg.jp/list/hsa"
     try:
         req = requests.get(url).content.decode('utf-8')
 
-        return req.split("\t")[1].split(",")[0]
+        gl.DF_GENE_HSA = read_csv(io.StringIO(req), sep='\t', names=gl.COLS_DF_2)
 
     except requests.exceptions.ConnectionError:
         print("ERROR: Connection refused from KEGG for get name gene")
         exit(1)
+
+
+def API_KEGG_get_name_gene_from_hsa(hsa):
+    print(hsa)
+    sub_df = (gl.DF_GENE_HSA[(gl.DF_GENE_HSA['hsa'] == hsa)])
+    print(sub_df['gene'].values[0])
+    exit(1)
+    return sub_df['gene'].values[0]
+
+
+
+def API_KEGG_get_hsa_gene_from_name(gene):
+    sub_df = gl.DF_GENE_HSA[gl.DF_GENE_HSA['gene'].str.contains(r'^%s[,;]' % gene)]
+
+    return sub_df['hsa'].values[0]
 
 
 def is_date(string, fuzzy=False):

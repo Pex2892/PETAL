@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 
 """
@@ -31,6 +32,9 @@ At this point, the dataframe with the specified columns will be created."""
 COLS_DF = ['deep', 'name_father', 'hsa_father', 'name_son', 'hsa_son', 'url_kegg_son', 'relation',
            'type_rel', 'pathway_of_origin', 'fullpath', 'occurrences']
 DF_TREE = pd.DataFrame(columns=COLS_DF)
+
+COLS_DF_2 = ['hsa', 'gene']
+DF_GENE_HSA = pd.DataFrame(columns=COLS_DF_2)
 
 
 """

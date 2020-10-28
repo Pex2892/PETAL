@@ -1,5 +1,5 @@
 import globals as gl
-from utility import download_file, download_read_html, set_progress_bar, export_data_for_deep, API_KEGG_get_name_gene
+from utility import download_file, download_read_html, set_progress_bar, export_data_for_deep, API_KEGG_get_hsa_gene_from_name, API_KEGG_get_name_gene_from_hsa
 import os
 import gzip
 from joblib import Parallel, delayed
@@ -12,27 +12,21 @@ def run_analysis(starting_depth):
         if deep == 1:
             # download initial pathway
             download_file('http://rest.kegg.jp/get/' + gl.pathway_input + '/kgml',
-                              os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), gl.pathway_input + '.xml.gz')
+                          os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), gl.pathway_input + '.xml.gz')
 
-            # get info first gene from gene name
-            hsa_finded = get_info_gene_initial(gl.pathway_input, gl.gene_input)
+            # It checks exist gene into the pathway
+            check_exist_gene_in_pathway(gl.pathway_input, gl.gene_input)
 
             # faccio questo perchè il gene di partenza potrebbe restituire un multiID, in realtà solo uno è di quel gene
-            split_hsa = hsa_finded.split(" ")
-            if len(split_hsa) > 1:
-                for i_hsa in split_hsa:
-                    name_gene = API_KEGG_get_name_gene(i_hsa)
-                    if name_gene == gl.gene_input:
-                        gl.gene_input_hsa = i_hsa
-                        gl.gene_input_url = "https://www.kegg.jp/dbget-bin/www_bget?%s" % i_hsa
-                        break
-            else:
-                # set globals variables
-                gl.gene_input_hsa = split_hsa[0]
-                gl.gene_input_url = "https://www.kegg.jp/dbget-bin/www_bget?%s" % hsa_finded
+            hsa_finded = API_KEGG_get_hsa_gene_from_name(gl.gene_input)
+
+            # set globals variables
+            gl.gene_input_hsa = hsa_finded
+            gl.gene_input_url = "https://www.kegg.jp/dbget-bin/www_bget?%s" % hsa_finded
 
             # read initial pathway, create and add genes to csv
-            list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input, gl.gene_input_hsa, gl.gene_input, 1)
+            list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input, gl.gene_input_hsa, gl.gene_input,
+                                              1)
 
             # add n genes found to the dataframe
             unified([list_rows_df_returned])
@@ -61,7 +55,6 @@ def run_analysis(starting_depth):
 
             for index, row in set_progress_bar(
                     '[Deep: %d]' % deep, str(df_genes_resulted.shape[0]))(df_genes_resulted.iterrows()):
-
                 # Return a list of pathways about the gene passed in input
                 list_pathways_this_gene = download_read_html(row['url_kegg_son'])
 
@@ -121,28 +114,19 @@ def run_analysis(starting_depth):
             return None"""
 
 
-def get_info_gene_initial(pathway_hsa, name_gene):
+def check_exist_gene_in_pathway(pathway_hsa, name_gene):
     filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
 
     with gzip.open(filename, "rb") as f:
         content = f.read().decode('utf-8')
-        mydoc = parseString(content)
 
-        # GENES
-        entry = mydoc.getElementsByTagName('entry')
-
-        for elem in entry:
-            string_check = name_gene + ','
-            if elem.attributes['type'].value == 'gene' and string_check in \
-                    elem.getElementsByTagName('graphics')[0].attributes['name'].value:
-                return elem.attributes['name'].value
-
-        print('The gene entered not exit into pathway selected!')
-        exit(1)
+        if not name_gene in content:
+            print('The gene entered not exit into pathway selected!')
+            exit(1)
 
 
 def search_id_to_hsa(list_genes_this_pathway, hsa_gene):
-    return [item for item in list_genes_this_pathway if hsa_gene in item[1]+" "]
+    return [item for item in list_genes_this_pathway if hsa_gene in item[1] + " "]
 
 
 def search_gene_to_id(list_genes_this_pathway, id_gene):
@@ -209,7 +193,7 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
                             if len(split_hsa) > 1:
 
                                 for i_hsa in split_hsa:
-                                    name_gene = API_KEGG_get_name_gene(i_hsa)
+                                    name_gene = API_KEGG_get_name_gene_from_hsa(i_hsa)
                                     url_gene = "https://www.kegg.jp/dbget-bin/www_bget?%s" % i_hsa
 
                                     row = {

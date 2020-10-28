@@ -161,8 +161,7 @@ def download_file(url, pathfile, filename):
 def download_read_html(url):
     # download and read of the html page containing all the genes, passed as parameters in the url
 
-    filename = url.split('?')[1].replace('+', '_').replace(':', '')
-    filename = hashlib.md5(filename.encode("utf-8")).hexdigest() + '.html.gz'
+    filename = url.split('?')[1]
 
     download_file(url, os.path.join(os.getcwd(), 'database', 'pathways', 'html'), filename)
 
@@ -182,7 +181,21 @@ def download_read_html(url):
 
         # generate a unique elements
         list_pathway = list(set(list_pathway))
+
     return list_pathway
+
+
+def API_KEGG_get_name_gene(hsa):
+    # http: // rest.kegg.jp / list / hsa: 2872
+    url = "http://rest.kegg.jp/list/%s" % hsa
+    try:
+        req = requests.get(url).content.decode('utf-8')
+
+        return req.split("\t")[1].split(",")[0]
+
+    except requests.exceptions.ConnectionError:
+        print("ERROR: Connection refused from KEGG for get name gene")
+        exit(1)
 
 
 def is_date(string, fuzzy=False):
@@ -240,7 +253,7 @@ def load_last_csv():
         exit(1)
     elif deep_last_csv < gl.deep_input:
         gl.DF_TREE = read_csv(path_last_csv, sep=";", names=gl.COLS_DF)
-        print(f"The analysis will start from the depth of {(deep_last_csv+1)}")
+        print(f"The analysis will start from the depth of {(deep_last_csv + 1)}")
         return deep_last_csv + 1
 
 

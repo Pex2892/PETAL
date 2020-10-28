@@ -1,9 +1,10 @@
 import globals as gl
-from utility import download_file, download_read_html, set_progress_bar, export_data_for_deep
+from utility import download_file, download_read_html, set_progress_bar, export_data_for_deep, API_KEGG_get_name_gene
 import os
 import gzip
 from joblib import Parallel, delayed
 from xml.dom.minidom import parseString
+from inputimeout import inputimeout, TimeoutOccurred
 
 
 def run_analysis(starting_depth):
@@ -14,11 +15,21 @@ def run_analysis(starting_depth):
                               os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), gl.pathway_input + '.xml.gz')
 
             # get info first gene from gene name
-            hsa_finded, url_finded = get_info_gene_initial(gl.pathway_input, gl.gene_input)
+            hsa_finded = get_info_gene_initial(gl.pathway_input, gl.gene_input)
 
-            # set globals variables
-            gl.gene_input_hsa = hsa_finded
-            gl.gene_input_url = url_finded
+            # faccio questo perchè il gene di partenza potrebbe restituire un multiID, in realtà solo uno è di quel gene
+            split_hsa = hsa_finded.split(" ")
+            if len(split_hsa) > 1:
+                for i_hsa in split_hsa:
+                    name_gene = API_KEGG_get_name_gene(i_hsa)
+                    if name_gene == gl.gene_input:
+                        gl.gene_input_hsa = i_hsa
+                        gl.gene_input_url = "https://www.kegg.jp/dbget-bin/www_bget?%s" % i_hsa
+                        break
+            else:
+                # set globals variables
+                gl.gene_input_hsa = hsa_finded
+                gl.gene_input_url = "https://www.kegg.jp/dbget-bin/www_bget?%s" % hsa_finded
 
             # read initial pathway, create and add genes to csv
             list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input, hsa_finded, gl.gene_input, 1)
@@ -27,7 +38,7 @@ def run_analysis(starting_depth):
             unified([list_rows_df_returned])
 
             # retrive other list pathways in reference to initial pathway
-            list_pathways_this_gene = download_read_html(url_finded)
+            list_pathways_this_gene = download_read_html(gl.gene_input_url)
 
             # The pathway set as input from the config file is removed
             if gl.pathway_input in list_pathways_this_gene:
@@ -86,6 +97,8 @@ def run_analysis(starting_depth):
         # The number of occurrences of the found links is updated and the duplicates will be deleted
         clean_update_row_duplicates(list_rows_to_do_df_returned)
 
+        # ----- END DROP DUPLICATES -----
+
         gl.DF_TREE = gl.DF_TREE[(gl.DF_TREE['deep'] == deep)]
 
         # export in csv per deep
@@ -94,7 +107,18 @@ def run_analysis(starting_depth):
         # Row indexes are reset, because they are no longer sequential due to the elimination of duplicates
         gl.DF_TREE = gl.DF_TREE.reset_index(drop=True)
 
-        # ----- END DROP DUPLICATES -----
+        """try:
+            answer = inputimeout(prompt='>>> Do you want to stop the running? You have 15 seconds to type \'yes\' and '
+                                        'then press enter!\n>> Answer: ', timeout=15)
+        except TimeoutOccurred:
+            answer = 'no'
+
+        print(answer)
+        if answer == 'yes':
+            print('The analysis will be stopped at depth %d' % deep)
+            #NOTA, verificare il nome dello zip se si blocca prima, scrivere il file config.ini
+            # https://stackoverflow.com/questions/8884188/how-to-read-and-write-ini-file-with-python3
+            return None"""
 
 
 def get_info_gene_initial(pathway_hsa, name_gene):
@@ -111,7 +135,7 @@ def get_info_gene_initial(pathway_hsa, name_gene):
             string_check = name_gene + ','
             if elem.attributes['type'].value == 'gene' and string_check in \
                     elem.getElementsByTagName('graphics')[0].attributes['name'].value:
-                return elem.attributes['name'].value, elem.attributes['link'].value
+                return elem.attributes['name'].value
 
         print('The gene entered not exit into pathway selected!')
         exit(1)
@@ -178,6 +202,10 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
 
                         # Checks if at least one connection has been found
                         if len(list_gene_relation) > 0:
+
+                            # qui verifico l'hsa end se è > 0 come hsa totali
+                            # Se si, ricavo name and hsa degli altri trovati
+
                             row = {
                                 'deep': deep,
                                 'name_father': name_gene_start,
@@ -192,6 +220,7 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
                                 'occurrences': occu
                             }
                             list_rows.append(row)
+
         return list_rows
 
 

@@ -5,4 +5,4 @@ beautifulsoup4~=4.9.3
 bs4~=0.0.1
 python-dateutil~=2.8.1
 progressbar2~=3.53.1
-inputimeout
+inputimeout~=1.0.4

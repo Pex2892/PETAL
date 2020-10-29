@@ -22,7 +22,6 @@ else:
 print("----- CHECK UPDATED PATHWAYS -----")
 check_pathway_update_history('https://www.genome.jp/kegg/docs/upd_map.html')
 
-print("-----  LOAD LIST OF HUMAN GENES -----")
 API_KEGG_get_list_human_genes()
 
 print("----- START ANALYSIS -----")

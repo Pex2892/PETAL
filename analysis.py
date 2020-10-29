@@ -17,7 +17,6 @@ def run_analysis(starting_depth):
             # It checks exist gene into the pathway
             check_exist_gene_in_pathway(gl.pathway_input, gl.gene_input)
 
-            # faccio questo perchè il gene di partenza potrebbe restituire un multiID, in realtà solo uno è di quel gene
             hsa_finded = API_KEGG_get_hsa_gene_from_name(gl.gene_input, gl.JSON_GENE_HSA)
 
             # set globals variables
@@ -186,9 +185,7 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu, js
                         # Checks if at least one connection has been found
                         if len(list_gene_relation) > 0:
 
-                            # qui verifico l'hsa end se è > 0 come hsa totali
-                            # Se si, ricavo name and hsa degli altri trovati
-
+                            # It could happen that one final gene, we have many hsa. will be managed individually
                             split_hsa = list_gene_relation[0][1].split(" ")
                             if len(split_hsa) > 1:
 

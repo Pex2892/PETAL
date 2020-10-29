@@ -5,17 +5,16 @@ import os
 import shutil
 import multiprocessing as mlp
 import gzip
-import hashlib
 import configparser
+import glob
+import re
+import json
+import io
 from dateutil.parser import parse
 from progressbar import Bar, Counter, ETA, Percentage, ProgressBar
 from datetime import datetime
-import glob
-import re
 from pandas import read_csv
 from zipfile import ZipFile
-import io
-
 
 
 def read_config():
@@ -188,30 +187,36 @@ def download_read_html(url):
 
 
 def API_KEGG_get_list_human_genes():
-    url = "http://rest.kegg.jp/list/hsa"
-    try:
-        req = requests.get(url).content.decode('utf-8')
+    path = os.path.join(os.getcwd(), 'database', 'dict_human_genes.json')
 
-        gl.DF_GENE_HSA = read_csv(io.StringIO(req), sep='\t', names=gl.COLS_DF_2)
+    if not os.path.exists(path):
+        print("-----  DOWNLOAD LIST OF HUMAN GENES -----")
+        url = "http://rest.kegg.jp/list/hsa"
+        try:
+            req = requests.get(url).content.decode('utf-8')
 
-    except requests.exceptions.ConnectionError:
-        print("ERROR: Connection refused from KEGG for get name gene")
-        exit(1)
+            df_temp = read_csv(io.StringIO(req), sep="	", names=['hsa', 'gene'])
+            df_temp.to_json(path, orient="records")
+            del df_temp
+        except requests.exceptions.ConnectionError:
+            print("ERROR: Connection refused from KEGG for get name gene")
+            exit(1)
+
+    print("-----  LOAD LIST OF HUMAN GENES -----")
+    with open(path, 'r') as f:
+        gl.JSON_GENE_HSA = json.load(f)
 
 
-def API_KEGG_get_name_gene_from_hsa(hsa):
-    print(hsa)
-    sub_df = (gl.DF_GENE_HSA[(gl.DF_GENE_HSA['hsa'] == hsa)])
-    print(sub_df['gene'].values[0])
-    exit(1)
-    return sub_df['gene'].values[0]
+def API_KEGG_get_name_gene_from_hsa(hsa, json_gene_hsa):
+    for dict in json_gene_hsa:
+        if dict['hsa'] == hsa:
+            return dict['gene'].split(";", 1)[0].split(",", 1)[0]
 
 
-
-def API_KEGG_get_hsa_gene_from_name(gene):
-    sub_df = gl.DF_GENE_HSA[gl.DF_GENE_HSA['gene'].str.contains(r'^%s[,;]' % gene)]
-
-    return sub_df['hsa'].values[0]
+def API_KEGG_get_hsa_gene_from_name(gene, json_gene_hsa):
+    for dict in json_gene_hsa:
+        if re.match(r"^%s[,;]" % gene, dict['gene']):
+            return dict['hsa']
 
 
 def is_date(string, fuzzy=False):

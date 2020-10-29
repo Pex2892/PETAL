@@ -187,38 +187,21 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu, js
 
                             # It could happen that one final gene, we have many hsa. will be managed individually
                             split_hsa = list_gene_relation[0][1].split(" ")
-                            if len(split_hsa) > 1:
+                            for i_hsa in split_hsa:
+                                name_gene = API_KEGG_get_name_gene_from_hsa(i_hsa, json_gene_hsa)
+                                url_gene = "https://www.kegg.jp/dbget-bin/www_bget?%s" % i_hsa
 
-                                for i_hsa in split_hsa:
-                                    name_gene = API_KEGG_get_name_gene_from_hsa(i_hsa, json_gene_hsa)
-                                    url_gene = "https://www.kegg.jp/dbget-bin/www_bget?%s" % i_hsa
-
-                                    row = {
-                                        'deep': deep,
-                                        'name_father': name_gene_start,
-                                        'hsa_father': hsa_gene_start,
-                                        'name_son': name_gene,
-                                        'hsa_son': i_hsa,
-                                        'url_kegg_son': url_gene,
-                                        'relation': elem.attributes['type'].value,
-                                        'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
-                                        'pathway_of_origin': pathway_hsa,
-                                        'fullpath': "%s/%s" % (path, name_gene),
-                                        'occurrences': occu
-                                    }
-                                    list_rows.append(row)
-                            else:
                                 row = {
                                     'deep': deep,
                                     'name_father': name_gene_start,
                                     'hsa_father': hsa_gene_start,
-                                    'name_son': list_gene_relation[0][2],
-                                    'hsa_son': list_gene_relation[0][1],
-                                    'url_kegg_son': list_gene_relation[0][3],
+                                    'name_son': name_gene,
+                                    'hsa_son': i_hsa,
+                                    'url_kegg_son': url_gene,
                                     'relation': elem.attributes['type'].value,
                                     'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
                                     'pathway_of_origin': pathway_hsa,
-                                    'fullpath': "%s/%s" % (path, list_gene_relation[0][2]),
+                                    'fullpath': "%s/%s" % (path, name_gene),
                                     'occurrences': occu
                                 }
                                 list_rows.append(row)

@@ -30,11 +30,11 @@ run_analysis(starting_depth)
 print("----- END ANALYSIS -----")
 
 print("----- START GENERATE OUTPUT -----")
-#draw_json_run()
+draw_json_run()
 print("----- END GENERATE OUTPUT -----")
 
 print("----- START GENERATE ZIPFILE -----")
-#create_zip()
+create_zip()
 print("----- END GENERATE ZIPFILE -----")
 
 m, s = divmod(time.time() - start_time, 60)

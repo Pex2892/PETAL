@@ -33,8 +33,8 @@ COLS_DF = ['deep', 'name_father', 'hsa_father', 'name_son', 'hsa_son', 'url_kegg
            'type_rel', 'pathway_of_origin', 'fullpath', 'occurrences']
 DF_TREE = pd.DataFrame(columns=COLS_DF)
 
-COLS_DF_2 = ['hsa', 'gene']
-DF_GENE_HSA = pd.DataFrame(columns=COLS_DF_2)
+
+JSON_GENE_HSA = None
 
 
 """

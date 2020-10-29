@@ -18,15 +18,15 @@ def run_analysis(starting_depth):
             check_exist_gene_in_pathway(gl.pathway_input, gl.gene_input)
 
             # faccio questo perchè il gene di partenza potrebbe restituire un multiID, in realtà solo uno è di quel gene
-            hsa_finded = API_KEGG_get_hsa_gene_from_name(gl.gene_input)
+            hsa_finded = API_KEGG_get_hsa_gene_from_name(gl.gene_input, gl.JSON_GENE_HSA)
 
             # set globals variables
             gl.gene_input_hsa = hsa_finded
             gl.gene_input_url = "https://www.kegg.jp/dbget-bin/www_bget?%s" % hsa_finded
 
             # read initial pathway, create and add genes to csv
-            list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input, gl.gene_input_hsa, gl.gene_input,
-                                              1)
+            list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input, gl.gene_input_hsa,
+                                              gl.gene_input, 1, gl.JSON_GENE_HSA)
 
             # add n genes found to the dataframe
             unified([list_rows_df_returned])
@@ -41,7 +41,7 @@ def run_analysis(starting_depth):
             if len(list_pathways_this_gene) > 0:
                 # process single gene on each CPUs available
                 list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(delayed(analysis_deep_n)(
-                    deep, gl.gene_input, gl.gene_input_hsa, pathway_this_gene, gl.gene_input, 1)
+                    deep, gl.gene_input, gl.gene_input_hsa, pathway_this_gene, gl.gene_input, 1, gl.JSON_GENE_HSA)
                                                                             for pathway_this_gene in set_progress_bar(
                     '[Deep: %d]' % deep, str(len(list_pathways_this_gene)))(list_pathways_this_gene))
 
@@ -66,7 +66,7 @@ def run_analysis(starting_depth):
                 list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(
                     delayed(analysis_deep_n)(
                         deep, row['name_son'], row['hsa_son'], pathway_this_gene,
-                        row['fullpath'], row['occurrences']) for pathway_this_gene in list_pathways_this_gene
+                        row['fullpath'], row['occurrences'], gl.JSON_GENE_HSA) for pathway_this_gene in list_pathways_this_gene
                 )
 
                 unified(list_rows_df_returned)
@@ -143,7 +143,7 @@ def concat_multiple_subtype(list_subtype):
     return 'None'
 
 
-def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
+def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu, json_gene_hsa):
     filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
 
     with gzip.open(filename, "rb") as f:
@@ -193,7 +193,7 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
                             if len(split_hsa) > 1:
 
                                 for i_hsa in split_hsa:
-                                    name_gene = API_KEGG_get_name_gene_from_hsa(i_hsa)
+                                    name_gene = API_KEGG_get_name_gene_from_hsa(i_hsa, json_gene_hsa)
                                     url_gene = "https://www.kegg.jp/dbget-bin/www_bget?%s" % i_hsa
 
                                     row = {
@@ -228,11 +228,11 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
         return list_rows
 
 
-def analysis_deep_n(deep, gene, gene_hsa, pathway_this_gene, path, occu):
+def analysis_deep_n(deep, gene, gene_hsa, pathway_this_gene, path, occu, json_gene_hsa):
     download_file('http://rest.kegg.jp/get/' + pathway_this_gene + '/kgml',
                   os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), pathway_this_gene + '.xml.gz')
 
-    list_rows = read_kgml(deep, pathway_this_gene, gene, gene_hsa, path, occu)
+    list_rows = read_kgml(deep, pathway_this_gene, gene, gene_hsa, path, occu, json_gene_hsa)
 
     return list_rows
 

@@ -29,7 +29,7 @@ pd.set_option('display.max_colwidth', None)
 
 """
 At this point, the dataframe with the specified columns will be created."""
-COLS_DF = ['deep', 'name_father', 'hsa_father', 'name_son', 'hsa_son', 'url_kegg_son', 'relation',
+COLS_DF = ['deep', 'name_father', 'hsa_father', 'name_son', 'hsa_son', 'url_kegg_son', 'isoform', 'relation',
            'type_rel', 'pathway_of_origin', 'fullpath', 'occurrences']
 DF_TREE = pd.DataFrame(columns=COLS_DF)
 

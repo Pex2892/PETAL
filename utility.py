@@ -190,7 +190,7 @@ def API_KEGG_get_list_human_genes():
     path = os.path.join(os.getcwd(), 'database', 'dict_human_genes.json')
 
     if not os.path.exists(path):
-        print("-----  DOWNLOAD LIST OF HUMAN GENES -----")
+        print("----- DOWNLOAD LIST OF HUMAN GENES -----")
         url = "http://rest.kegg.jp/list/hsa"
         try:
             req = requests.get(url).content.decode('utf-8')
@@ -202,7 +202,7 @@ def API_KEGG_get_list_human_genes():
             print("ERROR: Connection refused from KEGG for get name gene")
             exit(1)
 
-    print("-----  LOAD LIST OF HUMAN GENES -----")
+    print("----- LOAD LIST OF HUMAN GENES -----")
     with open(path, 'r') as f:
         gl.JSON_GENE_HSA = json.load(f)
 

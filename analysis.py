@@ -17,7 +17,7 @@ def run_analysis(starting_depth):
             # It checks exist gene into the pathway
             check_exist_gene_in_pathway(gl.pathway_input, gl.gene_input)
 
-            hsa_finded = API_KEGG_get_hsa_gene_from_name(gl.gene_input, gl.JSON_GENE_HSA)
+            hsa_finded = API_KEGG_get_hsa_gene_from_name(gl.gene_input, gl.CSV_GENE_HSA)
 
             # set globals variables
             gl.gene_input_hsa = hsa_finded
@@ -25,7 +25,7 @@ def run_analysis(starting_depth):
 
             # read initial pathway, create and add genes to csv
             list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input, gl.gene_input_hsa,
-                                              gl.gene_input, 1, gl.JSON_GENE_HSA)
+                                              gl.gene_input, 1, gl.CSV_GENE_HSA)
 
             # add n genes found to the dataframe
             unified([list_rows_df_returned])
@@ -40,7 +40,7 @@ def run_analysis(starting_depth):
             if len(list_pathways_this_gene) > 0:
                 # process single gene on each CPUs available
                 list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(delayed(analysis_deep_n)(
-                    deep, gl.gene_input, gl.gene_input_hsa, pathway_this_gene, gl.gene_input, 1, gl.JSON_GENE_HSA)
+                    deep, gl.gene_input, gl.gene_input_hsa, pathway_this_gene, gl.gene_input, 1, gl.CSV_GENE_HSA)
                                                                             for pathway_this_gene in set_progress_bar(
                     '[Deep: %d]' % deep, str(len(list_pathways_this_gene)))(list_pathways_this_gene))
 
@@ -65,7 +65,7 @@ def run_analysis(starting_depth):
                 list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(
                     delayed(analysis_deep_n)(
                         deep, row['name_son'], row['hsa_son'], pathway_this_gene,
-                        row['fullpath'], row['occurrences'], gl.JSON_GENE_HSA) for pathway_this_gene in list_pathways_this_gene
+                        row['fullpath'], row['occurrences'], gl.CSV_GENE_HSA) for pathway_this_gene in list_pathways_this_gene
                 )
 
                 unified(list_rows_df_returned)
@@ -187,23 +187,21 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu, js
 
                             # It could happen that one final gene, we have many hsa. will be managed individually
                             split_hsa = list_gene_relation[0][1].split(" ")
-                            list_alias_this_gene = []
-                            name_gene = API_KEGG_get_name_gene_from_hsa(split_hsa[0], json_gene_hsa)
-                            for i_hsa in split_hsa[1:]:
-                                list_alias_this_gene.append(API_KEGG_get_name_gene_from_hsa(i_hsa, json_gene_hsa))
+
+                            list_isoform = API_KEGG_get_name_gene_from_hsa(split_hsa[1:], json_gene_hsa)
 
                             row = {
                                 'deep': deep,
                                 'name_father': name_gene_start,
                                 'hsa_father': hsa_gene_start,
-                                'name_son': name_gene,
+                                'name_son': list_gene_relation[0][2],
                                 'hsa_son': split_hsa[0],
                                 'url_kegg_son': "https://www.kegg.jp/dbget-bin/www_bget?%s" % split_hsa[0],
-                                'isoform': ','.join(list_alias_this_gene),
+                                'isoform': list_isoform,
                                 'relation': elem.attributes['type'].value,
                                 'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
                                 'pathway_of_origin': pathway_hsa,
-                                'fullpath': "%s/%s" % (path, name_gene),
+                                'fullpath': "%s/%s" % (path, list_gene_relation[0][2]),
                                 'occurrences': occu
                             }
                             list_rows.append(row)

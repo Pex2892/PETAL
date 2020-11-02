@@ -15,6 +15,7 @@ from progressbar import Bar, Counter, ETA, Percentage, ProgressBar
 from datetime import datetime
 from pandas import read_csv
 from zipfile import ZipFile
+import numpy as np
 
 
 def read_config():
@@ -187,7 +188,7 @@ def download_read_html(url):
 
 
 def API_KEGG_get_list_human_genes():
-    path = os.path.join(os.getcwd(), 'database', 'dict_human_genes.json')
+    path = os.path.join(os.getcwd(), 'database', 'dict_human_genes.csv')
 
     if not os.path.exists(path):
         print("----- DOWNLOAD LIST OF HUMAN GENES -----")
@@ -196,27 +197,32 @@ def API_KEGG_get_list_human_genes():
             req = requests.get(url).content.decode('utf-8')
 
             df_temp = read_csv(io.StringIO(req), sep="	", names=['hsa', 'gene'])
-            df_temp.to_json(path, orient="records")
+            df_temp.to_csv(path, sep='\t', header=False, index=False)
             del df_temp
+
         except requests.exceptions.ConnectionError:
             print("ERROR: Connection refused from KEGG for get name gene")
             exit(1)
 
     print("----- LOAD LIST OF HUMAN GENES -----")
-    with open(path, 'r') as f:
-        gl.JSON_GENE_HSA = json.load(f)
+    # convert array numpy 2d in 1d with flatten
+    gl.CSV_GENE_HSA = (read_csv(path, sep="\t").to_numpy()).flatten()
 
 
-def API_KEGG_get_name_gene_from_hsa(hsa, json_gene_hsa):
-    for dict in json_gene_hsa:
-        if dict['hsa'] == hsa:
-            return dict['gene'].split(";", 1)[0].split(",", 1)[0]
+def API_KEGG_get_name_gene_from_hsa(list_hsa, csv_gene_hsa):
+    list_genes_finded = []
+    for i_hsa in list_hsa:
+        index = np.where(csv_gene_hsa == i_hsa)[0][0]
+        list_genes_finded.append('%s(%s)' % (csv_gene_hsa[index+1].split(";", 1)[0].split(",", 1)[0], i_hsa))
+
+    return ', '.join(list_genes_finded)
 
 
-def API_KEGG_get_hsa_gene_from_name(gene, json_gene_hsa):
-    for dict in json_gene_hsa:
-        if re.match(r"^%s[,;]" % gene, dict['gene']):
-            return dict['hsa']
+def API_KEGG_get_hsa_gene_from_name(gene, csv_gene_hsa):
+    r = re.compile(r"^%s[,;]" % gene)
+    finded = list(filter(r.match, csv_gene_hsa))[0]
+    index = np.where(csv_gene_hsa == finded)[0][0]
+    return csv_gene_hsa[index-1]
 
 
 def is_date(string, fuzzy=False):

@@ -20,7 +20,7 @@ else:
     starting_depth = load_last_csv()
 
 print("----- CHECK UPDATED PATHWAYS -----")
-check_pathway_update_history('https://www.genome.jp/kegg/docs/upd_map.html')
+#check_pathway_update_history('https://www.genome.jp/kegg/docs/upd_map.html')
 
 API_KEGG_get_list_human_genes()
 

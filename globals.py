@@ -34,7 +34,7 @@ COLS_DF = ['deep', 'name_father', 'hsa_father', 'name_son', 'hsa_son', 'url_kegg
 DF_TREE = pd.DataFrame(columns=COLS_DF)
 
 
-JSON_GENE_HSA = None
+CSV_GENE_HSA = None
 
 
 """

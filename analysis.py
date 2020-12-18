@@ -95,14 +95,14 @@ def run_analysis(starting_depth):
         # ----- END DROP DUPLICATES -----
 
         # ----- START REPLACE ISOFORM -----
-        #df_isoform_this_level = gl.DF_TREE['isoform']
+        """#df_isoform_this_level = gl.DF_TREE['isoform']
         print(gl.DF_TREE['isoform'])
         #gl.DF_TREE[:, 'isoform'] = 'prova'
         new_column = pd.Series(['d', 'e'], name='isoform')
 
         gl.DF_TREE.update(new_column)
 
-        print(gl.DF_TREE['isoform'])
+        print(gl.DF_TREE['isoform'])"""
         # ----- END REPLACE ISOFORM -----
 
         # The dataframe with the entries relating to the current depth remains in memory

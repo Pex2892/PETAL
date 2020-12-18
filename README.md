@@ -6,7 +6,7 @@ PETAL software is written in the Python 3 programming language. It contains a se
 
 ---
 ## Publications
-###Please cite our paper if you want to use PETAL for your research.
+### Please cite our paper if you want to use PETAL for your research.
 
 #### DOI: [10.1093/bioinformatics/btaa1032](https://doi.org/10.1093/bioinformatics/btaa1032)
 

@@ -134,3 +134,5 @@ results/
 *.zip
 *.csv
 data-flare.json
+
+database/

@@ -3,9 +3,10 @@ import json
 import os
 from joblib import Parallel, delayed
 from utility import set_progress_bar
+import pandas as pd
 
 
-def draw_json_run():
+def draw_json_run(df_resulted):
     """
     This method defines the root node, after which the genes are
     filtered by level and processed in parallel.
@@ -13,6 +14,9 @@ def draw_json_run():
 
     :param: void.
     """
+
+    gl.DF_TREE = pd.read_csv(df_resulted, sep=";", names=gl.COLS_DF)
+
     # The root node is created in the dictionary
     gl.json_dict = {
         'name': gl.gene_input,

@@ -95,9 +95,15 @@ def run_analysis(starting_depth):
         # ----- END DROP DUPLICATES -----
 
         # ----- START REPLACE ISOFORM -----
-        """#df_isoform_this_level = gl.DF_TREE['isoform']
-        print(gl.DF_TREE['isoform'])
-        #gl.DF_TREE[:, 'isoform'] = 'prova'
+        # Take the isoforms that are empty
+        #df_isoform_this_level = gl.DF_TREE['isoform'][gl.DF_TREE['isoform'] != '']
+        #print(df_isoform_this_level)
+
+        # in parellelo elaborare le isoforme
+        # dal valore restituito aggiornare tutte la colonna delle isoforme
+
+
+        """#gl.DF_TREE[:, 'isoform'] = 'prova'
         new_column = pd.Series(['d', 'e'], name='isoform')
 
         gl.DF_TREE.update(new_column)

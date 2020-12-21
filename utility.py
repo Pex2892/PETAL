@@ -8,7 +8,6 @@ import gzip
 import configparser
 import glob
 import re
-import json
 import io
 from dateutil.parser import parse
 from progressbar import Bar, Counter, ETA, Percentage, ProgressBar

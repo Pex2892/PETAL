@@ -1,9 +1,9 @@
 import globals as gl
 import json
 import os
+import pandas as pd
 from joblib import Parallel, delayed
 from utility import set_progress_bar
-import pandas as pd
 
 
 def draw_json_run(df_resulted):
@@ -73,6 +73,6 @@ def concat_info(rel, type_rel, patwhay):
     type_rel_arr = type_rel.split('§§')
     patwhay_arr = patwhay.split('§§')
 
-    str_info = ' - '.join([c + ' | ' + a + ' | ' + b for a, b, c in zip(rel_arr, type_rel_arr, patwhay_arr)])
+    str_info = ' - '.join([f'{c} | {a} | {b}' for a, b, c in zip(rel_arr, type_rel_arr, patwhay_arr)])
 
     return str_info

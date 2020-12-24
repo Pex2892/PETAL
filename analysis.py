@@ -1,33 +1,36 @@
 import globals as gl
-from utility import download_file, download_read_html, set_progress_bar, export_data_for_deep
 import os
 import gzip
+import pandas as pd
 from joblib import Parallel, delayed
 from xml.dom.minidom import parseString
+from utility import read_gene_txt, set_progress_bar, export_data_for_deep, API_KEGG_get_hsa_gene_from_name, API_KEGG_get_name_gene_from_hsa
+from inputimeout import inputimeout, TimeoutOccurred
 
 
 def run_analysis(starting_depth):
     for deep in range(starting_depth, gl.deep_input + 1):
         if deep == 1:
             # download initial pathway
-            download_file('http://rest.kegg.jp/get/' + gl.pathway_input + '/kgml',
-                              os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), gl.pathway_input + '.xml.gz')
+            # download_file('http://rest.kegg.jp/get/' + gl.pathway_input + '/kgml',
+            #               os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), gl.pathway_input + '.xml.gz')
 
-            # get info first gene from gene name
-            hsa_finded, url_finded = get_info_gene_initial(gl.pathway_input, gl.gene_input)
+            # It checks exist gene into the pathway
+            check_exist_gene_in_pathway(gl.pathway_input, gl.gene_input)
 
             # set globals variables
-            gl.gene_input_hsa = hsa_finded
-            gl.gene_input_url = url_finded
+            gl.gene_input_hsa = API_KEGG_get_hsa_gene_from_name(gl.gene_input, gl.CSV_GENE_HSA)
+            gl.gene_input_url = f'https://www.kegg.jp/dbget-bin/www_bget?{gl.gene_input_hsa}'
 
             # read initial pathway, create and add genes to csv
-            list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input, hsa_finded, gl.gene_input, 1)
+            list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input,
+                                              gl.gene_input_hsa, gl.gene_input, 1)
 
             # add n genes found to the dataframe
             unified([list_rows_df_returned])
 
             # retrive other list pathways in reference to initial pathway
-            list_pathways_this_gene = download_read_html(url_finded)
+            list_pathways_this_gene = read_gene_txt(gl.gene_input_hsa)
 
             # The pathway set as input from the config file is removed
             if gl.pathway_input in list_pathways_this_gene:
@@ -36,9 +39,9 @@ def run_analysis(starting_depth):
             if len(list_pathways_this_gene) > 0:
                 # process single gene on each CPUs available
                 list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(delayed(analysis_deep_n)(
-                    deep, gl.gene_input, hsa_finded, pathway_this_gene, gl.gene_input, 1)
+                    deep, gl.gene_input, gl.gene_input_hsa, pathway_this_gene, gl.gene_input, 1)
                                                                             for pathway_this_gene in set_progress_bar(
-                    '[Deep: %d]' % deep, str(len(list_pathways_this_gene)))(list_pathways_this_gene))
+                    f'[Deep: {deep}]', str(len(list_pathways_this_gene)))(list_pathways_this_gene))
 
                 unified(list_rows_df_returned)
             else:
@@ -49,10 +52,9 @@ def run_analysis(starting_depth):
                 gl.DF_TREE[(gl.DF_TREE['deep'] == deep - 1) & (gl.DF_TREE['name_son'] != gl.gene_input)])
 
             for index, row in set_progress_bar(
-                    '[Deep: %d]' % deep, str(df_genes_resulted.shape[0]))(df_genes_resulted.iterrows()):
-
+                    f'[Deep: {deep}]', str(df_genes_resulted.shape[0]))(df_genes_resulted.iterrows()):
                 # Return a list of pathways about the gene passed in input
-                list_pathways_this_gene = download_read_html(row['url_kegg_son'])
+                list_pathways_this_gene = read_gene_txt(row['hsa_son'])
 
                 # The pathway set as input from the config file is removed, so as to avoid an endless loop
                 # if gl.pathway_input in list_pathways_this_gene:
@@ -86,39 +88,61 @@ def run_analysis(starting_depth):
         # The number of occurrences of the found links is updated and the duplicates will be deleted
         clean_update_row_duplicates(list_rows_to_do_df_returned)
 
-        gl.DF_TREE = gl.DF_TREE[(gl.DF_TREE['deep'] == deep)]
-
-        # export in csv per deep
-        export_data_for_deep(deep)
-
         # Row indexes are reset, because they are no longer sequential due to the elimination of duplicates
         gl.DF_TREE = gl.DF_TREE.reset_index(drop=True)
 
         # ----- END DROP DUPLICATES -----
 
+        # ----- START REPLACE ISOFORM -----
+        # Take the isoforms that are empty
+        #df_isoform_this_level = gl.DF_TREE['isoform'][gl.DF_TREE['isoform'] != '']
+        #print(df_isoform_this_level)
 
-def get_info_gene_initial(pathway_hsa, name_gene):
-    filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
+        # in parellelo elaborare le isoforme
+        # dal valore restituito aggiornare tutte la colonna delle isoforme
+
+
+        """#gl.DF_TREE[:, 'isoform'] = 'prova'
+        new_column = pd.Series(['d', 'e'], name='isoform')
+
+        gl.DF_TREE.update(new_column)
+
+        print(gl.DF_TREE['isoform'])"""
+        # ----- END REPLACE ISOFORM -----
+
+        # The dataframe with the entries relating to the current depth remains in memory
+        gl.DF_TREE = gl.DF_TREE[(gl.DF_TREE['deep'] == deep)]
+
+        # export in csv per deep
+        export_data_for_deep(deep)
+
+        """try:
+            answer = inputimeout(prompt='>>> Do you want to stop the running? You have 15 seconds to type \'yes\' and '
+                                        'then press enter!\n>> Answer: ', timeout=15)
+        except TimeoutOccurred:
+            answer = 'no'
+
+        print(answer)
+        if answer == 'yes':
+            print('The analysis will be stopped at depth %d' % deep)
+            #NOTA, verificare il nome dello zip se si blocca prima, scrivere il file config.ini
+            # https://stackoverflow.com/questions/8884188/how-to-read-and-write-ini-file-with-python3
+            return None"""
+
+
+def check_exist_gene_in_pathway(pathway_hsa, name_gene):
+    filename = os.path.join(os.getcwd(), 'database', 'pathways', 'kgml', f'{pathway_hsa}.xml.gz')
 
     with gzip.open(filename, "rb") as f:
         content = f.read().decode('utf-8')
-        mydoc = parseString(content)
 
-        # GENES
-        entry = mydoc.getElementsByTagName('entry')
-
-        for elem in entry:
-            string_check = name_gene + ','
-            if elem.attributes['type'].value == 'gene' and string_check in \
-                    elem.getElementsByTagName('graphics')[0].attributes['name'].value:
-                return elem.attributes['name'].value, elem.attributes['link'].value
-
-        print('The gene entered not exit into pathway selected!')
-        exit(1)
+        if name_gene not in content:
+            print('The gene entered not exit into pathway selected!')
+            exit(1)
 
 
 def search_id_to_hsa(list_genes_this_pathway, hsa_gene):
-    return [item for item in list_genes_this_pathway if hsa_gene == item[1]]
+    return [item for item in list_genes_this_pathway if hsa_gene in f'{item[1]} ']
 
 
 def search_gene_to_id(list_genes_this_pathway, id_gene):
@@ -136,7 +160,7 @@ def concat_multiple_subtype(list_subtype):
 
 
 def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
-    filename = os.path.join(os.getcwd(), 'database', 'pathways', 'xml', pathway_hsa + '.xml.gz')
+    filename = os.path.join(os.getcwd(), 'database', 'pathways', 'kgml', f'{pathway_hsa}.xml.gz')
 
     with gzip.open(filename, "rb") as f:
         content = f.read().decode('utf-8')
@@ -173,22 +197,28 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
 
                         # We try to find a correspondence between gene and your id. If it returns zero,
                         # it indicates that that gene does not exist or is group or compund type and not gene type
-                        if elem.attributes['entry1'].value == id_gene[0]:
-                            list_gene_relation = search_gene_to_id(list_genes_this_pathway, elem.attributes['entry2'].value)
+                        list_gene_relation = search_gene_to_id(list_genes_this_pathway, elem.attributes['entry2'].value)
 
                         # Checks if at least one connection has been found
                         if len(list_gene_relation) > 0:
+
+                            # It could happen that one final gene, we have many hsa. will be managed individually
+                            split_hsa = list_gene_relation[0][1].split(" ")
+
+                            #list_isoform = API_KEGG_get_name_gene_from_hsa(split_hsa[1:], json_gene_hsa)
+
                             row = {
                                 'deep': deep,
                                 'name_father': name_gene_start,
                                 'hsa_father': hsa_gene_start,
                                 'name_son': list_gene_relation[0][2],
-                                'hsa_son': list_gene_relation[0][1],
-                                'url_kegg_son': list_gene_relation[0][3],
+                                'hsa_son': split_hsa[0],
+                                'url_kegg_son': f'https://www.kegg.jp/dbget-bin/www_bget?{split_hsa[0]}',
+                                'isoform': ','.join(split_hsa[1:]),
                                 'relation': elem.attributes['type'].value,
                                 'type_rel': concat_multiple_subtype(elem.getElementsByTagName('subtype')),
                                 'pathway_of_origin': pathway_hsa,
-                                'fullpath': path + '/' + list_gene_relation[0][2],
+                                'fullpath': f'{path}/{list_gene_relation[0][2]}',
                                 'occurrences': occu
                             }
                             list_rows.append(row)
@@ -196,8 +226,8 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
 
 
 def analysis_deep_n(deep, gene, gene_hsa, pathway_this_gene, path, occu):
-    download_file('http://rest.kegg.jp/get/' + pathway_this_gene + '/kgml',
-                  os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), pathway_this_gene + '.xml.gz')
+    # download_file('http://rest.kegg.jp/get/' + pathway_this_gene + '/kgml',
+    #               os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), pathway_this_gene + '.xml.gz')
 
     list_rows = read_kgml(deep, pathway_this_gene, gene, gene_hsa, path, occu)
 
@@ -217,30 +247,22 @@ def get_info_row_duplicated(df_filtered, gene):
 
     list_to_do_df = list()
     for key, group in grouped_df:
-        hsa_end_refactor = ' '.join(group['hsa_son'].tolist())
-        hsa_end_refactor = sorted(set(hsa_end_refactor.split(' ')))
-        hsa_end_refactor = ' '.join(hsa_end_refactor)
-
-        url_gene_end_refactor = 'https://www.kegg.jp/dbget-bin/www_bget?' + hsa_end_refactor.replace(' ', '+')
         occurences_calculated = group.iloc[0]['occurrences'] * group.shape[0]
 
         # row to update (take the first one by updating all fields)
         # list of rows to be removed, keeping only one
-        # the hsa_end of the gene is created
-        # url_end of the gene is created
         # concatenation of all relations based on the source pathways
         # concatenation of all type_rel based on the source pathway
         # concatenation of all path_origin
-        list_to_do_df.append((
-            group.index[0],
-            list(filter(group.index[0].__ne__, group.index.values.tolist())),
-            hsa_end_refactor,
-            url_gene_end_refactor,
-            '§§'.join(group['relation'].tolist()),
-            '§§'.join(group['type_rel'].tolist()),
-            '§§'.join(group['pathway_of_origin'].tolist()),
-            occurences_calculated
-        )
+        list_to_do_df.append(
+            (
+                group.index[0],
+                list(filter(group.index[0].__ne__, group.index.values.tolist())),
+                '§§'.join(group['relation'].tolist()),
+                '§§'.join(group['type_rel'].tolist()),
+                '§§'.join(group['pathway_of_origin'].tolist()),
+                occurences_calculated
+            )
         )
     return list_to_do_df
 
@@ -249,9 +271,9 @@ def clean_update_row_duplicates(list_to_do_df):
     for row in list_to_do_df:
         for cell in row:
             # The selected row is updated, in the 4 specified columns, with the new information
-            cols = ['hsa_son', 'url_kegg_son', 'relation', 'type_rel', 'pathway_of_origin', 'occurrences']
+            cols = ['relation', 'type_rel', 'pathway_of_origin', 'occurrences']
 
-            gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4], cell[5], cell[6], cell[7]]
+            gl.DF_TREE.loc[cell[0], cols] = [cell[2], cell[3], cell[4], cell[5]]
 
             # The selected rows are removed, because they are duplicated
             if len(cell[1]) > 0:

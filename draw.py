@@ -1,11 +1,12 @@
 import globals as gl
 import json
 import os
+import pandas as pd
 from joblib import Parallel, delayed
 from utility import set_progress_bar
 
 
-def draw_json_run():
+def draw_json_run(df_resulted):
     """
     This method defines the root node, after which the genes are
     filtered by level and processed in parallel.
@@ -13,6 +14,9 @@ def draw_json_run():
 
     :param: void.
     """
+
+    gl.DF_TREE = pd.read_csv(df_resulted, sep=";", names=gl.COLS_DF)
+
     # The root node is created in the dictionary
     gl.json_dict = {
         'name': gl.gene_input,
@@ -69,6 +73,6 @@ def concat_info(rel, type_rel, patwhay):
     type_rel_arr = type_rel.split('§§')
     patwhay_arr = patwhay.split('§§')
 
-    str_info = ' - '.join([c + ' | ' + a + ' | ' + b for a, b, c in zip(rel_arr, type_rel_arr, patwhay_arr)])
+    str_info = ' - '.join([f'{c} | {a} | {b}' for a, b, c in zip(rel_arr, type_rel_arr, patwhay_arr)])
 
     return str_info

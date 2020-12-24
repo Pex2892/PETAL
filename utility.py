@@ -5,14 +5,15 @@ import os
 import shutil
 import multiprocessing as mlp
 import gzip
-import hashlib
 import configparser
-from dateutil.parser import parse
-from progressbar import Bar, Counter, ETA, Percentage, ProgressBar
-from datetime import datetime
 import glob
 import re
+import json
+import numpy as np
+from progressbar import Bar, Counter, ETA, Percentage, ProgressBar
 from pandas import read_csv
+from datetime import datetime
+from pywget import wget
 from zipfile import ZipFile
 
 
@@ -20,184 +21,205 @@ def read_config():
     config = configparser.ConfigParser()
     config.read(os.path.join(os.getcwd(), gl.filename_config))
 
+    gl.pathway_input = config['analysis'].get('pathway')
+    print(f'Pathway: {gl.pathway_input}')
+
+    gl.gene_input = config['analysis'].get('gene')
+    print(f'Gene: {gl.gene_input}')
+
+    gl.deep_input = config['analysis'].getint('deep')
+    print(f'Depth: {gl.deep_input}')
+
     gl.num_cores_input = config['analysis'].getint('n_cpu')
     if gl.num_cores_input == 0 or gl.num_cores_input > mlp.cpu_count():
         # print('Selected all CPUs or an excessive number')
         gl.num_cores_input = mlp.cpu_count()
-    print("#CPUs: %d" % gl.num_cores_input)
-
-    gl.pathway_input = config['analysis'].get('pathway')
-    print("Pathway: %s" % gl.pathway_input)
-
-    gl.gene_input = config['analysis'].get('gene')
-    print("Gene: %s" % gl.gene_input)
-
-    gl.deep_input = config['analysis'].getint('deep')
-    print("Deep: %s" % gl.deep_input)
+    print(f'#CPUs: {gl.num_cores_input}')
 
     gl.mode_input = config['analysis'].getboolean('mode')
 
 
 def clear_previous_results():
-    pathdir = os.path.join(os.getcwd(), 'export_data')
+    path = os.path.join(os.getcwd(), 'export_data')
 
-    if os.path.exists(pathdir):
-        shutil.rmtree(pathdir)
+    if os.path.exists(path):
+        shutil.rmtree(path)
 
-    os.makedirs(pathdir)
+    os.makedirs(path)
 
-    namezip = '%s_%s_%d.zip' % (gl.pathway_input, gl.gene_input, gl.deep_input)
-    if os.path.isfile(os.path.join(os.getcwd(), namezip)):
-        os.remove(os.path.join(os.getcwd(), namezip))
+    filename = f'{gl.pathway_input}_{gl.gene_input}_{gl.deep_input}.zip'
+    if os.path.isfile(os.path.join(os.getcwd(), filename)):
+        os.remove(os.path.join(os.getcwd(), filename))
 
 
-def check_pathway_update_history(url):
-    # download and return list of the updated pathway
+def check_database():
+    path = os.path.join(os.getcwd(), 'database')
 
-    pathfile = os.path.join(os.getcwd(), 'database')
-    filename = 'pathway_update_history.html.gz'
+    # Check if exist the database directory
+    if not os.path.exists(path):
+        # Check if the database is empty
+        print("---> This is the first run of PETAL, so download the database from Github!")
 
-    # If it does not exist, download the html file with all the pathways recently updated
-    download_file(url, pathfile, filename)
+        # The database zip is downloaded from Github
+        print('---> The zip download has started!')
+        wget.download(gl.url_download_database, os.getcwd())
+        print("---> The zip download is complete!")
 
-    # retrieve datetime to file
-    filetime = os.path.getmtime(os.path.join(pathfile, filename))
+        # unzip
+        with ZipFile(os.path.join(os.getcwd(), 'only_database.zip'), 'r') as zf:
+            zf.extractall(os.getcwd())
+        print("---> The database is ready for use")
 
-    # check different time (in seconds) > 24h (seconds), download file
-    if (datetime.now() - datetime.fromtimestamp(filetime)).total_seconds() > 86400:
-        print('Download updated list, because the saved file has not been updated for more than 24 hours')
+        os.remove(os.path.join(os.getcwd(), 'only_database.zip'))
 
-        # deleting the oldest file
-        os.remove(os.path.join(pathfile, filename))
+    print("----- CHECK UPDATED PATHWAYS -----")
 
-        # download the html file with all the pathways recently updated
-        download_file(url, pathfile, filename)
+    db_info = json.load(open(os.path.join(os.getcwd(), 'database', 'db_info.json')))
 
-    # reading the compressed file
-    with gzip.open(os.path.join(pathfile, filename), "rb") as f:
+    delta_time = (datetime.now() - datetime.strptime(db_info['updated_at'], '%Y-%m-%d %H:%M:%S.%f')).seconds
+
+    # Check if it has been more than 48 hours (172800 seconds) since the last check on the KEGG database
+    if delta_time > 172800:
+        print('---> It\'s been more than 48 hours since the last check!')
+
+        # Check for updated pathways
+        check_history_pathways(db_info['updated_at'])
+
+        # Update the db_info.json file
+        update_info_db(db_info['created_at'])
+
+    # Load the complete list of genes (homo sapiens) into memory
+    read_list_homo_sapiens_genes()
+
+
+def check_history_pathways(last_update):
+    url = 'https://www.genome.jp/kegg/docs/upd_map.html'
+    path = os.path.join(os.getcwd(), 'database')
+    filename = 'history_pathways.html.gz'
+
+    # download the html file with all the pathways recently updated
+    download_file(url, filename, path)
+
+    with gzip.open(os.path.join(path, filename), "rb") as f:
         content = f.read().decode('utf-8')
 
         soup = bs.BeautifulSoup(content, 'html.parser')
-
         items = soup.findAll('td')
 
         i = 0
         while i < len(items):
-            # check if the field is a date and if from 2020 onwards
-            if is_date(items[i].text) and int(items[i].text[0:4]) >= 2020:
-                if 'Deleted; ' in items[i + 3].text:
+            date_json = datetime.fromisoformat(last_update).strftime("%Y-%m-%d")
+            date_pathways = datetime.strptime(items[i].text, "%Y-%m-%d")
 
-                    # If the pathway deleted by KEGG exists locally, it is removed
-                    if os.path.exists(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz')):
-                        print('Deleting the "%s" pathway, removed from KEGG' % items[i + 1].text)
-                        os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz'))
+            # Exit the loop, if there are updates older than 2020
+            if date_pathways.year < 2020:
+                i = len(items)
 
-                    merged_pathway = items[i + 3].text.split('merged into ')[1]
-                    if os.path.exists(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + merged_pathway + '.xml.gz')):
-                        # retrieve datetime to file
-                        filetime = datetime.fromtimestamp(os.path.getmtime(
-                            os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz')))
+            if date_json < date_pathways.strftime("%Y-%m-%d"):
+                type_update = items[i + 3].text
 
-                        # convert time
-                        update_time_from_kegg = datetime.strptime(
-                            items[i].text + ' 00:00:00.000000', '%Y-%m-%d %H:%M:%S.%f')
+                if 'Newly added' in type_update:
+                    print(f'---> The "hsa{items[i + 1].text}" pathway has been added to the KEGG database')
 
-                        if filetime < update_time_from_kegg:
-                            print('The pathway "%s" is more recent on KEGG than the one saved locally' % 'hsa' +
-                                  merged_pathway)
-
-                            print('Deleting the locally saved "%s" pathway' % 'hsa' + merged_pathway)
-                            os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + merged_pathway + '.xml.gz'))
-
-                            # scaricare il pathway con cui è stato unito
-                            print('Downloading the most updated pathway from KEGG: %s' % 'hsa' + merged_pathway)
-                            download_file('http://rest.kegg.jp/get/' + 'hsa' + merged_pathway + '/kgml',
-                                          os.path.join(pathfile, 'pathways', 'xml'),
-                                          'hsa' + merged_pathway + '.xml.gz')
-                        else:
-                            print('The saved pathway "%s" is more recent!' % 'hsa' + merged_pathway)
-                elif 'Newly added' in items[i + 3].text:
                     # check if the file exists locally
-                    if os.path.exists(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz')):
-                        # retrieve datetime to file
-                        filetime = datetime.fromtimestamp(os.path.getmtime(
-                            os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz')))
+                    if os.path.exists(os.path.join(path, 'pathways', 'kgml', f'hsa{items[i + 1].text}.xml.gz')):
+                        os.remove(os.path.join(path, 'pathways', 'kgml', f'hsa{items[i + 1].text}.xml.gz'))
+                        print(f'------> The "hsa{items[i + 1].text}.xml.gz" (older) file has been deleted!')
 
-                        # convert time
-                        update_time_from_kegg = datetime.strptime(
-                            items[i].text + ' 00:00:00.000000', '%Y-%m-%d %H:%M:%S.%f')
+                    flag = download_file(f'http://rest.kegg.jp/get/hsa{items[i + 1].text}/kgml',
+                                         f'hsa{items[i + 1].text}.xml.gz', os.path.join(path, 'pathways', 'kgml'))
+                    if flag:
+                        print(f'------> The "hsa{items[i + 1].text}.xml.gz" file has been downloaded!')
 
-                        if filetime < update_time_from_kegg:
-                            print('The pathway "%s" is more recent on KEGG than the one saved locally' % 'hsa' + items[
-                                i + 1].text)
+                elif 'Deleted; ' in type_update:
+                    merged_into_pathway = items[i + 3].text.split('merged into ')[1]
 
-                            print('Deleting the locally saved "%s" pathway' % 'hsa' + items[i + 1].text)
-                            os.remove(os.path.join(pathfile, 'pathways', 'xml', 'hsa' + items[i + 1].text + '.xml.gz'))
+                    print(f'---> The "hsa{items[i + 1].text}" pathway has been removed from the KEGG and merged '
+                          f'into the "hsa{merged_into_pathway}" pathway')
 
-                            print('Downloading the most updated pathway from KEGG: %s' % 'hsa' + items[i + 1].text)
-                            download_file('http://rest.kegg.jp/get/' + 'hsa' + items[i + 1].text + '/kgml',
-                                          os.path.join(pathfile, 'pathways', 'xml'),
-                                          'hsa' + items[i + 1].text + '.xml.gz')
-                        else:
-                            print('The saved pathway "%s" is more recent!' % 'hsa' + items[i + 1].text)
-                i = i + 4
-            else:
-                break
+                    # check if the file exists locally
+                    if os.path.exists(os.path.join(path, 'pathways', 'kgml', f'hsa{items[i + 1].text}.xml.gz')):
+                        os.remove(os.path.join(path, 'pathways', 'kgml', f'hsa{items[i + 1].text}.xml.gz'))
+                        print(f'------> The "hsa{items[i + 1].text}.xml.gz" file has been deleted!')
+
+                    # check if the "merged_pathway" file exists locally
+                    if os.path.exists(os.path.join(path, 'pathways', 'kgml', f'hsa{merged_into_pathway}.xml.gz')):
+                        os.remove(os.path.join(path, 'pathways', 'kgml', f'hsa{merged_into_pathway}.xml.gz'))
+                        print(f'------> The "hsa{merged_into_pathway}.xml.gz" file has been deleted!')
+
+                    flag = download_file(f'http://rest.kegg.jp/get/hsa{merged_into_pathway}/kgml',
+                                         f'hsa{merged_into_pathway}.xml.gz', os.path.join(path, 'pathways', 'kgml'))
+                    if flag:
+                        print(f'------> The "hsa{merged_into_pathway}.xml.gz" file has been downloaded!')
+            i = i + 4
 
 
-def download_file(url, pathfile, filename):
-    if not os.path.exists(os.path.join(pathfile, filename)):
-        try:
-            req = requests.get(url)
+def read_list_homo_sapiens_genes():
+    path = os.path.join(os.getcwd(), 'database', 'genes', 'homo_sapiens_genes.csv')
 
-            with gzip.open(os.path.join(pathfile, filename), "wb") as f:
+    # convert array numpy 2d in 1d with flatten
+    gl.CSV_GENE_HSA = (read_csv(path, sep="\t").to_numpy()).flatten()
+
+    print("----- LOADED LIST OF HUMAN GENES -----")
+
+
+def update_info_db(_created_at):
+    time_now = str(datetime.now())
+    data = {'created_at': _created_at, 'updated_at': time_now}
+
+    with open(os.path.join(os.getcwd(), 'database', 'db_info.json'), 'w') as f:
+        json.dump(data, f)
+
+    print('---> The "db_info.json" file has been updated with the latest updates!')
+
+
+def download_file(url, filename, destination, message='ERROR: Connection refused'):
+    try:
+        req = requests.get(url)
+
+        if req.text:
+            with gzip.open(os.path.join(destination, filename), "wb") as f:
                 f.write(req.content)
+            return True
+        else:
+            print(f"The url \"{url}\" returned empty content!")
+            return False
+    except requests.exceptions.ConnectionError:
+        print(message)
+        exit(1)
 
-        except requests.exceptions.ConnectionError:
-            print("ERROR: Connection refused from KEGG")
-            exit(1)
 
-
-def download_read_html(url):
-    # download and read of the html page containing all the genes, passed as parameters in the url
-
-    filename = url.split('?')[1].replace('+', '_').replace(':', '')
-    filename = hashlib.md5(filename.encode("utf-8")).hexdigest() + '.html.gz'
-
-    download_file(url, os.path.join(os.getcwd(), 'database', 'pathways', 'html'), filename)
-
-    # open pathway of the genes in html
-    with gzip.open(os.path.join(os.getcwd(), 'database', 'pathways', 'html', filename), "rb") as f:
+def read_gene_txt(hsa):
+    # open pathway of the genes in txt
+    with gzip.open(os.path.join(os.getcwd(), 'database', 'genes', 'txt', f'{hsa}.gz.txt'), "rb") as f:
         content = f.read().decode('utf-8')
 
-        soup = bs.BeautifulSoup(content, 'html.parser')
+        # Identify the pathways of the gene passed into the method through the regex
+        res = re.findall(r'(hsa\d+)? {2}', content)
 
-        list_pathway = list()
-        for link in soup.findAll('a'):
-            a_tag = str(link.get('href'))
-            if "/kegg-bin/show_pathway" in a_tag:
-                a_tag = a_tag.split("+")
-                a_tag = a_tag[0].split("?")
-                list_pathway.append(a_tag[1])
+        # Empty items are removed
+        res = list(filter(None, res))
 
-        # generate a unique elements
-        list_pathway = list(set(list_pathway))
-    return list_pathway
+        # Remove duplicates, if they exist
+        res = list(set(res))
+
+        return res
 
 
-def is_date(string, fuzzy=False):
-    """
-    Return whether the string can be interpreted as a date.
+def API_KEGG_get_name_gene_from_hsa(list_hsa, csv_gene_hsa):
+    list_genes_finded = []
+    for i_hsa in list_hsa:
+        index = np.where(csv_gene_hsa == i_hsa)[0][0]
+        list_genes_finded.append(f'{csv_gene_hsa[index + 1].split(";", 1)[0].split(",", 1)[0]}({i_hsa})')
 
-    :param string: str, string to check for date
-    :param fuzzy: bool, ignore unknown tokens in string if True
-    """
-    try:
-        parse(string, fuzzy=fuzzy)
-        return True
+    return ', '.join(list_genes_finded)
 
-    except ValueError:
-        return False
+
+def API_KEGG_get_hsa_gene_from_name(gene, csv_gene_hsa):
+    r = re.compile(r"^%s[,;]" % gene)
+    finded = list(filter(r.match, csv_gene_hsa))[0]
+    index = np.where(csv_gene_hsa == finded)[0][0]
+    return csv_gene_hsa[index - 1]
 
 
 def set_progress_bar(action, max_elem):
@@ -207,13 +229,13 @@ def set_progress_bar(action, max_elem):
 
 
 def export_data_for_deep(deep):
-    gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', 'df_resulted_deep_%d.csv' % deep), sep=';',
+    gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', f'df_resulted_deep_{deep}.csv'), sep=';',
                       header=False, index=False)
 
     gl.DF_TREE.to_csv(os.path.join(os.getcwd(), 'export_data', 'df_resulted.csv'), sep=';', mode='a',
                       header=False, index=False)
 
-    print('----- Deep %d - CSV SAVED ----- ' % deep)
+    print(f'----- Deep {deep} - CSV SAVED ----- ')
 
 
 def numericalSort(value):
@@ -233,20 +255,21 @@ def load_last_csv():
     deep_last_csv = int(re.compile(r'\d+').findall(filename_last_csv)[0])
 
     if deep_last_csv == gl.deep_input:
-        print('The maximum depth selected has already been analyzed.\nYou will find the results in the "exporta_data" folder.')
+        print('The maximum depth selected has already been analyzed.\n'
+              'You will find the results in the "exporta_data" folder.')
         exit(1)
     elif deep_last_csv > gl.deep_input:
         print('Warning!\nThe maximum depth analyzed is greater than that selected in input.')
         exit(1)
     elif deep_last_csv < gl.deep_input:
         gl.DF_TREE = read_csv(path_last_csv, sep=";", names=gl.COLS_DF)
-        print(f"The analysis will start from the depth of {(deep_last_csv+1)}")
+        print(f"The analysis will start from the depth of {(deep_last_csv + 1)}")
         return deep_last_csv + 1
 
 
 def create_zip():
     path = os.path.join(os.getcwd(), 'export_data')
-    namezip = '%s_%s_%d.zip' % (gl.pathway_input, gl.gene_input, gl.deep_input)
+    namezip = f'{gl.pathway_input}_{gl.gene_input}_{gl.deep_input}.zip'
 
     # create a ZipFile object
     with ZipFile(namezip, 'w') as zipObj:

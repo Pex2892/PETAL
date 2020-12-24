@@ -1,6 +1,6 @@
 import globals as gl
 import time
-from utility import read_config, clear_previous_results, check_pathway_update_history, load_last_csv, create_zip, API_KEGG_get_list_human_genes
+from utility import read_config, clear_previous_results, load_last_csv, create_zip, check_database
 from draw import draw_json_run
 from analysis import run_analysis
 import os
@@ -20,16 +20,12 @@ else:
     print("----- LOAD LAST RESULTS (CSV) SAVED -----")
     starting_depth = load_last_csv()
 
-
-print("----- CHECK UPDATED PATHWAYS -----")
-#check_pathway_update_history('https://www.genome.jp/kegg/docs/upd_map.html')
-
-API_KEGG_get_list_human_genes()
+print("----- CHECK DATABASE -----")
+check_database()
 
 print("----- START ANALYSIS -----")
 run_analysis(starting_depth)
 print("----- END ANALYSIS -----")
-
 
 print("----- START GENERATE OUTPUT -----")
 draw_json_run(os.path.join(os.getcwd(), 'export_data', 'df_resulted.csv'))
@@ -40,4 +36,4 @@ create_zip()
 print("----- END GENERATE ZIPFILE -----")
 
 m, s = divmod(time.time() - start_time, 60)
-print("----- DONE EXECUTION (%d mins, %d secs) -----" % (round(m), round(s)))
+print(f"----- DONE EXECUTION ({round(m)} mins, {round(s)} secs) -----")

@@ -280,3 +280,18 @@ def create_zip():
                 filepath = os.path.join(folderName, filename)
                 # Add file to zip
                 zipObj.write(filepath, os.path.basename(filepath))
+
+
+def header():
+    header = '========================================================\n' \
+             '=          PETAL – ParallEl paThways AnaLyzer          =\n' \
+             '=                        v1.1.1                        =\n' \
+             '=          Last update: 2021/01/07                     =\n' \
+             '=          database update: 2020/12/24                 =\n' \
+             '========================================================\n' \
+             '=          E-mail: giuseppe.sgroi@unict.it             =\n' \
+             '========================================================\n' \
+             '=          PETAL is licensed under CC BY-NC-SA 4.0     =\n' \
+             '========================================================' \
+
+    print(header)

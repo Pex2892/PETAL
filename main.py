@@ -1,12 +1,14 @@
 import globals as gl
 import time
-from utility import read_config, clear_previous_results, load_last_csv, create_zip, check_database
+from utility import read_config, clear_previous_results, load_last_csv, create_zip, check_database, header
 from draw import draw_json_run
 from analysis import run_analysis
 import os
 
 # --------------- INITIAL START TIME --------------
 start_time = time.time()
+
+header()
 
 # -------------- INITIAL MAIN --------------
 print("----- INITIAL SHELL PARAMETERS -----")

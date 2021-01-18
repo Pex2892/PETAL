@@ -4,7 +4,7 @@ import gzip
 import pandas as pd
 from joblib import Parallel, delayed
 from xml.dom.minidom import parseString
-from utility import read_gene_txt, set_progress_bar, export_data_for_deep, API_KEGG_get_hsa_gene_from_name, API_KEGG_get_name_gene_from_hsa
+from utility import read_gene_txt, get_gene_info_from_name, set_progress_bar, export_data_for_deep
 from inputimeout import inputimeout, TimeoutOccurred
 
 
@@ -19,8 +19,9 @@ def run_analysis(starting_depth):
             check_exist_gene_in_pathway(gl.pathway_input, gl.gene_input)
 
             # set globals variables
-            gl.gene_input_hsa = API_KEGG_get_hsa_gene_from_name(gl.gene_input, gl.CSV_GENE_HSA)
-            gl.gene_input_url = f'https://www.kegg.jp/dbget-bin/www_bget?{gl.gene_input_hsa}'
+            gene_info = get_gene_info_from_name(gl.gene_input, gl.CSV_GENE_HSA)
+            gl.gene_input_hsa = gene_info[0]
+            gl.gene_input_url = gene_info[2]
 
             # read initial pathway, create and add genes to csv
             list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input,

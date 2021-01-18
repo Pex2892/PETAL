@@ -206,16 +206,6 @@ def read_gene_txt(hsa):
         return res
 
 
-"""def API_KEGG_get_name_gene_from_hsa(list_hsa, csv_gene_hsa):
-    list_genes_finded = []
-    for i_hsa in list_hsa:
-        print(i_hsa, csv_gene_hsa)
-        index = np.where(csv_gene_hsa == i_hsa)[0][0]
-        list_genes_finded.append(f'{csv_gene_hsa[index + 1].split(";", 1)[0].split(",", 1)[0]}({i_hsa})')
-
-    return ', '.join(list_genes_finded)"""
-
-
 def get_alias(alias_list):
     # NOTE: THERE ARE GENES IN THE LIST WITHOUT NAME
 
@@ -231,7 +221,7 @@ def get_alias(alias_list):
 
 def check_gene_and_alias(gene, alias):
     if gene != alias[0]:
-        print(f'Cambio il nome del gene scelto con il suo primo alias, ovvero: {alias[0]}')
+        print(f'The name of the selected gene does not match the first name provided by KEGG: {alias[0]}')
         return alias[0]
     return gene
 

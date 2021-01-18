@@ -89,7 +89,8 @@ def check_database():
         update_info_db(db_info['created_at'])
 
     # Load the complete list of genes (homo sapiens) into memory
-    read_list_homo_sapiens_genes()
+    gl.CSV_GENE_HSA = read_list_homo_sapiens_genes()
+    print("----- LOADED LIST OF HUMAN GENES -----")
 
 
 def check_history_pathways(last_update):
@@ -158,9 +159,8 @@ def read_list_homo_sapiens_genes():
     path = os.path.join(os.getcwd(), 'database', 'genes', 'homo_sapiens_genes.csv')
 
     # convert array numpy 2d in 1d with flatten
-    gl.CSV_GENE_HSA = (read_csv(path, sep="\t").to_numpy()).flatten()
-
-    print("----- LOADED LIST OF HUMAN GENES -----")
+    return np.genfromtxt(path, dtype=np.str, delimiter='\t').flatten()
+    # return (read_csv(path, sep="\t").to_numpy()).flatten()
 
 
 def update_info_db(_created_at):
@@ -206,20 +206,48 @@ def read_gene_txt(hsa):
         return res
 
 
-def API_KEGG_get_name_gene_from_hsa(list_hsa, csv_gene_hsa):
+"""def API_KEGG_get_name_gene_from_hsa(list_hsa, csv_gene_hsa):
     list_genes_finded = []
     for i_hsa in list_hsa:
+        print(i_hsa, csv_gene_hsa)
         index = np.where(csv_gene_hsa == i_hsa)[0][0]
         list_genes_finded.append(f'{csv_gene_hsa[index + 1].split(";", 1)[0].split(",", 1)[0]}({i_hsa})')
 
-    return ', '.join(list_genes_finded)
+    return ', '.join(list_genes_finded)"""
 
 
-def API_KEGG_get_hsa_gene_from_name(gene, csv_gene_hsa):
-    r = re.compile(r"^%s[,;]" % gene)
-    finded = list(filter(r.match, csv_gene_hsa))[0]
-    index = np.where(csv_gene_hsa == finded)[0][0]
-    return csv_gene_hsa[index - 1]
+def get_alias(alias_list):
+    # NOTE: THERE ARE GENES IN THE LIST WITHOUT NAME
+
+    if ';' in alias_list:
+        alias = alias_list.split(";", 1)[0]
+        if ',' in alias:
+            alias = alias.split(", ")
+        return alias
+    else:
+        print('No aliases were found.')
+        exit()
+
+
+def check_gene_and_alias(gene, alias):
+    if gene != alias[0]:
+        print(f'Cambio il nome del gene scelto con il suo primo alias, ovvero: {alias[0]}')
+        return alias[0]
+    return gene
+
+
+def get_gene_info_from_hsa(hsa, csv_gene_hsa):
+    for i in range(0, len(csv_gene_hsa), 2):
+        if hsa == csv_gene_hsa[i]:
+            return [csv_gene_hsa[i], get_alias(csv_gene_hsa[i + 1])]
+
+
+def get_gene_info_from_name(gene, csv_gene_hsa):
+    for i in range(0, len(csv_gene_hsa), 2):
+        if gene in csv_gene_hsa[i + 1]:
+            for alias in get_alias(csv_gene_hsa[i + 1]):
+                if gene == alias:
+                    return [csv_gene_hsa[i], get_alias(csv_gene_hsa[i + 1]), f'https://www.kegg.jp/dbget-bin/www_bget?{csv_gene_hsa[i]}']
 
 
 def set_progress_bar(action, max_elem):

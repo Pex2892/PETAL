@@ -30,7 +30,7 @@ run_analysis(starting_depth)
 print("----- END ANALYSIS -----")
 
 print("----- START GENERATE OUTPUT -----")
-draw_json_run(os.path.join(os.getcwd(), 'export_data', 'df_resulted.csv'))
+draw_json_run(gl.gene_input, os.path.join(os.getcwd(), 'export_data', 'df_resulted.csv'))
 print("----- END GENERATE OUTPUT -----")
 
 print("----- START GENERATE ZIPFILE -----")

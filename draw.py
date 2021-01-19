@@ -3,10 +3,10 @@ import json
 import os
 import pandas as pd
 from joblib import Parallel, delayed
-from utility import set_progress_bar
+from utility import get_gene_info_from_name, set_progress_bar
 
 
-def draw_json_run(df_resulted):
+def draw_json_run(gene_input, df_resulted):
     """
     This method defines the root node, after which the genes are
     filtered by level and processed in parallel.
@@ -15,23 +15,26 @@ def draw_json_run(df_resulted):
     :param: void.
     """
 
-    gl.DF_TREE = pd.read_csv(df_resulted, sep=";", names=gl.COLS_DF)
+    df = pd.read_csv(df_resulted, sep=";", names=gl.COLS_DF)
+
+    iter_deep = df['deep'].max()
+    gene_info = get_gene_info_from_name(gene_input, gl.CSV_GENE_HSA)
 
     # The root node is created in the dictionary
     gl.json_dict = {
-        'name': gl.gene_input,
-        'hsa': gl.gene_input_hsa,
-        'url': gl.gene_input_url,
+        'name': gene_input,
+        'hsa': gene_info[0],
+        'url': gene_info[2],
         'info': 'Nothing',
         'occurrences': 0,
         'deep': 0,
         'children': []}
 
-    for i in set_progress_bar('[Drawing]', str(gl.deep_input))(range(1, gl.deep_input+1)):
+    for i in set_progress_bar('[Drawing]', str(iter_deep))(range(1, iter_deep+1)):
         # Genes divided by depth are filtered
-        df_filter = gl.DF_TREE[gl.DF_TREE['deep'] == i]
+        df_filter = df[df['deep'] == i]
 
-        #The addition of genes in the dictionary by depth starts in parallel
+        # The addition of genes in the dictionary by depth starts in parallel
         Parallel(n_jobs=gl.num_cores_input, backend='threading')(
             delayed(draw_deep_n)(i, item) for key, item in df_filter.iterrows())
 

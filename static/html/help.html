@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Radial Tree Help</title>
+  <style>
+body {
+  font-family: Roboto, Helvetica, sans-serif;
+}
+table {
+  border: solid black 1px;
+}
+td {
+  text-align: center;
+  padding: 2px 3px;
+}
+li {
+  line-height: 1.3em;
+}
+  </style>
+</head>
+<body>
+<h1>Radial Tree</h1>
+
+<p>
+This animated radial tree is collapsible and expandible, and you can change the root of the tree.
+It has a full user interface, including mouse, mousewheel (if you have one), and keyboard shortcuts.
+It may also work on touch screens, although that has not been tested.
+The tree automatically resizes to fit the window.
+</p>
+<p>
+See the gist in action at <a href="http://bl.ocks.org/wmleler/raw/a734fb2bb3319a2cb386/"
+target="_blank">http://bl.ocks.org/wmleler/raw/a734fb2bb3319a2cb386/</a>
+
+The source is on github at <a href="https://gist.github.com/wmleler/a734fb2bb3319a2cb386"
+target="_blank">https://gist.github.com/wmleler/a734fb2bb3319a2cb386</a>
+</p>
+<h2>User Interface</h2>
+<p>
+Initially, the root node of the tree is selected.
+Click on any node in the tree to select it; node is then highlighted and
+path to it is displayed in toolbar.
+Click on any name in path to change the root. The current root is shown in bold.
+</p>
+<p>
+If the center of a node is colored in, then it has (hidden) children:
+<ul>
+<li>Double-click on the node to expand its immediate children (or if they are showing, to collapse them).</li>
+<li>Hold down the shift key and double click a node to expand/collapse all descendent children.</li>
+<li>Press the "/" key to set the root of the tree to the currently selected node.
+  Press again to reset it back to the original root.</li>
+</ul>
+</p>
+<p>Right-click on a node to bring up a context menu that gives you shortcuts for
+  expanding and collapsing nodes, changing the root, and recentering the view.</p>
+<table>
+  <thead style="font-weight:bold">
+    <tr><td>Function</td><td>Tool</td><td>Keyboard shortcut</td><td>Context menu</td><td>Other</td><td>Description</td></tr>
+  </thead>
+  <tr><td>Zoom In</td><td>+</td><td>+</td><td></td><td>scrollwheel</td></tr>
+  <tr><td>Zoom Out</td><td>&minus;</td><td>&minus;</td><td></td><td>scrollwheel</td></tr>
+  <tr><td>Rotate CCW</td><td>&#8634;</td><td>"Page Up"</td><td></td><td>shift + scrollwheel</td></tr>
+  <tr><td>Rotate CW</td><td>&#8635;</td><td>"Page Down"</td><td></td><td>shift + scrollwheel</td></tr>
+  <tr><td>Select Up</td><td>&#8613;</td><td>shift + &uarr;</td><td></td><td></td><td>move selection to previous child</tr>
+  <tr><td>Select Down</td><td>&#8615;</td><td>shift + &darr;</td><td></td><td></td><td>move selection to next child</tr>
+  <tr><td>Select Parent</td><td></td><td>shift + &larr;</td><td></td><td></td><td>move selection to parent</tr>
+  <tr><td>Select Child</td><td></td><td>shift + &rarr;</td><td></td><td></td><td>move selection to first child</tr>
+  <tr><td>View Home</td><td>&#8962;</td><td>"Home"</td><td>Center Root</td><td></td><td>reset rotate and zoom</td></tr>
+  <tr><td>View Selected</td><td>&#9673;</td><td>"End"</td><td>Center This Node</td><td></td><td>center selection</tr>
+  <tr><td>Toggle 1</td><td>1</td><td>space bar</td><td>Node</td><td>double-click</td><td>expand/collapse immediate children</tr>
+  <tr><td>Expand Level</td><td>&oplus;</td><td>"Return"</td><td>Expand 1 Level</td><td>shift + double-click</td><td>expand/collapse all children</tr>
+  <tr><td>Toggle Root</td><td>/</td><td>/</td><td>Set Root</td><td></td><td>change root to selection (and back)</tr>
+</table>
+<p>Hover over any tool button to see a popup tooltip containing keyboard shortcuts.</p>
+<p>Note that there is no toolbar button for Select Parent or Select Child;
+use the keyboard shortcut (shift + arrow key), or the mouse to select any node.</p>
+<p>Hold down the alt/option key to slow down the transition animations or the rate of zooming and rotation.</p>
+<p>Hold down shift key and press the &oplus; tool to force expand entire tree from selection. This is also available in the context menu as "Expand Full Tree".</p>
+<p>Hold down shift key and press the &#8962; tool to reset root.</p>
+<img src="thumbnail.png" />
+</body>
+</html>

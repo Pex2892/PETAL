@@ -74,12 +74,12 @@ After completing an analysis, to view the final output just open the index.html 
 ### "index.html" blank
 You cannot do Ajax calls locally (file://). You can use the built-in python server in your project directory. Running from a console:
 ```sh
-$ cd petal-dir/demo/
-$ python3 -m http.server 9090
+$ cd PETAL/export_data/demo_radialtree/
+$ python3 -m http.server 8080 --bind 127.0.0.1
 ```
 Now you can open the browser with the URL:
 ```sh
-$ http://localhost:9090/
+$ http://127.0.0.1:8080/
 ```
 
 ---

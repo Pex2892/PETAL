@@ -1,74 +1,60 @@
 import globals as gl
-import json
 import os
 import pandas as pd
-from joblib import Parallel, delayed
-from utility import get_gene_info_from_name, set_progress_bar
+from anytree import Node, RenderTree, ContRoundStyle
+from anytree.exporter import JsonExporter
 
 
-def draw_json_run(gene_input, df_resulted):
-    """
-    This method defines the root node, after which the genes are
-    filtered by level and processed in parallel.
-    Finally the output is saved in the json format.
+def draw_from_filter(path):
+    df = pd.read_csv(os.path.join(path, 'df_filtered.csv'), sep=";", names=gl.COLS_DF)
 
-    :param: void.
-    """
+    path_lists = df['fullpath'].str.split('/').values.tolist()
 
-    df = pd.read_csv(df_resulted, sep=";", names=gl.COLS_DF)
+    info_lists = df[['deep', 'hsa_son', 'url_kegg_son', 'isoform', 'relation',
+                     'type_rel', 'pathway_of_origin', 'occurrences']].values.tolist()
 
-    iter_deep = df['deep'].max()
-    gene_info = get_gene_info_from_name(gene_input, gl.CSV_GENE_HSA)
+    tree = list_to_anytree(path_lists, info_lists)
 
-    # The root node is created in the dictionary
-    gl.json_dict = {
-        'name': gene_input,
-        'hsa': gene_info[0],
-        'url': gene_info[2],
-        'info': 'Nothing',
-        'occurrences': 0,
-        'deep': 0,
-        'children': []}
-
-    for i in set_progress_bar('[Drawing]', str(iter_deep))(range(1, iter_deep+1)):
-        # Genes divided by depth are filtered
-        df_filter = df[df['deep'] == i]
-
-        # The addition of genes in the dictionary by depth starts in parallel
-        Parallel(n_jobs=gl.num_cores_input, backend='threading')(
-            delayed(draw_deep_n)(i, item) for key, item in df_filter.iterrows())
-
-    # export the dictionary to json
-    with open(os.path.join(os.getcwd(), 'demo', 'data-flare.json'), 'w') as outfile:
-        json.dump(gl.json_dict, outfile, indent=4)
+    export_tree_in_txt(tree, path)
 
 
-def draw_deep_n(deep, item):
-    # We look for the pointer, where to save the genes
-    p = search_key(item['fullpath'], gl.json_dict['children'])
-    # The genes found in the selected pointer are inserted
-    p.append({
-        'name': item['name_son'],
-        'hsa': item['hsa_son'],
-        'url': item['url_kegg_son'],
-        'info': concat_info(item['relation'], item['type_rel'], item['pathway_of_origin']),
-        'occurrences': item['occurrences'],
-        'deep': deep,
-        'children': []
-    })
+def draw_from_analysis(gene_info, path):
+    df = pd.read_csv(os.path.join(path, 'df_resulted.csv'), sep=";", names=gl.COLS_DF)
+
+    path_lists = df['fullpath'].str.split('/').values.tolist()
+
+    info_lists = df[['deep', 'hsa_son', 'url_kegg_son', 'isoform', 'relation',
+                     'type_rel', 'pathway_of_origin', 'occurrences']].values.tolist()
+
+    tree = list_to_anytree(path_lists, info_lists, gene_info)
+
+    export_tree_in_json(tree, path)
+
+    export_tree_in_txt(tree, path)
 
 
-def search_key(path, p):
-    # This method, starting from the root, based on the "path_arr" variable, tries
-    # to find the position of the gene (father) and position the pointer at that point.
-    # Return the pointer to the "children" list of the parent gene.
-    path_arr = path.split('/')
-    for elem_path in path_arr[1:]:
-        for i, item in enumerate(p):
-            if item['name'] == elem_path:
-                p = p[i]['children']
-                break
-    return p
+def list_to_anytree(lst, lst2, info_root=None):
+    root_name = lst[0][0]
+
+    if info_root is None:
+        root_node = Node(name=root_name)
+    else:
+        root_node = Node(name=root_name, hsa=info_root[0], url=info_root[2], info='Nothing', occurrences=0, deep=0)
+
+    for branch, i in zip(lst, lst2):
+        parent_node = root_node
+        assert branch[0] == parent_node.name
+
+        for cur_node_name in branch[1:]:
+            cur_node = next(
+                (node for node in parent_node.children if node.name == cur_node_name),
+                None,
+            )
+            if cur_node is None:
+                cur_node = Node(name=cur_node_name, hsa=i[1], url=i[2],
+                                info=concat_info(i[4], i[5], i[6]), occurrences=i[7], deep=i[0], parent=parent_node)
+            parent_node = cur_node
+    return root_node
 
 
 def concat_info(rel, type_rel, patwhay):
@@ -77,5 +63,19 @@ def concat_info(rel, type_rel, patwhay):
     patwhay_arr = patwhay.split('§§')
 
     str_info = ' - '.join([f'{c} | {a} | {b}' for a, b, c in zip(rel_arr, type_rel_arr, patwhay_arr)])
-
     return str_info
+
+
+def export_tree_in_json(tree, path):
+    f = open(os.path.join(path, 'data-flare.json'), 'w')
+    exporter = JsonExporter(indent=4)
+    exporter.write(tree, f)
+
+
+def export_tree_in_txt(tree, path):
+    tree_txt = ''
+    for pre, _, node in RenderTree(tree, style=ContRoundStyle()):
+        tree_txt += f'{pre}{node.name}\n'
+
+    with open(os.path.join(path, 'tree.txt'), 'w') as f:
+        f.write(tree_txt)

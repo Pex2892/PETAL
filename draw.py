@@ -3,7 +3,8 @@ import os
 import pandas as pd
 from anytree import Node, RenderTree, ContRoundStyle
 from anytree.exporter import JsonExporter
-from shutil import copyfile
+from shutil import copyfile, copytree
+
 
 def draw_from_filter(path):
     df = pd.read_csv(os.path.join(path, 'df_filtered.csv'), sep=";", names=gl.COLS_DF)
@@ -28,16 +29,16 @@ def draw_from_analysis(gene_info, path):
 
     tree = list_to_anytree(path_lists, info_lists, gene_info)
 
-    d_name = f'{path_lists[0][0]}_radialtree'
-    path_tree = os.path.join(path, d_name)
+    path_tree = os.path.join(path, 'demo_radialtree')
     os.makedirs(path_tree)
 
     export_tree_in_json(tree, path_tree)
 
     export_tree_in_txt(tree, path_tree)
 
-    copyfile(os.path.join(os.getcwd(), 'static', 'index.html'), os.path.join(path_tree, 'index.html'))
-
+    copyfile(os.path.join(os.getcwd(), 'static', 'html', 'index.html'), os.path.join(path_tree, 'index.html'))
+    copyfile(os.path.join(os.getcwd(), 'static', 'html', 'help.html'), os.path.join(path_tree, 'help.html'))
+    copytree(os.path.join(os.getcwd(), 'static', 'assets'), os.path.join(path_tree, 'assets'))
 
 def list_to_anytree(lst, lst2, info_root=None):
     root_name = lst[0][0]

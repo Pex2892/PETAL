@@ -38,7 +38,7 @@ draw_from_analysis(
 print("----- END GENERATE OUTPUT -----")
 
 print("----- START GENERATE ZIPFILE -----")
-create_zip()
+create_zip(f'analysis_{gl.pathway_input}_{gl.gene_input}_{gl.deep_input}')
 print("----- END GENERATE ZIPFILE -----")
 
 m, s = divmod(time.time() - start_time, 60)

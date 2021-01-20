@@ -10,6 +10,7 @@ import glob
 import re
 import json
 import numpy as np
+import subprocess as sb
 from progressbar import Bar, Counter, ETA, Percentage, ProgressBar
 from pandas import read_csv
 from datetime import datetime
@@ -285,19 +286,14 @@ def load_last_csv():
         return deep_last_csv + 1
 
 
-def create_zip():
+def create_zip(namezip):
+    root_path = os.getcwd()
     path = os.path.join(os.getcwd(), 'export_data')
-    namezip = f'{gl.pathway_input}_{gl.gene_input}_{gl.deep_input}.zip'
 
-    # create a ZipFile object
-    with ZipFile(namezip, 'w') as zipObj:
-        # Iterate over all the files in directory
-        for folderName, subfolders, filenames in os.walk(path):
-            for filename in filenames:
-                # create complete filepath of file in directory
-                filepath = os.path.join(folderName, filename)
-                # Add file to zip
-                zipObj.write(filepath, os.path.basename(filepath))
+    try:
+        sb.check_output(f'cd {path} && zip -r {namezip}.zip . >/dev/null && cd {root_path}', shell=True)
+    except sb.CalledProcessError:
+        print('An error occurred while compressing the results.')
 
 
 def header():

@@ -1,13 +1,13 @@
 import argparse
-import datetime
 import os
-import subprocess as sb
-import time
-from draw import draw_from_filter
+import datetime, time
 from utility import read_list_homo_sapiens_genes, check_gene_and_alias, get_gene_info_from_name
+import subprocess as sb
+from draw import draw_from_filter
 
 
 print("----- START FILTER -----")
+
 start_time = time.time()
 
 parser = argparse.ArgumentParser()

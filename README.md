@@ -10,7 +10,7 @@ PETAL software is written in the Python 3 programming language. It contains a se
 
 ---
 ## Publications
-### Please cite our paper if you want to use PETAL for your research.
+#### Please cite our paper if you want to use PETAL for your research.
 
 #### DOI: [10.1093/bioinformatics/btaa1032](https://doi.org/10.1093/bioinformatics/btaa1032)
 
@@ -37,84 +37,127 @@ To report PETAL bugs or request features, please file an [issue directly using G
 If you wish to make any contributions, please [issue a Pull Request on Github](https://github.com/Pex2892/PETAL/pulls).
 
 ---
-## Installation
-### Download the PETAL repository:
 
+# _Documentation_
+
+- [Installation](#installation)
+  - [Download zip](#download-zip)
+  - [Clone repository](#clone-repository)
+- [Setting Environment](#setting-environment)
+- [Run](#run)
+- [Viewing the results](#viewing-the-results)
+- [Filtering the results](#filtering-the-results)
+  - [Single target](#single-target)
+  - [Multi target](#multi-target)
+- [Common errors](#common-errors)
+  - [bz2 error](#bz2-error)
+  - [lzma error](#lzma-error)
+
+
+---
+
+## Installation
+
+### Download zip
+```bash
+wget https://github.com/Pex2892/PETAL/archive/master.zip
+unzip PETAL-master.zip
+```
+or
+### Clone repository
 ```bash
 git clone https://github.com/Pex2892/PETAL.git
 ```
 
-### Dependencies
+---
 
-PETAL depends on the following libraries:
-
-*   pandas, joblib, requests and beautifulsoup4
-
+## Setting Environment
 A typical user can install the libraries using the following command:
-
 ``` bash
-pip3 install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 ---
 
-# Testing the Installation
-
+# Run
 You can test that you have correctly installed the PETAL 
 by running the following command:
-
 ```bash
-python3 main.py
+python3 main.py -m <mode> -p <pathway> -g <gene> -d <depth> -c <CPUs>
 ```
-After completing an analysis, to view the final output just open the index.html file located in the "demo" folder.
 
----
-## How to resolve the common errors
-
-### "index.html" blank
-You cannot do Ajax calls locally (file://). You can use the built-in python server in your project directory. Running from a console:
-```sh
-$ cd PETAL/export_data/demo_radialtree/
-$ python3 -m http.server 8080 --bind 127.0.0.1
-```
-Now you can open the browser with the URL:
-```sh
-$ http://127.0.0.1:8080/
-```
+Before starting the breadth analysis, PETAL requires the setting of five mandatory and optional input parameters:
+>- __Mode__ (-m or --mode): if it is set to 0, the entire analysis will start; if it is equal to 1, the analysis will be extended to the new maximum depth considered;
+>- __Pathway__ (-p or --pathway): represents the biological pathway (in hsa format) from which the analysis will start (e.g., hsa04010);
+>- __Gene__ (-g or --gene): represents the starting gene present in the selected pathway. If the inserted gene is not detected in the biological pathway, the analysis will fail (e.g., MAPK1);
+>- __Depth__ (-d or --depth): indicates the maximum search depth of the analysis;
+>- __CPUs__ (-c or --cpu): indicates the maximum number of CPUs used during the analysis. If it is set to 0 or its value exceeds the number of installed CPUs, the analysis will be automatically set to the maximum number.
 
 ---
 
-### bz2 error 
+# Viewing the results
+After PETAL has finished the analysis, to view the final output generated you need to run the following commands:
+```bash
+cd export_data/demo_radialtree/
+python3 -m http.server 8080 --bind 127.0.0.1
+```
+After starting the local server, now you can open the browser with the url http://127.0.0.1:8080/, so the PETAL GUI will be shown.
+
+This method it has been tested on both Firefox, Chrome and Safari.
+
+---
+
+# Filtering the results
+You can filter the results obtained based on a target gene.
+```bash
+python3 filter.py -t <target>
+```
+
+Before filtering the results, PETAL requires an input parameter:
+
+>- __Target__ (-t or --gtarget): represents the target gene to be found in the results obtained during the analysis (e.g., AKT3)
+
+## Single target
+You can filter the results by passing a single target gene. For example:
+```bash
+python3 filter.py -t AKT3
+```
+
+## Multi target
+Or you can filter the results by passing multiple target genes, as long as they are separated by commas. For example:
+```bash
+python3 filter.py -t MAPK1,EGFR
+```
+If one of the targets is not found, an on-screen message will be returned while execution continues.
+
+---
+
+# Common errors
+
+## _bz2 error_
 When trying to execute the python script, if the following error occurs:
 
-```bash
-from _bz2 import BZ2Compressor, BZ2Decompressor ImportError: No module named '_bz2'
-```
+>from _bz2 import BZ2Compressor, BZ2Decompressor ImportError: No module named '_bz2'
+
 
 You need to install libbz2 and .so files, so that python will be compiled with bz2 support.
 ```bash
 sudo apt install libbz2-dev  # on ubuntu/debian or
 sudo yum install bzip2-devel # on fedora
 
-cp /usr/lib/python3.7/lib-dynload/_bz2.cpython-37m-x86_64-linux-gnu.so  /usr/local/lib/python3.7/
+cp /usr/lib/python3.8/lib-dynload/_bz2.cpython-38m-x86_64-linux-gnu.so  /usr/local/lib/python3.8/
 ```
 
----
-
-### lzma error 
+## _lzma error_
 When trying to execute the python script, if the following error occurs:
 
-```bash
-UserWarning: Could not import the lzma module. Your installed Python is incomplete. 
+>UserWarning: Could not import the lzma module. Your installed Python is incomplete. 
 Attempting to use lzma compression will result in a RuntimeError.
-```
 
 You need to install liblzma and .so files, so that python will be compiled with lzma support.
 ```bash
 sudo apt install liblzma-dev  # on ubuntu/debian or
 sudo yum install -y xz-devel  # on fedora
 
-cp /usr/lib/python3.7/lib-dynload/_lzma.cpython-37m-x86_64-linux-gnu.so /usr/local/lib/python3.7/
+cp /usr/lib/python3.8/lib-dynload/_lzma.cpython-38m-x86_64-linux-gnu.so /usr/local/lib/python3.8/
 ```
-
-

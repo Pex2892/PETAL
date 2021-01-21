@@ -1,52 +1,49 @@
 import globals as gl
 import os
 import gzip
-import pandas as pd
 from joblib import Parallel, delayed
 from xml.dom.minidom import parseString
-from utility import read_gene_txt, get_gene_info_from_name, set_progress_bar, export_data_for_deep
+from utility import read_gene_txt, get_gene_info_from_name, set_progress_bar, export_data_for_deep, check_gene_and_alias
 from inputimeout import inputimeout, TimeoutOccurred
 
 
 def run_analysis(starting_depth):
     for deep in range(starting_depth, gl.deep_input + 1):
         if deep == 1:
-            # download initial pathway
-            # download_file('http://rest.kegg.jp/get/' + gl.pathway_input + '/kgml',
-            #               os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), gl.pathway_input + '.xml.gz')
-
-            # It checks exist gene into the pathway
-            check_exist_gene_in_pathway(gl.pathway_input, gl.gene_input)
-
-            # set globals variables
             gene_info = get_gene_info_from_name(gl.gene_input, gl.CSV_GENE_HSA)
-            gl.gene_input_hsa = gene_info[0]
-            gl.gene_input_url = gene_info[2]
+            if gene_info is not None:
+                # set globals variables
+                gl.gene_input = check_gene_and_alias(gl.gene_input, gene_info[1])
+                gl.gene_input_hsa = gene_info[0]
+                gl.gene_input_url = gene_info[2]
 
-            # read initial pathway, create and add genes to csv
-            list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input,
-                                              gl.gene_input_hsa, gl.gene_input, 1)
+                # read initial pathway, create and add genes to csv
+                list_rows_df_returned = read_kgml(deep, gl.pathway_input, gl.gene_input,
+                                                  gl.gene_input_hsa, gl.gene_input, 1)
 
-            # add n genes found to the dataframe
-            unified([list_rows_df_returned])
+                # add n genes found to the dataframe
+                unified([list_rows_df_returned])
 
-            # retrive other list pathways in reference to initial pathway
-            list_pathways_this_gene = read_gene_txt(gl.gene_input_hsa)
+                # retrive other list pathways in reference to initial pathway
+                list_pathways_this_gene = read_gene_txt(gl.gene_input_hsa)
 
-            # The pathway set as input from the config file is removed
-            if gl.pathway_input in list_pathways_this_gene:
-                list_pathways_this_gene.remove(gl.pathway_input)
+                # The pathway set as input from the config file is removed
+                if gl.pathway_input in list_pathways_this_gene:
+                    list_pathways_this_gene.remove(gl.pathway_input)
 
-            if len(list_pathways_this_gene) > 0:
-                # process single gene on each CPUs available
-                list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(delayed(analysis_deep_n)(
-                    deep, gl.gene_input, gl.gene_input_hsa, pathway_this_gene, gl.gene_input, 1)
-                                                                            for pathway_this_gene in set_progress_bar(
-                    f'[Deep: {deep}]', str(len(list_pathways_this_gene)))(list_pathways_this_gene))
+                if len(list_pathways_this_gene) > 0:
+                    # process single gene on each CPUs available
+                    list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(delayed(analysis_deep_n)(
+                        deep, gl.gene_input, gl.gene_input_hsa, pathway_this_gene, gl.gene_input, 1)
+                                                                                for pathway_this_gene in set_progress_bar(
+                        f'[Deep: {deep}]', str(len(list_pathways_this_gene)))(list_pathways_this_gene))
 
-                unified(list_rows_df_returned)
+                    unified(list_rows_df_returned)
+                else:
+                    print('[Deep: 1] Only directly connected genes were found')
             else:
-                print('[Deep: 1] Only directly connected genes were found')
+                print('The starting gene was not found in the chosen pathway! Try to verify manually.')
+                exit(1)
         else:
             # Retrieve the genes found at depth-1, avoiding the input gene
             df_genes_resulted = (
@@ -56,10 +53,6 @@ def run_analysis(starting_depth):
                     f'[Deep: {deep}]', str(df_genes_resulted.shape[0]))(df_genes_resulted.iterrows()):
                 # Return a list of pathways about the gene passed in input
                 list_pathways_this_gene = read_gene_txt(row['hsa_son'])
-
-                # The pathway set as input from the config file is removed, so as to avoid an endless loop
-                # if gl.pathway_input in list_pathways_this_gene:
-                #    list_pathways_this_gene.remove(gl.pathway_input)
 
                 # process single gene on each CPUs available
                 list_rows_df_returned = Parallel(n_jobs=gl.num_cores_input)(
@@ -129,17 +122,6 @@ def run_analysis(starting_depth):
             #NOTA, verificare il nome dello zip se si blocca prima, scrivere il file config.ini
             # https://stackoverflow.com/questions/8884188/how-to-read-and-write-ini-file-with-python3
             return None"""
-
-
-def check_exist_gene_in_pathway(pathway_hsa, name_gene):
-    filename = os.path.join(os.getcwd(), 'database', 'pathways', 'kgml', f'{pathway_hsa}.xml.gz')
-
-    with gzip.open(filename, "rb") as f:
-        content = f.read().decode('utf-8')
-
-        if name_gene not in content:
-            print('The gene entered not exit into pathway selected!')
-            exit(1)
 
 
 def search_id_to_hsa(list_genes_this_pathway, hsa_gene):
@@ -227,9 +209,6 @@ def read_kgml(deep, pathway_hsa, name_gene_start, hsa_gene_start, path, occu):
 
 
 def analysis_deep_n(deep, gene, gene_hsa, pathway_this_gene, path, occu):
-    # download_file('http://rest.kegg.jp/get/' + pathway_this_gene + '/kgml',
-    #               os.path.join(os.getcwd(), 'database', 'pathways', 'xml'), pathway_this_gene + '.xml.gz')
-
     list_rows = read_kgml(deep, pathway_this_gene, gene, gene_hsa, path, occu)
 
     return list_rows

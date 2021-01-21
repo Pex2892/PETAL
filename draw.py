@@ -40,13 +40,15 @@ def draw_from_analysis(gene_info, path):
     copyfile(os.path.join(os.getcwd(), 'static', 'html', 'help.html'), os.path.join(path_tree, 'help.html'))
     copytree(os.path.join(os.getcwd(), 'static', 'assets'), os.path.join(path_tree, 'assets'))
 
+
 def list_to_anytree(lst, lst2, info_root=None):
     root_name = lst[0][0]
 
     if info_root is None:
         root_node = Node(name=root_name)
     else:
-        root_node = Node(name=root_name, hsa=info_root[0], url=info_root[2], info='Nothing', occurrences=0, deep=0)
+        root_node = Node(name=root_name, hsa=info_root[0], url=info_root[2], info='nan',
+                         occurrences=0, deep=0, isoforms='nan')
 
     for branch, i in zip(lst, lst2):
         parent_node = root_node
@@ -58,8 +60,8 @@ def list_to_anytree(lst, lst2, info_root=None):
                 None,
             )
             if cur_node is None:
-                cur_node = Node(name=cur_node_name, hsa=i[1], url=i[2],
-                                info=concat_info(i[4], i[5], i[6]), occurrences=i[7], deep=i[0], parent=parent_node)
+                cur_node = Node(name=cur_node_name, hsa=i[1], url=i[2], info=concat_info(i[4], i[5], i[6]),
+                                occurrences=i[7], deep=i[0], isoforms=str(i[3]), parent=parent_node)
             parent_node = cur_node
     return root_node
 

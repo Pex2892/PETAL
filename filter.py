@@ -23,7 +23,7 @@ for target in target_lists:
     list_all_genes = read_list_homo_sapiens_genes()
 
     gene_info_target = get_gene_info_from_name(target, list_all_genes)
-    print(gene_info_target)
+    # print(gene_info_target)
 
     if gene_info_target is not None:
         gene_target = check_gene_and_alias(target, gene_info_target[1])

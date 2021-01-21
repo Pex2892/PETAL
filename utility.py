@@ -291,7 +291,9 @@ def create_zip(namezip):
     path = os.path.join(os.getcwd(), 'export_data')
 
     try:
-        sb.check_output(f'cd {path} && zip -r {namezip}.zip . >/dev/null && cd {root_path}', shell=True)
+        sb.check_output(f'cd {path} && '
+                        f'zip -r {namezip}.zip . -x \'*.DS_Store\' -x \'*.zip\' > /dev/null && '
+                        f'cd {root_path}', shell=True)
     except sb.CalledProcessError:
         print('An error occurred while compressing the results.')
 

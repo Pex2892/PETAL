@@ -2,7 +2,7 @@ import globals as gl
 import time
 import os
 from analysis import run_analysis
-from utility import read_config, clear_previous_results, load_last_csv, create_zip, check_database, header
+from utility import read_params, clear_previous_results, load_last_csv, create_zip, check_database, header
 from draw import draw_from_analysis
 
 
@@ -13,7 +13,7 @@ header()
 
 # -------------- INITIAL MAIN --------------
 print("----- INITIAL SHELL PARAMETERS -----")
-read_config()
+read_params()
 
 if gl.mode_input == 0:
     print("----- CLEAN PREVIOUS RESULTS -----")

@@ -5,7 +5,6 @@ import os
 import shutil
 import multiprocessing as mlp
 import gzip
-import configparser
 import glob
 import re
 import json
@@ -16,28 +15,42 @@ from pandas import read_csv
 from datetime import datetime
 from pywget import wget
 from zipfile import ZipFile
+import argparse
 
 
-def read_config():
-    config = configparser.ConfigParser()
-    config.read(os.path.join(os.getcwd(), gl.filename_config))
+def read_params():
+    parser = argparse.ArgumentParser(
+        description='PETAL requires the setting of five mandatory and optional input parameters')
+    parser.add_argument('-m', '--mode', type=int, choices=[0, 1],
+                        help='(mandatory) if it is set to 0, the entire analysis will start; '
+                             'if it is equal to 1, the analysis will be extended to the new maximum depth considered',
+                        required=True)
+    parser.add_argument('-p', '--pathway', type=str, help='(mandatory) Biological pathway (in hsa format)',
+                        required=True)
+    parser.add_argument('-g', '--gene', type=str, help='(mandatory) Starting gene present in the selected pathway',
+                        required=True)
+    parser.add_argument('-d', '--depth', type=int, help='(mandatory) Maximum search depth of the analysis',
+                        required=True)
+    parser.add_argument('-c', '--cpu', type=int, default=0,
+                        help='(optional) Maximum number of CPUs used during the analysis',
+                        required=False)
+    args = parser.parse_args()
 
-    gl.pathway_input = config['analysis'].get('pathway')
+    gl.pathway_input = args.pathway
     print(f'Pathway: {gl.pathway_input}')
 
-    gl.gene_input = config['analysis'].get('gene')
+    gl.gene_input = args.gene
     print(f'Gene: {gl.gene_input}')
 
-    gl.deep_input = config['analysis'].getint('deep')
+    gl.deep_input = args.depth
     print(f'Depth: {gl.deep_input}')
 
-    gl.num_cores_input = config['analysis'].getint('n_cpu')
+    gl.num_cores_input = args.cpu
     if gl.num_cores_input == 0 or gl.num_cores_input > mlp.cpu_count():
-        # print('Selected all CPUs or an excessive number')
         gl.num_cores_input = mlp.cpu_count()
     print(f'#CPUs: {gl.num_cores_input}')
 
-    gl.mode_input = config['analysis'].getboolean('mode')
+    gl.mode_input = args.mode
 
 
 def clear_previous_results():
@@ -302,7 +315,7 @@ def header():
     t = '========================================================\n' \
              '=          PETAL – ParallEl paThways AnaLyzer          =\n' \
              '=                        v1.2                          =\n' \
-             '=          Last update: 2021/01/20                     =\n' \
+             '=          Last update:     2021/01/21                 =\n' \
              '=          database update: 2020/12/24                 =\n' \
              '========================================================\n' \
              '=          E-mail: giuseppe.sgroi@unict.it             =\n' \

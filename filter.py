@@ -37,12 +37,13 @@ for target in target_lists:
             sb.check_output(f'grep -wE \'{gene_target}|{gene_info_target[0]}\' {filepath} > {filename}', shell=True)
         except sb.CalledProcessError as e:
             os.remove(filename)
-            message = f'The filter "{gene_target}" did not find any results!'
+            message = f'The filter "{gene_target}" did not find any results.'
             with open(os.path.join(filterdir_path, f'{gene_target}_README.txt'), 'w') as f:
                 f.write(message)
             print(message)
         else:
             draw_from_filter(filterdir_path)
+            print(f'The filter "{gene_target}" was completed successfully.')
     else:
         print('The inserted target gene does not exist! Try to verify manually.')
 

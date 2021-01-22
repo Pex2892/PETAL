@@ -36,7 +36,11 @@ for target in target_lists:
         try:
             sb.check_output(f'grep -wE \'{gene_target}|{gene_info_target[0]}\' {filepath} > {filename}', shell=True)
         except sb.CalledProcessError as e:
-            print('The filter did not find any results!')
+            os.remove(filename)
+            message = f'The filter "{gene_target}" did not find any results!'
+            with open(os.path.join(filterdir_path, f'{gene_target}_README.txt'), 'w') as f:
+                f.write(message)
+            print(message)
         else:
             draw_from_filter(filterdir_path)
     else:

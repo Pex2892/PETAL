@@ -1,14 +1,19 @@
 # PETAL (ParallEl paThways AnaLyzer)
 
+![python](https://img.shields.io/badge/Python%20tested-3.9.x%20%7C%203.8.x%20%7C%203.7.x%20-blue)
+![version](https://img.shields.io/badge/version-v.1.2-blue)
+![coverage](https://img.shields.io/badge/Coverage-50%25-orange)
+![requirements](https://img.shields.io/badge/requirements-up%20to%20date-brightgreen)
+![last_update](https://img.shields.io/badge/last%20update-January%2024%2C%202021-yellowgreen)
+![license](https://img.shields.io/badge/License-PETAL%20by%20Giuseppe%20Sgroi%20is%20licensed%20under%20CC%20BY--NC--SA%204.0-red)
+![doi](https://img.shields.io/badge/DOI-10.1093%2Fbioinformatics%2Fbtaa1032-blue)
+
 PETAL software is written in the Python 3 programming language. It contains a set of tools for pathway analysis and discovery of novel therapeutic targets. The approach allows you to scan and perform a in-depth search of the biological pathway to analyze less recurrent pathways, detect nodes that are far from the initial target nodes and showing the pathway of origin from which it was taken the gene.
 
 ![gui-of-PETAL](gui.png)
 
 ---
-## License
- <p xmlns:dct="http://purl.org/dc/terms/" xmlns:cc="http://creativecommons.org/ns#"><a rel="cc:attributionURL" property="dct:title" href="https://github.com/Pex2892/PETAL">PETAL</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/Pex2892">Giuseppe Sgroi</a> is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-SA 4.0<br /><img style="height:20px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:10px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:20px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"><img style="height:20px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></p> 
 
----
 ## Publications
 #### Please cite our paper if you want to use PETAL for your research.
 
@@ -32,11 +37,6 @@ PETAL software is written in the Python 3 programming language. It contains a se
 ```
 
 ---
-## How to Contribute
-To report PETAL bugs or request features, please file an [issue directly using Github](https://github.com/Pex2892/PETAL/issues). 
-If you wish to make any contributions, please [issue a Pull Request on Github](https://github.com/Pex2892/PETAL/pulls).
-
----
 
 # _Documentation_
 
@@ -50,6 +50,7 @@ If you wish to make any contributions, please [issue a Pull Request on Github](h
   - [Single target](#single-target)
   - [Multi target](#multi-target)
 - [Common errors](#common-errors)
+  - [certificate verify failed](#certificate-verify-failed)
   - [bz2 error](#bz2-error)
   - [lzma error](#lzma-error)
 
@@ -133,6 +134,22 @@ If one of the targets is not found, an on-screen message will be returned while 
 ---
 
 # Common errors
+
+## _certificate verify failed_
+If at the first run of PETAL on Mac OS, the following error occurs:
+>urllib.error.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed
+
+You can try to solve in two ways:
+1) Via PIP:
+```bash
+pip3 install --upgrade certifi
+```
+2) If it doesn't work, try to run a Cerificates.command that comes bundled with Python 3.x for Mac:
+```bash
+open /Applications/Python\ 3.9/Install\ Certificates.command
+```
+One way or another, you should now have certificates installed, and Python should be able to connect via HTTPS without any issues.
+
 
 ## _bz2 error_
 When trying to execute the python script, if the following error occurs:

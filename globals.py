@@ -17,7 +17,7 @@ Parameters set during execution.
 """
 gene_input_hsa = None
 gene_input_url = None
-url_download_database = 'https://github.com/Pex2892/PETAL/releases/download/v1.1.1/only_database.zip'
+url_download_database = 'https://github.com/Pex2892/PETAL/releases/download/v1.2/only_database.zip'
 
 
 """

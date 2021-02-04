@@ -315,7 +315,7 @@ def header():
     t = '========================================================\n' \
              '=          PETAL – ParallEl paThways AnaLyzer          =\n' \
              '=                        v1.2                          =\n' \
-             '=          Last update:     2021/01/21                 =\n' \
+             '=          Last update:     2021/02/04                 =\n' \
              '=          database update: 2020/12/24                 =\n' \
              '========================================================\n' \
              '=          E-mail: giuseppe.sgroi@unict.it             =\n' \

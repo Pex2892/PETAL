@@ -1,45 +1,62 @@
-import globals as gl
 import time
-import os
-from analysis import run_analysis
-from utility import read_params, clear_previous_results, load_last_csv, create_zip, check_database, header
-from draw import draw_from_analysis
+from utility import header, read_args, clear_results, create_zip
+from kegg import KEGG
+from analysis import Analysis
+from draw import Draw
+from filter import Filter
 
 
-# --------------- INITIAL START TIME --------------
 start_time = time.time()
 
 header()
 
-# -------------- INITIAL MAIN --------------
-print("----- INITIAL SHELL PARAMETERS -----")
-read_params()
+print(">>> READ PARAMETERS <<<")
+args = read_args()
 
-if gl.mode_input == 0:
-    print("----- CLEAN PREVIOUS RESULTS -----")
-    clear_previous_results()
-    starting_depth = 1
-else:
-    print("----- LOAD LAST RESULTS (CSV) SAVED -----")
-    starting_depth = load_last_csv()
+print(">>> CHECK DATABASE <<<")
+obj = KEGG('https://github.com/Pex2892/PETAL/releases/download/v1.2/only_database.zip', 172800)
+print(">>> LOADED LIST OF HUMAN GENES <<<")
 
-print("----- CHECK DATABASE -----")
-check_database()
+if args.command == 'analysis':
+    obj = Analysis(args, obj)
 
-print("----- START ANALYSIS -----")
-run_analysis(starting_depth)
-print("----- END ANALYSIS -----")
+    if args.load:
+        print(">>> LOADING PREVIOUS RESULTS <<<")
+        obj.load_results()
+    else:
+        print(">>> DELETING PREVIOUS RESULTS <<<")
+        clear_results()
 
-print("----- START GENERATE OUTPUT -----")
-draw_from_analysis(
-    [gl.gene_input_hsa, gl.gene_input, gl.gene_input_url],
-    os.path.join(os.getcwd(), 'export_data')
-)
-print("----- END GENERATE OUTPUT -----")
+    print(">>> STARTING – ANALYSIS <<<")
+    obj.run()
+    r = obj.__repr__()
+    print(">>> ENDING – ANALYSIS <<<")
 
-print("----- START GENERATE ZIPFILE -----")
-create_zip(f'analysis_{gl.pathway_input}_{gl.gene_input}_{gl.deep_input}')
-print("----- END GENERATE ZIPFILE -----")
+    print(">>> STARTING – GENERATION OF THE TREE <<<")
+    obj = Draw(args)
+    obj.from_analysis(r)
+    print(">>> ENDING – GENERATION OF THE TREE <<<")
+
+    print(">>> STARTING – GENERATION OF THE ZIP FILE <<<")
+    create_zip(f'analysis_{args.pathway}_{args.gene}_{args.depth}')
+    print(">>> ENDING – GENERATION OF THE ZIP FILE <<<")
+
+elif args.command == 'filter':
+    print(">>> STARTING – FILTER <<<")
+    obj = Filter(args, obj)
+    r = obj.run()
+
+    print(">>> STARTING – GENERATION OF THE TEXT TREE <<<")
+    obj = Draw(args)
+    obj.from_filter(r)
+    print(">>> ENDING – GENERATION OF THE TEXT TREE <<<")
+
+    print(">>> STARTING – GENERATION OF THE ZIP FILE <<<")
+    create_zip('analysis_with_filters')
+    print(">>> ENDING – GENERATION OF THE ZIP FILE <<<")
+
+    print(">>> ENDING – FILTER <<<")
+
 
 m, s = divmod(time.time() - start_time, 60)
 print(f"----- DONE EXECUTION ({round(m)} mins, {round(s)} secs) -----")

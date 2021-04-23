@@ -16,5 +16,3 @@ jobs:
     steps:
       - name: wemake-python-styleguide
       - uses: wemake-services/wemake-python-styleguide@0.15.2
-      - with:
-          path: '../../'

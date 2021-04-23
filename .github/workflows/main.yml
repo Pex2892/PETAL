@@ -1,4 +1,4 @@
-name: CI
+name: Static Analyzer
 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
@@ -15,3 +15,5 @@ jobs:
     
     steps:
       - uses: wemake-services/wemake-python-styleguide@0.15.2
+      - with:
+          path: ../../

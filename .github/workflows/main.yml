@@ -14,5 +14,5 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: test
-      - run: 'ls'
+      - name: wemake-python-styleguide
+        uses: wemake-services/wemake-python-styleguide@0.15.2

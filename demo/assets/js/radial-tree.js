@@ -352,7 +352,6 @@ d3.json(file_json, function(error, treeData) {
         d3.select('#modal-path').property('value', d3.select('#selection').text());
         d3.select('#modal-occurences').property('value', d.occurrences);
         d3.select('#modal-deep').property('value', d.deep);
-        d3.select('#modal-isoforms').property('value', d.isoforms);
 
         var res = d.info.split(" - ");
         var html = '';

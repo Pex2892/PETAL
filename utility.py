@@ -5,52 +5,38 @@ import os
 import shutil
 import multiprocessing as mlp
 import gzip
+import configparser
 import glob
 import re
 import json
 import numpy as np
-import subprocess as sb
 from progressbar import Bar, Counter, ETA, Percentage, ProgressBar
 from pandas import read_csv
 from datetime import datetime
 from pywget import wget
 from zipfile import ZipFile
-import argparse
 
 
-def read_params():
-    parser = argparse.ArgumentParser(
-        description='PETAL requires the setting of five mandatory and optional input parameters')
-    parser.add_argument('-m', '--mode', type=int, choices=[0, 1],
-                        help='(mandatory) if it is set to 0, the entire analysis will start; '
-                             'if it is equal to 1, the analysis will be extended to the new maximum depth considered',
-                        required=True)
-    parser.add_argument('-p', '--pathway', type=str, help='(mandatory) Biological pathway (in hsa format)',
-                        required=True)
-    parser.add_argument('-g', '--gene', type=str, help='(mandatory) Starting gene present in the selected pathway',
-                        required=True)
-    parser.add_argument('-d', '--depth', type=int, help='(mandatory) Maximum search depth of the analysis',
-                        required=True)
-    parser.add_argument('-c', '--cpu', type=int, default=0,
-                        help='(optional) Maximum number of CPUs used during the analysis',
-                        required=False)
-    args = parser.parse_args()
+def read_config():
+    config = configparser.ConfigParser()
+    config.read(os.path.join(os.getcwd(), gl.filename_config))
 
-    gl.pathway_input = args.pathway
+    gl.pathway_input = config['analysis'].get('pathway')
     print(f'Pathway: {gl.pathway_input}')
 
-    gl.gene_input = args.gene
+    gl.gene_input = config['analysis'].get('gene')
     print(f'Gene: {gl.gene_input}')
 
-    gl.deep_input = args.depth
+    gl.deep_input = config['analysis'].getint('deep')
     print(f'Depth: {gl.deep_input}')
 
-    gl.num_cores_input = args.cpu
+    gl.num_cores_input = config['analysis'].getint('n_cpu')
     if gl.num_cores_input == 0 or gl.num_cores_input > mlp.cpu_count():
+        # print('Selected all CPUs or an excessive number')
         gl.num_cores_input = mlp.cpu_count()
     print(f'#CPUs: {gl.num_cores_input}')
 
-    gl.mode_input = args.mode
+    gl.mode_input = config['analysis'].getboolean('mode')
 
 
 def clear_previous_results():
@@ -103,8 +89,7 @@ def check_database():
         update_info_db(db_info['created_at'])
 
     # Load the complete list of genes (homo sapiens) into memory
-    gl.CSV_GENE_HSA = read_list_homo_sapiens_genes()
-    print("----- LOADED LIST OF HUMAN GENES -----")
+    read_list_homo_sapiens_genes()
 
 
 def check_history_pathways(last_update):
@@ -173,8 +158,9 @@ def read_list_homo_sapiens_genes():
     path = os.path.join(os.getcwd(), 'database', 'genes', 'homo_sapiens_genes.csv')
 
     # convert array numpy 2d in 1d with flatten
-    return np.genfromtxt(path, dtype=np.str, delimiter='\t').flatten()
-    # return (read_csv(path, sep="\t").to_numpy()).flatten()
+    gl.CSV_GENE_HSA = (read_csv(path, sep="\t").to_numpy()).flatten()
+
+    print("----- LOADED LIST OF HUMAN GENES -----")
 
 
 def update_info_db(_created_at):
@@ -220,38 +206,20 @@ def read_gene_txt(hsa):
         return res
 
 
-def get_alias(alias_list):
-    # NOTE: THERE ARE GENES IN THE LIST WITHOUT NAME
+def API_KEGG_get_name_gene_from_hsa(list_hsa, csv_gene_hsa):
+    list_genes_finded = []
+    for i_hsa in list_hsa:
+        index = np.where(csv_gene_hsa == i_hsa)[0][0]
+        list_genes_finded.append(f'{csv_gene_hsa[index + 1].split(";", 1)[0].split(",", 1)[0]}({i_hsa})')
 
-    if ';' in alias_list:
-        alias = alias_list.split(";", 1)[0]
-        if ',' in alias:
-            alias = alias.split(", ")
-        return alias
-    else:
-        print('No aliases were found.')
-        exit()
+    return ', '.join(list_genes_finded)
 
 
-def check_gene_and_alias(gene, alias):
-    if gene != alias[0]:
-        print(f'The name of the selected gene does not match the first name provided by KEGG: {alias[0]}')
-        return alias[0]
-    return gene
-
-
-def get_gene_info_from_hsa(hsa, csv_gene_hsa):
-    for i in range(0, len(csv_gene_hsa), 2):
-        if hsa == csv_gene_hsa[i]:
-            return [csv_gene_hsa[i], get_alias(csv_gene_hsa[i + 1])]
-
-
-def get_gene_info_from_name(gene, csv_gene_hsa):
-    for i in range(0, len(csv_gene_hsa), 2):
-        if gene in csv_gene_hsa[i + 1]:
-            for alias in get_alias(csv_gene_hsa[i + 1]):
-                if gene == alias:
-                    return [csv_gene_hsa[i], get_alias(csv_gene_hsa[i + 1]), f'https://www.kegg.jp/dbget-bin/www_bget?{csv_gene_hsa[i]}']
+def API_KEGG_get_hsa_gene_from_name(gene, csv_gene_hsa):
+    r = re.compile(r"^%s[,;]" % gene)
+    finded = list(filter(r.match, csv_gene_hsa))[0]
+    index = np.where(csv_gene_hsa == finded)[0][0]
+    return csv_gene_hsa[index - 1]
 
 
 def set_progress_bar(action, max_elem):
@@ -299,27 +267,31 @@ def load_last_csv():
         return deep_last_csv + 1
 
 
-def create_zip(namezip):
-    root_path = os.getcwd()
+def create_zip():
     path = os.path.join(os.getcwd(), 'export_data')
+    namezip = f'{gl.pathway_input}_{gl.gene_input}_{gl.deep_input}.zip'
 
-    try:
-        sb.check_output(f'cd {path} && '
-                        f'zip -r {namezip}.zip . -x \'*.DS_Store\' -x \'*.zip\' > /dev/null && '
-                        f'cd {root_path}', shell=True)
-    except sb.CalledProcessError:
-        print('An error occurred while compressing the results.')
+    # create a ZipFile object
+    with ZipFile(namezip, 'w') as zipObj:
+        # Iterate over all the files in directory
+        for folderName, subfolders, filenames in os.walk(path):
+            for filename in filenames:
+                # create complete filepath of file in directory
+                filepath = os.path.join(folderName, filename)
+                # Add file to zip
+                zipObj.write(filepath, os.path.basename(filepath))
 
 
 def header():
-    t = '========================================================\n' \
+    header = '========================================================\n' \
              '=          PETAL – ParallEl paThways AnaLyzer          =\n' \
-             '=                        v1.2                          =\n' \
-             '=          Last update:     2021/02/04                 =\n' \
+             '=                        v1.1.1                        =\n' \
+             '=          Last update: 2021/01/07                     =\n' \
              '=          database update: 2020/12/24                 =\n' \
              '========================================================\n' \
              '=          E-mail: giuseppe.sgroi@unict.it             =\n' \
              '========================================================\n' \
              '=          PETAL is licensed under CC BY-NC-SA 4.0     =\n' \
-             '========================================================'
-    print(t)
+             '========================================================' \
+
+    print(header)

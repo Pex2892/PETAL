@@ -18,5 +18,7 @@ jobs:
         uses: wemake-services/wemake-python-styleguide@0.15.2
       - name: test-main
         #uses: wemake-services/wemake-python-styleguide@0.15.2
-        run: pwd          
+        run: |
+          pwd
+          ls
 

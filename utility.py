@@ -50,14 +50,14 @@ def read_args():
                                                           '– Default value = 2', default=2)
     analysis.add_argument('-c', '--cpu', type=int, help='(optional) Maximum number of CPUs used '
                                                         'during the analysis – Default value = 0',
-                          choices=range(0, mlp.cpu_count()), default=0)
+                          choices=range(0, mlp.cpu_count()), default=2)
 
     filter = subprasers.add_parser('filter', help='Filter: it allows to filter through a target gene the '
                                                   'results previously obtained with the generation of a textual tree')
     filter.add_argument('-t', '--targets', type=str, help='Target gene used to filter the data', required=True)
     filter.add_argument('-c', '--cpu', type=int, help='(optional) Maximum number of CPUs used '
                                                       'during the analysis – Default value = 0',
-                        choices=range(0, mlp.cpu_count()), default=0)
+                        choices=range(0, mlp.cpu_count()), default=2)
 
     args = parser.parse_args()
 

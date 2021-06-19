@@ -8,3 +8,4 @@ inputimeout
 numpy
 pywget
 anytree
+lxml

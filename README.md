@@ -1,10 +1,10 @@
 # PETAL (ParallEl paThways AnaLyzer)
 
-![python](https://img.shields.io/badge/Python%20tested-3.9.x%20%7C%203.8.x%20%7C%203.7.x%20-blue)
-![version](https://img.shields.io/badge/version-v.1.2-blue)
-![coverage](https://img.shields.io/badge/Coverage-50%25-orange)
+![python](https://img.shields.io/badge/Python%20tested-3.9.x%20%7C%203.8.x%20-blue)
+![version](https://img.shields.io/badge/version-v.2.0-blue)
+![coverage](https://img.shields.io/badge/Coverage-30%25-orange)
 ![requirements](https://img.shields.io/badge/requirements-up%20to%20date-brightgreen)
-![last_update](https://img.shields.io/badge/last%20update-January%2024%2C%202021-yellowgreen)
+![last_update](https://img.shields.io/badge/last%20update-June%2029%2C%202021-yellowgreen)
 ![license](https://img.shields.io/badge/License-PETAL%20by%20Giuseppe%20Sgroi%20is%20licensed%20under%20CC%20BY--NC--SA%204.0-red)
 ![doi](https://img.shields.io/badge/DOI-10.1093%2Fbioinformatics%2Fbtaa1032-blue)
 

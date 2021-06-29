@@ -1,45 +1,34 @@
-import globals as gl
 import time
-import os
-from analysis import run_analysis
-from utility import read_params, clear_previous_results, load_last_csv, create_zip, check_database, header
-from draw import draw_from_analysis
+from utility import header, read_args, clear_results
+from database_v2 import Kegg
+from analysis_v2 import Analysis
+from tree_v2 import Tree
 
-
-# --------------- INITIAL START TIME --------------
 start_time = time.time()
 
 header()
 
-# -------------- INITIAL MAIN --------------
-print("----- INITIAL SHELL PARAMETERS -----")
-read_params()
+print(f'\u276F\u276F\u276F READ ARGUMENTS \u276E\u276E\u276E')
+args = read_args()
 
-if gl.mode_input == 0:
-    print("----- CLEAN PREVIOUS RESULTS -----")
-    clear_previous_results()
-    starting_depth = 1
-else:
-    print("----- LOAD LAST RESULTS (CSV) SAVED -----")
-    starting_depth = load_last_csv()
+print('\u276F\u276F\u276F CHECKING THE KEGG DATABASE \u276E\u276E\u276E')
+kegg = Kegg()
+kegg.run()
 
-print("----- CHECK DATABASE -----")
-check_database()
+if args.command == 'analysis' or args.load is False:
+    print('\u276F\u276F\u276F DELETING PREVIOUS RESULTS \u276E\u276E\u276E')
+    clear_results()
+    print('\u276F\u276F\u276F CHECKING INPUT PARAMETERS \u276E\u276E\u276E')
+    analysis = Analysis(args, kegg)
+    print('\u276F\u276F\u276F ANALYSIS \u276E\u276E\u276E')
+    analysis.run()
 
-print("----- START ANALYSIS -----")
-run_analysis(starting_depth)
-print("----- END ANALYSIS -----")
+    tree = Tree(args, kegg)
+    tree.run(True)
 
-print("----- START GENERATE OUTPUT -----")
-draw_from_analysis(
-    [gl.gene_input_hsa, gl.gene_input, gl.gene_input_url],
-    os.path.join(os.getcwd(), 'export_data')
-)
-print("----- END GENERATE OUTPUT -----")
 
-print("----- START GENERATE ZIPFILE -----")
-create_zip(f'analysis_{gl.pathway_input}_{gl.gene_input}_{gl.deep_input}')
-print("----- END GENERATE ZIPFILE -----")
 
 m, s = divmod(time.time() - start_time, 60)
 print(f"----- DONE EXECUTION ({round(m)} mins, {round(s)} secs) -----")
+
+

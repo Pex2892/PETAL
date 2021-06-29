@@ -132,8 +132,7 @@ dmypy.json
 .idea/
 results/
 *.zip
-*.csv
+
 data-flare.json
 
-database/
 export_data/

@@ -1,6 +1,6 @@
 import time
 from utility import header, read_args, clear_results
-from database_v2 import Kegg
+from database import Kegg
 from analysis_v2 import Analysis
 from tree_v2 import Tree
 

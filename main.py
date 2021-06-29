@@ -1,7 +1,7 @@
 import time
 from utility import header, read_args, clear_results
 from database import Kegg
-from analysis_v2 import Analysis
+from analysis import Analysis
 from tree_v2 import Tree
 
 start_time = time.time()

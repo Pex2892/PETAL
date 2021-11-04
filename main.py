@@ -27,7 +27,6 @@ if args.command == 'analysis' or args.load is False:
     tree.run(True)
 
 
-
 m, s = divmod(time.time() - start_time, 60)
 print(f"----- DONE EXECUTION ({round(m)} mins, {round(s)} secs) -----")
 

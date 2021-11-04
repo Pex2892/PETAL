@@ -51,15 +51,13 @@ class Tree:
             root_node = Node(name=root_name, hsa=info_root[0], url=info_root[2], info='NaN',
                              occurrences=0, deep=0, isoforms='NaN')
 
+        print(lst)
         for branch, i in zip(lst, lst2):
             parent_node = root_node
             assert branch[0] == parent_node.name
 
             for cur_node_name in branch[1:]:
-                cur_node = next(
-                    (node for node in parent_node.children if node.name == cur_node_name),
-                    None,
-                )
+                cur_node = next((node for node in parent_node.children if node.name == cur_node_name), None,)
                 if cur_node is None:
                     cur_node = Node(name=cur_node_name, hsa=i[1], url=i[2], info='da fare',
                                     occurrences=i[7], deep=i[0], isoforms=str(i[3]), parent=parent_node)

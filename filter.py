@@ -3,7 +3,7 @@ import datetime
 import os
 import subprocess as sb
 import time
-from draw import draw_from_filter
+from draw_old import draw_from_filter
 from utility import read_list_homo_sapiens_genes, check_gene_and_alias, get_gene_info_from_name, create_zip
 
 

@@ -54,8 +54,8 @@ def read_args():
                                                  'results previously obtained with the generation of a textual tree')
     menu2.add_argument('-t', '--targets', type=str, help='Target gene used to filter the data', required=True)
     menu2.add_argument('-c', '--cpu', type=int, help='(optional) Maximum number of CPUs used '
-                                                     'during the analysis – Default value = 0',
-                       choices=range(0, cpu_count()), default=2)
+                                                     'during the analysis – Default value = 1',
+                       choices=range(0, cpu_count()), default=1)
 
     args = parser.parse_args()
 

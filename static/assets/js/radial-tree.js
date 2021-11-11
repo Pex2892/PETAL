@@ -353,13 +353,14 @@ d3.json(file_json, function(error, treeData) {
         d3.select('#modal-occurences').property('value', d.occurrences);
         d3.select('#modal-deep').property('value', d.deep);
         d3.select('#modal-isoforms').property('value', d.isoforms);
+        d3.select('#modal-info').property('value', d.info);
 
-        var res = d.info.split(" - ");
+        /*var res = d.info.split(" - ");
         var html = '';
         for (var i = 0; i < res.length; i++) {
           html += res[i] +"\n";
         }
-        d3.select('#modal-info').property('value', html);
+        d3.select('#modal-info').property('value', html);*/
 
         return button;
     }

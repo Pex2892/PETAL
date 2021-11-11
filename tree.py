@@ -40,7 +40,7 @@ class Tree:
         copyfile(pathjoin(getcwd(), 'static', 'html', 'help.html'), pathjoin(path_tree, 'help.html'))
         copytree(pathjoin(getcwd(), 'static', 'assets'), pathjoin(path_tree, 'assets'))
 
-        print()
+        # print()
 
     def _list_to_anytree(self, lst, lst2, info_root=None):
         root_name = lst[0][0]
@@ -51,16 +51,19 @@ class Tree:
             root_node = Node(name=root_name, hsa=info_root[0], url=info_root[2], info='NaN',
                              occurrences=0, deep=0, isoforms='NaN')
 
-        print(lst)
+        # print(lst)
         for branch, i in zip(lst, lst2):
+            # print(i)
             parent_node = root_node
             assert branch[0] == parent_node.name
 
             for cur_node_name in branch[1:]:
                 cur_node = next((node for node in parent_node.children if node.name == cur_node_name), None,)
                 if cur_node is None:
-                    cur_node = Node(name=cur_node_name, hsa=i[1], url=i[2], info='da fare',
-                                    occurrences=i[7], deep=i[0], isoforms=str(i[3]), parent=parent_node)
+                    cur_node = Node(name=cur_node_name, hsa=i[1],
+                                    url=f'https://www.genome.jp/dbget-bin/www_bget?{i[1]}',
+                                    info=f'{i[6]} ({i[5]})',
+                                    occurrences=i[8], deep=i[0], isoforms=f'{i[3]}', parent=parent_node)
                 parent_node = cur_node
         return root_node
 
@@ -72,6 +75,7 @@ class Tree:
     def _export_tree_in_txt(self, tree, path):
         tree_txt = ''
         for pre, _, node in RenderTree(tree, style=ContRoundStyle()):
+            # print(node)
             tree_txt += f'{pre}{node.name}\n'
 
         with open(pathjoin(path, 'tree.txt'), 'w') as f:

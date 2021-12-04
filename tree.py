@@ -53,7 +53,7 @@ class Tree:
 
         # print(lst)
         for branch, i in zip(lst, lst2):
-            # print(i)
+            print(i)
             parent_node = root_node
             assert branch[0] == parent_node.name
 
@@ -62,7 +62,7 @@ class Tree:
                 if cur_node is None:
                     cur_node = Node(name=cur_node_name, hsa=i[1],
                                     url=f'https://www.genome.jp/dbget-bin/www_bget?{i[1]}',
-                                    info=f'{i[6]} ({i[5]})',
+                                    info=f'&&{i[6]}&&{i[5]}&&{i[9]}',
                                     occurrences=i[8], deep=i[0], isoforms=f'{i[3]}', parent=parent_node)
                 parent_node = cur_node
         return root_node

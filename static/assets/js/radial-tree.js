@@ -347,8 +347,8 @@ d3.json(file_json, function(error, treeData) {
     function info(d) {
         var button = '<button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#exampleModal">More info: '+ d.name +'</button>'
         d3.select('#modal-url').property('href', d.url);
-        d3.select('#modal-gene').property('value', d.name);
-        d3.select('#modal-hsa').property('value', d.hsa);
+        d3.select('#modal-gene').property('value', d.name+' ('+d.hsa+')');
+        //d3.select('#modal-hsa').property('value', d.hsa);
         d3.select('#modal-path').property('value', d3.select('#selection').text());
         d3.select('#modal-occurences').property('value', d.occurrences);
         d3.select('#modal-deep').property('value', d.deep);

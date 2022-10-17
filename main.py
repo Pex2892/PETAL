@@ -42,4 +42,4 @@ create_zip(f'analysis_{gl.pathway_input}_{gl.gene_input}_{gl.deep_input}')
 print("----- END GENERATE ZIPFILE -----")
 
 m, s = divmod(time.time() - start_time, 60)
-print(f"----- DONE EXECUTION ({round(m)} mins, {round(s)} secs) -----")
+print(f"---- DONE EXECUTION ({round(m)} mins, {round(s)} secs) -----")

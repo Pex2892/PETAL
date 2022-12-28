@@ -5,6 +5,5 @@ beautifulsoup4
 python-dateutil
 progressbar2
 numpy
-pywget
 anytree
 lxml

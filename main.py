@@ -1,4 +1,6 @@
 import time
+import os
+import http.server
 from utility import header, read_args, clear_results
 from database import Kegg
 from analysis import Analysis
@@ -30,4 +32,9 @@ if args.command == 'analysis' or args.load is False:
 m, s = divmod(time.time() - start_time, 60)
 print(f"----- DONE EXECUTION ({round(m)} mins, {round(s)} secs) -----")
 
+os.chdir('export_data/demo_radialtree')
+http.server.test(
+    HandlerClass=http.server.SimpleHTTPRequestHandler,
+    bind='127.0.0.1',
+    port=8080)
 

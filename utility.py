@@ -59,7 +59,7 @@ def read_args():
 
     args = parser.parse_args()
 
-    if args.cpu == 0:
+    if hasattr(args, 'cpu') and args.cpu == 0:
         args.cpu = cpu_count()
 
     print(f'\t\u279C {args}')

@@ -1,12 +1,17 @@
 from os.path import join as pathjoin, exists as pathexists
 from os import getcwd, remove
+import os
 import pandas as pd
-from pywget import wget
+import requests
 from zipfile import ZipFile
 from pandas import read_csv
 from lxml import etree
 from io import StringIO
 
+def download_to_file(url, filename):
+    r = requests.get(url, allow_redirects=True)
+    with open(filename, 'wb') as f:
+        f.write(r.content)
 
 class Kegg:
     def __init__(self):
@@ -32,7 +37,8 @@ class Kegg:
 
             # The database zip is downloaded from Github
             print('\t\u279C The zip download has started!')
-            wget.download(self.url_database, getcwd())
+            download_to_file(url=self.url_database, 
+                filename=os.path.join(os.getcwd(), 'only_database.zip'))           
             print("\t\u279C The zip download is complete!")
 
             # unzip

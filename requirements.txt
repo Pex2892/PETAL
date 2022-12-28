@@ -4,8 +4,6 @@ requests
 beautifulsoup4
 python-dateutil
 progressbar2
-inputimeout
 numpy
-pywget
 anytree
 lxml
